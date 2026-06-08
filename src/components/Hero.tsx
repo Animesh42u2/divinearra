@@ -1,7 +1,4 @@
-import { useState } from 'react'
-
 export default function Hero() {
-  const [form, setForm] = useState({ name: '', phone: '', email: '', dob: '', time: '', place: '', gender: '' })
 
   return (
     <>
