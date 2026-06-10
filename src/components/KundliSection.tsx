@@ -2,19 +2,11 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Loader2, User, Phone, Mail, Calendar, Clock, MapPin, Users } from 'lucide-react'
 
-const PROXY_BASE = '/prokerala'
-const clientId = import.meta.env.VITE_PROKERALA_CLIENT_ID as string
-const clientSecret = import.meta.env.VITE_PROKERALA_CLIENT_SECRET as string
+const PROXY_BASE = '/api/prokerala'
 
 async function getToken(): Promise<string> {
-  const res = await fetch(`${PROXY_BASE}/token`, {
+  const res = await fetch('/api/prokerala-token', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: new URLSearchParams({
-      grant_type: 'client_credentials',
-      client_id: clientId,
-      client_secret: clientSecret,
-    }),
   })
   if (!res.ok) throw new Error('Token fetch failed — check your .env credentials')
   const data = await res.json()
