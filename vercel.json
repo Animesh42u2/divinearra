@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/prokerala/:path*",
+      "destination": "/api/prokerala/[...path]"
+    }
+  ]
+}
