@@ -1,6 +1,13 @@
 import { useState, useEffect, useRef } from 'react'
-import { Star, Briefcase, Heart, Sparkles, ArrowRight, Phone} from 'lucide-react'
-
+import {
+  Star,
+  Briefcase,
+  Heart,
+  Sparkles,
+  ArrowRight,
+  Phone,
+  type LucideIcon,
+} from 'lucide-react'
 interface Feature {
   icon: LucideIcon
   title: string
