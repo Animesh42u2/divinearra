@@ -9,9 +9,9 @@ const slides = [
     image: '/slide1.png',
   },
   {
-    tag: '✦ Meet Astro Arun Panda',
+    tag: '✦ Meet Astro Aditya Narayan Panigrahi',
     title: 'Thousands Have Transformed Their Lives. Your Turn Starts Here.',
-    desc: 'With years of Vedic expertise and a heart for genuine guidance, Astro Arun Panda has helped people across the world find clarity, purpose, and peace.',
+    desc: 'With years of Vedic expertise and a heart for genuine guidance, Astro Aditya Narayan Panigrahi has helped people across the world find clarity, purpose, and peace.',
     btn1: 'Book a Session', btn2: 'Learn More',
     image: '/slide2.png',
   },
