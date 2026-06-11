@@ -81,7 +81,7 @@ export default function OneCall() {
 
         .oc-section {
           padding: 96px 5%;
-          background: #0e0a1a;
+          background: #fdf6ed;
           position: relative;
           overflow: hidden;
           font-family: 'Inter', sans-serif;
@@ -166,7 +166,7 @@ export default function OneCall() {
           font-family: 'Playfair Display', Georgia, serif;
           font-size: clamp(28px, 5vw, 52px);
           font-weight: 700;
-          color: #f5ead8;
+          color: #4a2006;
           margin: 0 0 16px;
           line-height: 1.15;
           opacity: 0;
@@ -183,7 +183,7 @@ export default function OneCall() {
         }
 
         .oc-subtext {
-          color: #9a8070;
+          color: #9a7050;
           font-size: 16px;
           line-height: 1.7;
           max-width: 540px;
@@ -202,7 +202,7 @@ export default function OneCall() {
         }
 
         .oc-card {
-          background: rgba(255,255,255,0.03);
+          background: #fff5e6;
           border: 1px solid rgba(196,122,30,0.2);
           border-radius: 20px;
           padding: 32px 24px;
@@ -297,12 +297,12 @@ export default function OneCall() {
           font-family: 'Playfair Display', Georgia, serif;
           font-size: 16px;
           font-weight: 600;
-          color: #f0e0c0;
+          color: #4a2006;
           margin: 0 0 10px;
         }
         .oc-card-desc {
           font-size: 13.5px;
-          color: #7a6a58;
+          color: #9a7050;
           line-height: 1.65;
           transition: color 0.3s ease;
         }
@@ -394,10 +394,6 @@ export default function OneCall() {
       `}</style>
 
       <section className="oc-section" ref={sectionRef}>
-        {/* Ambient glows */}
-        <div className="oc-bg-glow oc-bg-glow-1" />
-        <div className="oc-bg-glow oc-bg-glow-2" />
-
         {/* Star field */}
         <div className="oc-stars" aria-hidden="true">
           {STARS.map((star, i) => (

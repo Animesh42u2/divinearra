@@ -7,6 +7,7 @@ export const navLinks = [
     label: "Vedic Reports",
     path: "/reports",
     dropdown: [
+      "Reports",
       "Premium Personalized Kundali",
       "Career Report",
       "Finance Report",

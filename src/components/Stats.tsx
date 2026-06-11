@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
 
 const stats = [
-  { target: 52, suffix: 'M+', label: 'Monthly Views', duration: 2000 },
-  { target: 5.9, suffix: 'M+', label: 'Social Followers', duration: 1800, decimals: 1 },
-  { target: 8, suffix: 'Lakh+', label: 'Reports Delivered', duration: 1600 },
-  { target: 53, suffix: '+', label: 'Years of Legacy', duration: 1400 },
+  { target: 100, suffix: 'K+', label: 'Consultations Delivered', duration: 2000 },
+  { target: 7, suffix: '+', label: 'Years of Experience', duration: 1400 },
+  { target: 59, suffix: '+', label: 'Years of Legacy', duration: 1600 },
+  { target: 8, suffix: '+', label: 'Professional Awards', duration: 1200 },
+  { target: 30, suffix: 'K+', label: 'Hours of Expert Guidance', duration: 1800 },
 ]
 
 function easeOutQuart(t: number): number {
@@ -42,21 +43,24 @@ function StatItem({
   decimals?: number; triggered: boolean; index: number
 }) {
   const display = useCountUp(target, duration, decimals, triggered)
+  const [hovered, setHovered] = useState(false)
 
   return (
     <div
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
       style={{
-        flex: '1 1 140px',
-        minWidth: 120,
-        maxWidth: 200,
+        flex: '1 1 160px',
+        minWidth: 140,
+        maxWidth: 240,
         opacity: triggered ? 1 : 0,
-        transform: triggered ? 'translateY(0)' : 'translateY(24px)',
-        transition: `opacity 0.6s ease ${index * 0.12}s, transform 0.6s ease ${index * 0.12}s`,
+        transform: triggered ? (hovered ? 'translateY(-6px)' : 'translateY(0)') : 'translateY(24px)',
+        transition: `opacity 0.6s ease ${index * 0.12}s, transform 0.3s ease`,
         position: 'relative',
         padding: '0 12px',
+        cursor: 'default',
       }}
     >
-      {/* Divider between items */}
       {index > 0 && (
         <div style={{
           position: 'absolute', left: 0, top: '15%', height: '70%',
@@ -65,37 +69,37 @@ function StatItem({
       )}
 
       <div style={{
-        fontSize: 'clamp(36px, 5vw, 54px)',
+        fontSize: 'clamp(40px, 5.5vw, 64px)',
         fontWeight: 800,
-        color: '#4a2006',
         fontFamily: 'Georgia, serif',
         lineHeight: 1,
         letterSpacing: '-1px',
+        transition: 'color 0.3s ease',
       }}>
-        {display}
-        <span style={{ color: '#c47a1e' }}>{suffix}</span>
+        <span style={{ color: hovered ? '#c47a1e' : '#4a2006' }}>{display}</span>
+        <span style={{ color: hovered ? '#c47a1e' : '#4a2006', fontSize: 'inherit', fontWeight: 'inherit' }}>{suffix}</span>
       </div>
 
       <div style={{
         fontSize: 11,
-        color: '#9a7050',
+        color: hovered ? '#c47a1e' : '#9a7050',
         letterSpacing: 2,
         textTransform: 'uppercase',
         fontFamily: 'sans-serif',
         marginTop: 10,
         lineHeight: 1.5,
+        transition: 'color 0.3s ease',
       }}>
         {label}
       </div>
 
-      {/* Animated underline accent */}
       <div style={{
         height: 2,
         background: 'linear-gradient(90deg, #c47a1e, #e8a63a)',
         borderRadius: 2,
         marginTop: 12,
-        width: triggered ? '40px' : '0px',
-        transition: `width 0.6s ease ${0.4 + index * 0.12}s`,
+        width: hovered ? '60px' : (triggered ? '40px' : '0px'),
+        transition: `width 0.3s ease`,
         margin: '12px auto 0',
       }} />
     </div>
@@ -134,7 +138,7 @@ export default function Stats() {
         color: '#1a0a00',
         lineHeight: 1.3,
       }}>
-        A Journey Built on <span style={{ color: '#c47a1e' }}>Trust & Proven Results</span>
+        Trusted By <span style={{ color: '#c47a1e' }}>Thousands</span>
       </h2>
 
       <div style={{
@@ -143,7 +147,7 @@ export default function Stats() {
         alignItems: 'stretch',
         gap: 'clamp(16px, 3vw, 32px)',
         flexWrap: 'wrap',
-        maxWidth: 860,
+        maxWidth: 1100,
         margin: '0 auto',
       }}>
         {stats.map((s, i) => (
