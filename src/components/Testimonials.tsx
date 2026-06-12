@@ -144,9 +144,9 @@ export default function Testimonials() {
     <section style={styles.section}>
       <p style={styles.eyebrow}>Testimonials</p>
       <h2 style={styles.heading}>
-        What <span style={styles.gold}>Our Partners</span> Say About Us
+        What <span style={styles.gold}>Our Clients</span> Say About Us
       </h2>
-      <p style={styles.subtext}>Real feedback from partners who have collaborated with Divine Arra</p>
+      <p style={styles.subtext}>Real feedback from clients who have collaborated with Divine Arra</p>
 
       {/* Card */}
       <div
@@ -246,19 +246,23 @@ export default function Testimonials() {
         </button>
 
         <div style={styles.dots}>
-          {reviews.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => handleNav(i)}
-              aria-label={`Go to testimonial ${i + 1}`}
-              style={{
-                ...styles.dot,
-                width: i === current ? 24 : 8,
-                background: i === current ? '#c47a1e' : '#e8d5b7',
-                transition: 'width 0.35s ease, background 0.35s ease',
-              }}
-            />
-          ))}
+         {reviews.map((_, i) => {
+  const isNear = Math.abs(i - current) <= 2 || i === 0 || i === reviews.length - 1
+  return (
+    <button
+      key={i}
+      onClick={() => handleNav(i)}
+      aria-label={`Go to testimonial ${i + 1}`}
+      style={{
+        ...styles.dot,
+        width: i === current ? 24 : isNear ? 8 : 5,
+        opacity: isNear ? 1 : 0.4,
+        background: i === current ? '#c47a1e' : '#e8d5b7',
+        transition: 'width 0.35s ease, background 0.35s ease, opacity 0.35s ease',
+      }}
+    />
+  )
+})}
         </div>
 
         <button style={styles.navBtn} onClick={() => handleNav(current + 1)} aria-label="Next">
@@ -425,11 +429,14 @@ const styles: Record<string, React.CSSProperties> = {
     justifyContent: 'center',
     transition: 'background 0.2s',
   },
-  dots: {
-    display: 'flex',
-    gap: 8,
-    alignItems: 'center',
-  },
+ dots: {
+  display: 'flex',
+  gap: 6,
+  alignItems: 'center',
+  flexWrap: 'wrap',
+  justifyContent: 'center',
+  maxWidth: 220,
+},
   dot: {
     height: 8,
     borderRadius: 4,

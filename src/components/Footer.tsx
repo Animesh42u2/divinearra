@@ -13,6 +13,7 @@ export default function Footer() {
 
   const [showScroll, setShowScroll] = useState(false)
   const [scrollProgress, setScrollProgress] = useState(0)
+  const [scrollHover, setScrollHover] = useState(false)
   const circumference = 2 * Math.PI * 16
 
   useEffect(() => {
@@ -115,10 +116,13 @@ export default function Footer() {
         }
         .scroll-top-btn.hidden-btn { opacity: 0; pointer-events: none; transform: translateY(10px); }
         .scroll-top-btn.visible-btn { opacity: 1; pointer-events: auto; transform: translateY(0); }
-        .scroll-top-btn:hover { background: rgba(196,122,30,0.25); border-color: #c47a1e; transform: translateY(-3px); }
-        .scroll-top-svg { position: absolute; top: 0; left: 0; width: 44px; height: 44px; transform: rotate(-90deg); border-radius: 50%; }
-        .scroll-top-track { fill: none; stroke: rgba(196,122,30,0.2); stroke-width: 2; }
-        .scroll-top-progress { fill: none; stroke: rgba(196,122,30,0.8); stroke-width: 2; stroke-linecap: round; transition: stroke-dashoffset 0.15s linear; }
+.scroll-top-btn:hover { 
+  background: #e8c97a; 
+  border-color: #e8c97a; 
+  transform: translateY(-3px); 
+}        .scroll-top-svg { position: absolute; top: 0; left: 0; width: 44px; height: 44px; transform: rotate(-90deg); border-radius: 50%; }
+        .scroll-top-track { fill: none; stroke: rgba(232,201,122,0.3); stroke-width: 2; }
+.scroll-top-progress { fill: none; stroke: #e8c97a; stroke-width: 2; stroke-linecap: round; transition: stroke-dashoffset 0.15s linear; }
 
         /* WhatsApp */
         @keyframes wa-ping {
@@ -225,22 +229,24 @@ export default function Footer() {
       </div>
 
       {/* Scroll To Top */}
-      <button
-        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-        className={`scroll-top-btn ${showScroll ? 'visible-btn' : 'hidden-btn'}`}
-        aria-label="Scroll to top"
-      >
-        <svg className="scroll-top-svg" viewBox="0 0 44 44">
-          <circle className="scroll-top-track" cx="22" cy="22" r="16" />
-          <circle
-            className="scroll-top-progress"
-            cx="22" cy="22" r="16"
-            strokeDasharray={circumference}
-            strokeDashoffset={circumference - (scrollProgress / 100) * circumference}
-          />
-        </svg>
-        <ArrowUp size={16} color="#c47a1e" style={{ position: 'relative', zIndex: 1 }} />
-      </button>
+     <button
+  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+  onMouseEnter={() => setScrollHover(true)}
+  onMouseLeave={() => setScrollHover(false)}
+  className={`scroll-top-btn ${showScroll ? 'visible-btn' : 'hidden-btn'}`}
+  aria-label="Scroll to top"
+>
+  <svg className="scroll-top-svg" viewBox="0 0 44 44">
+    <circle className="scroll-top-track" cx="22" cy="22" r="16" />
+    <circle
+      className="scroll-top-progress"
+      cx="22" cy="22" r="16"
+      strokeDasharray={circumference}
+      strokeDashoffset={circumference - (scrollProgress / 100) * circumference}
+    />
+  </svg>
+  <ArrowUp size={16} color={scrollHover ? '#1a0a00' : '#e8c97a'} style={{ position: 'relative', zIndex: 1 }} />
+</button>
 
       {/* WhatsApp Floating */}
       <div className="wa-wrapper">

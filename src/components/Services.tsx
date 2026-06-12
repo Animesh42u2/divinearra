@@ -18,7 +18,7 @@ const serviceData: Record<string, {
 }[]> = {
   Consultations: [
     { tag: '1-on-1', Icon: MessageCircle, title: 'Personalized Consultation', desc: 'Get personalized guidance directly from the leading expert for clear life decisions.', btnLabel: 'Book Now' },
-    { tag: 'Expert', Icon: Briefcase, title: 'Career Astrology Consultation', desc: 'Get expert guidance for your career growth and professional success.', btnLabel: 'Book Now' },
+    { tag: 'Expert', Icon: Briefcase, title: 'Tarot Card Reading Consultation', desc: 'Get expert guidance for your career growth and professional success.', btnLabel: 'Book Now' },
     { tag: 'Couple', Icon: Users, title: 'Couple Consultation', desc: 'Understand your relationship dynamics and get clarity for your future together.', btnLabel: 'Book Now' },
     { tag: 'Special', Icon: Gem, title: 'Gemstone & Rudraksha', desc: 'Get the right gemstone recommendations based on your birth chart analysis.', btnLabel: 'Book Now' },
   ],
