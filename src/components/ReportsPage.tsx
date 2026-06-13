@@ -641,9 +641,6 @@ export default function ReportsPage() {
         <div className="reports-grid">
           {filtered.map((r, i) => {
             const tc = tagConfig[r.tag]
-            const orig = parseInt(r.originalPrice.replace(/[^0-9]/g, ''))
-            const curr = parseInt(r.price.replace(/[^0-9]/g, ''))
-            const savePct = Math.round((1 - curr / orig) * 100)
             const bc = beamColors[i % beamColors.length]
 
             return (
@@ -686,16 +683,6 @@ export default function ReportsPage() {
                   </div>
 
                   <p className="card-desc">{r.desc}</p>
-
-                  <div className="card-divider" />
-
-                  <div className="card-price-row">
-                    <div className="price-stack">
-                      <span className="price-original">{r.originalPrice}</span>
-                      <span className="price-current">{r.price}</span>
-                    </div>
-                    <span className="price-save">Save {savePct}%</span>
-                  </div>
 
                   <button className="buy-btn">
                     <span className="buy-btn-icon"><CartIcon /></span>
