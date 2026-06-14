@@ -7,6 +7,52 @@ import {
 import Navbar from './Navbar'
 import Footer from './Footer'
 
+// ── Spiritual Confetti — fast, no lag, built-in shapes only ──────────────────
+const SPIRITUAL_COLORS = [
+  '#FF9933', '#FFD700', '#FF6B35', '#C8791A',
+  '#FFF176', '#FF5722', '#FFAB40', '#FFE082',
+]
+
+declare global {
+  interface Window {
+    confetti?: (opts: object) => void
+  }
+}
+
+function launchOmConfetti() {
+  const fire = () => {
+    const cf = window.confetti
+    if (!cf) return
+
+    const base = {
+      colors        : SPIRITUAL_COLORS,
+      shapes        : ['circle', 'square'],
+      gravity       : 1,
+      decay         : 0.9,
+      ticks         : 180,
+      zIndex        : 9999,
+      disableForReducedMotion: true,
+    }
+
+    // Left cannon
+    cf({ ...base, particleCount: 60, angle: 60,  spread: 55, startVelocity: 50, origin: { x: 0, y: 0.65 } })
+    // Right cannon
+    cf({ ...base, particleCount: 60, angle: 120, spread: 55, startVelocity: 50, origin: { x: 1, y: 0.65 } })
+    // Center pop
+    setTimeout(() => cf({ ...base, particleCount: 80, spread: 90, startVelocity: 40, origin: { x: 0.5, y: 0.55 } }), 150)
+  }
+
+  if (window.confetti) {
+    fire()
+  } else {
+    const script  = document.createElement('script')
+    script.src    = 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js'
+    script.async  = true
+    script.onload = fire
+    document.body.appendChild(script)
+  }
+}
+
 const AMBER      = '#c8791a'
 const AMBER_DARK = '#8b4e0a'
 const CREAM      = '#fdf6e9'
@@ -65,6 +111,7 @@ export default function ContactUs() {
       await fetch(APPS_SCRIPT_URL, { method: 'POST', body: fd })
 
       setSubmitted(true)
+      launchOmConfetti()
       setForm({ name: '', email: '', phone: '', subject: 'Select Service', message: '' })
       setTimeout(() => setSubmitted(false), 5000)
     } catch (err) {
