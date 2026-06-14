@@ -42,7 +42,7 @@ export default function Navbar() {
         }}>
 
           {/* Logo */}
-          <a href="/" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }) }}
+          <a href="/" onClick={(e) => { e.preventDefault(); navigate('/'); window.scrollTo({ top: 0, behavior: 'smooth' }) }}
             style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0 }}>
             <img
               src="/logo.jpeg"
