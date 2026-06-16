@@ -14,6 +14,8 @@ import Newsletter from './components/Newsletter'
 import Footer from './components/Footer'
 import ReportDetailPage from './components/ReportDetailPage'
 import ConsultationDetailPage from './components/Consultationdetailpage'
+import CourseDetailPage from './components/CourseDetailPage'
+import CoursesPage from './components/Coursespage'
 import AboutUs from './components/AboutUs'
 import ContactUs from './components/ContactUs'
 
@@ -66,6 +68,12 @@ function App() {
         } />
         <Route path="/consultation/:slug" element={
           <PageLayout><ConsultationDetailPage /></PageLayout>
+        } />
+        <Route path="/courses/:slug" element={
+  <PageLayout><CourseDetailPage /></PageLayout>
+        } />
+        <Route path="/courses" element={
+          <PageLayout><CoursesPage /></PageLayout>
         } />
         <Route path="/kundali" element={
           <PageLayout><KundliResultPage /></PageLayout>
