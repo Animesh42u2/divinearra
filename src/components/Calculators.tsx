@@ -108,7 +108,7 @@ const FIELDS: Record<FieldKey, { label: string; type: string; placeholder: strin
   name2:   { label: "Partner's Name",     type: 'text',   placeholder: 'Partner full name', icon: User     },
   dob2:    { label: "Partner's DOB",      type: 'date',   placeholder: '',                  icon: Calendar },
   time2:   { label: "Partner's Time",     type: 'time',   placeholder: '',                  icon: Clock    },
-  place2:  { label: "Partner's Place",    type: 'text',   placeholder: 'Partner city',      icon: MapPin   },
+  place2:  { label: "Partner's Place",    type: 'text',   placeholder: 'Partner city',       icon: MapPin   },
   gender2: { label: "Partner's Gender",   type: 'select', placeholder: 'Select gender',     icon: Users    },
 }
 
@@ -234,7 +234,7 @@ function MoonPhaseResult({ data }: { data: Record<string, unknown> }) {
   const sunrise  = d.sunrise as string
   const sunset   = d.sunset  as string
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(150px,1fr))', gap: 12 }}>
+    <div className="result-grid">
       <InfoCard label="Tithi"       value={tithi} />
       <InfoCard label="Nakshatra"   value={nakshatra} />
       <InfoCard label="Yoga"        value={yoga} />
@@ -256,12 +256,12 @@ function MangalResult({ data }: { data: Record<string, unknown> }) {
   return (
     <div>
       <div style={{
-        textAlign: 'center', padding: '24px 20px', borderRadius: 14, marginBottom: 18,
+        textAlign: 'center', padding: 'clamp(18px,4vw,24px) clamp(14px,4vw,20px)', borderRadius: 14, marginBottom: 18,
         background:  hasDosha && !cancels ? '#fff5f5' : T.successBg,
         border: `2px solid ${hasDosha && !cancels ? T.errorBdr : T.successBdr}`,
       }}>
-        <div style={{ fontSize: 40 }}>{hasDosha && !cancels ? '⚠️' : '✅'}</div>
-        <div style={{ fontSize: 20, fontWeight: 800, marginTop: 10, fontFamily: 'Georgia,serif',
+        <div style={{ fontSize: 'clamp(32px,7vw,40px)' }}>{hasDosha && !cancels ? '⚠️' : '✅'}</div>
+        <div style={{ fontSize: 'clamp(16px,3.5vw,20px)', fontWeight: 800, marginTop: 10, fontFamily: 'Georgia,serif',
           color: hasDosha && !cancels ? T.error : T.success }}>
           {hasDosha == null ? 'Unable to determine'
             : hasDosha && !cancels ? 'Mangal Dosha Present'
@@ -269,7 +269,7 @@ function MangalResult({ data }: { data: Record<string, unknown> }) {
             : 'No Mangal Dosha'}
         </div>
       </div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(150px,1fr))', gap: 12, marginBottom: 14 }}>
+      <div className="result-grid" style={{ marginBottom: 14 }}>
         <InfoCard label="Mars Position" value={mangalPos} />
         <InfoCard label="Dosha Type"    value={dosha} />
       </div>
@@ -289,9 +289,9 @@ function KundliResult({ data }: { data: Record<string, unknown> }) {
     <div>
       {score != null && (
         <div style={{ textAlign: 'center', marginBottom: 24 }}>
-          <div style={{ fontSize: 56, fontWeight: 800, fontFamily: 'Georgia,serif', color: T.amber, lineHeight: 1 }}>
+          <div style={{ fontSize: 'clamp(40px,10vw,56px)', fontWeight: 800, fontFamily: 'Georgia,serif', color: T.amber, lineHeight: 1 }}>
             {score}
-            <span style={{ fontSize: 22, color: T.brown, fontWeight: 400 }}>/{maxPts ?? 36}</span>
+            <span style={{ fontSize: 'clamp(16px,4vw,22px)', color: T.brown, fontWeight: 400 }}>/{maxPts ?? 36}</span>
           </div>
           <div style={{ fontSize: 12, color: T.brown, marginTop: 4, marginBottom: 12 }}>Guna Milan Score</div>
           <div style={{ height: 8, background: '#f0e0c8', borderRadius: 4, maxWidth: 260, margin: '0 auto' }}>
@@ -309,7 +309,7 @@ function KundliResult({ data }: { data: Record<string, unknown> }) {
         </div>
       )}
       {gunas && (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(130px,1fr))', gap: 10 }}>
+        <div className="guna-grid">
           {gunas.map(g => (
             <div key={g.name} style={{
               background: T.white, border: `1.5px solid ${T.border}`,
@@ -336,7 +336,7 @@ function LagnaResult({ data }: { data: Record<string, unknown> }) {
   const sunSign   = (d.soorya_rasi  as { name?: string })?.name
   const sunrise   = d.sunrise as string
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(150px,1fr))', gap: 12 }}>
+    <div className="result-grid">
       <InfoCard label="Lagna (Ascendant)"  value={ascendant} />
       <InfoCard label="Moon Sign (Rashi)"  value={rashi} />
       <InfoCard label="Sun Sign"           value={sunSign} />
@@ -371,7 +371,8 @@ const SHARED_CSS = `
   .cp-input::placeholder { color: ${T.brownLight}; }
   .cp-input:focus { border-bottom-color: ${T.amber}; }
 
-  .cp-field { position: relative; }
+  .cp-field { position: relative; grid-column: span 1; }
+  .cp-field.span-2 { grid-column: span 2; }
   .cp-field::after {
     content: ''; position: absolute; bottom: 0; left: 0;
     width: 0; height: 2px;
@@ -399,18 +400,23 @@ const SHARED_CSS = `
     grid-template-columns: 1fr 1fr;
     gap: 22px 28px;
   }
-  @media (max-width: 540px) {
-    .form-grid { grid-template-columns: 1fr !important; }
-    .span-2    { grid-column: span 1 !important; }
+
+  .result-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px,1fr));
+    gap: 12px;
+  }
+
+  .guna-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(110px,1fr));
+    gap: 10px;
   }
 
   .calc-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
-  }
-  @media (max-width: 640px) {
-    .calc-grid { grid-template-columns: 1fr !important; }
   }
 
   .calc-card {
@@ -454,6 +460,48 @@ const SHARED_CSS = `
     to   { opacity: 1; transform: translateY(0); }
   }
   .fade-up { animation: fadeUp 0.4s ease both; }
+
+  .cp-back-btn {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.25);
+    color: #fff; border-radius: 8px;
+    padding: 6px 14px; cursor: pointer;
+    font-size: 12px; font-family: inherit;
+    display: inline-flex; align-items: center; gap: 6px;
+    margin-bottom: 24px; transition: background 0.2s;
+  }
+
+  .cp-hero-title-row { display: flex; align-items: center; gap: 16px; margin-bottom: 10px; }
+
+  /* ── Responsive breakpoints ───────────────────────────────── */
+
+  @media (max-width: 720px) {
+    .calc-grid { grid-template-columns: 1fr !important; }
+
+    .calc-card {
+      flex-wrap: wrap;
+      padding: 16px 18px;
+    }
+    .calc-cta-btn {
+      width: 100%;
+      margin-top: 4px;
+    }
+  }
+
+  @media (max-width: 540px) {
+    .form-grid { grid-template-columns: 1fr !important; }
+    .cp-field.span-2 { grid-column: span 1 !important; }
+
+    .cp-hero-title-row { gap: 12px; }
+
+    .guna-grid { grid-template-columns: repeat(auto-fit, minmax(90px,1fr)); }
+  }
+
+  @media (max-width: 420px) {
+    .calc-icon-wrap { width: 40px; height: 40px; }
+
+    .cp-back-btn { font-size: 11px; padding: 5px 12px; }
+  }
 `
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -464,11 +512,11 @@ export default function Calculators() {
   const navigate = useNavigate()
 
   return (
-    <section style={{ padding: 'clamp(48px,8vw,80px) clamp(16px,8%,80px)', background: T.cream }}>
+    <section style={{ padding: 'clamp(40px,8vw,80px) clamp(16px,8%,80px)', background: T.cream }}>
       <style>{SHARED_CSS}</style>
 
       {/* Header */}
-      <div style={{ textAlign: 'center', marginBottom: 48 }}>
+      <div style={{ textAlign: 'center', marginBottom: 'clamp(32px,6vw,48px)' }}>
         <div style={{
           display: 'inline-flex', alignItems: 'center', gap: 6,
           background: T.amberPale, border: `1px solid ${T.border}`,
@@ -478,14 +526,14 @@ export default function Calculators() {
           <Sparkles size={12} /> Free Vedic Tools
         </div>
         <h2 style={{
-          margin: '0 0 12px', fontSize: 'clamp(26px,4vw,36px)',
+          margin: '0 0 12px', fontSize: 'clamp(24px,4vw,36px)',
           fontWeight: 800, fontFamily: 'Georgia,serif', color: T.amberDark,
         }}>
           Free <span style={{ color: T.amber }}>Calculators</span>
         </h2>
         <p style={{
           color: T.brown, fontFamily: 'sans-serif',
-          fontSize: 15, maxWidth: 460, margin: '0 auto',
+          fontSize: 'clamp(13px,2vw,15px)', maxWidth: 460, margin: '0 auto',
           lineHeight: 1.7,
         }}>
           Understand your life better with our free Vedic astrology tools
@@ -551,7 +599,7 @@ export function CalculatorPage() {
 
   if (!calc) {
     return (
-      <div style={{ textAlign: 'center', padding: 80, fontFamily: 'sans-serif' }}>
+      <div style={{ textAlign: 'center', padding: 'clamp(48px,12vw,80px) 20px', fontFamily: 'sans-serif' }}>
         <div style={{ fontSize: 48, marginBottom: 16 }}>🔭</div>
         <h2 style={{ color: T.amberDark, fontFamily: 'Georgia,serif' }}>Calculator not found</h2>
         <button
@@ -599,8 +647,7 @@ export function CalculatorPage() {
       const MIcon = meta.icon
       const wide  = fk === 'place' || fk === 'place2'
       return (
-        <div key={fk} className={`cp-field${wide ? ' span-2' : ''}`}
-          style={{ gridColumn: wide ? 'span 2' : 'span 1' }}>
+        <div key={fk} className={`cp-field${wide ? ' span-2' : ''}`}>
           <label style={{
             fontSize: 10, color: T.brown, fontWeight: 700,
             textTransform: 'uppercase', letterSpacing: '0.07em',
@@ -640,43 +687,32 @@ export function CalculatorPage() {
       {/* ── Hero Banner ── */}
       <div style={{
         background: `linear-gradient(130deg, #6a2e04 0%, ${accent} 100%)`,
-        padding: 'clamp(28px,5vw,52px) clamp(16px,8%,80px)',
+        padding: 'clamp(24px,5vw,52px) clamp(16px,8%,80px)',
         color: '#fff', position: 'relative', overflow: 'hidden',
       }}>
         {/* Decorative rings */}
         <div style={{
-          position: 'absolute', right: -60, top: -60,
-          width: 280, height: 280, borderRadius: '50%',
+          position: 'absolute', right: 'clamp(-40px,-10vw,-60px)', top: -60,
+          width: 'clamp(160px,40vw,280px)', height: 'clamp(160px,40vw,280px)', borderRadius: '50%',
           border: '1px solid rgba(255,255,255,0.1)',
           pointerEvents: 'none',
         }} />
         <div style={{
           position: 'absolute', right: -20, top: -20,
-          width: 180, height: 180, borderRadius: '50%',
+          width: 'clamp(100px,25vw,180px)', height: 'clamp(100px,25vw,180px)', borderRadius: '50%',
           border: '1px solid rgba(255,255,255,0.08)',
           pointerEvents: 'none',
         }} />
 
         {/* Back button */}
-        <button
-          onClick={() => navigate(-1)}
-          style={{
-            background: 'rgba(255,255,255,0.12)',
-            border: '1px solid rgba(255,255,255,0.25)',
-            color: '#fff', borderRadius: 8,
-            padding: '6px 14px', cursor: 'pointer',
-            fontSize: 12, fontFamily: 'inherit',
-            display: 'inline-flex', alignItems: 'center', gap: 6,
-            marginBottom: 24, transition: 'background 0.2s',
-          }}
-        >
+        <button className="cp-back-btn" onClick={() => navigate(-1)}>
           <ArrowLeft size={13} /> Back to Calculators
         </button>
 
         {/* Title row */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 10 }}>
+        <div className="cp-hero-title-row">
           <div style={{
-            width: 54, height: 54, borderRadius: '50%',
+            width: 'clamp(42px,10vw,54px)', height: 'clamp(42px,10vw,54px)', borderRadius: '50%',
             background: 'rgba(255,255,255,0.15)',
             border: '1.5px solid rgba(255,255,255,0.3)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -685,9 +721,10 @@ export function CalculatorPage() {
             <Icon size={26} color="#fff" strokeWidth={1.5} />
           </div>
           <h1 style={{
-            margin: 0, fontSize: 'clamp(20px,4vw,32px)',
+            margin: 0, fontSize: 'clamp(19px,4vw,32px)',
             fontWeight: 800, fontFamily: 'Georgia,serif',
             textShadow: '0 2px 12px rgba(0,0,0,0.18)',
+            lineHeight: 1.25,
           }}>
             {calc.title}
           </h1>
@@ -703,12 +740,12 @@ export function CalculatorPage() {
       </div>
 
       {/* ── Content ── */}
-      <div style={{ maxWidth: 760, margin: '0 auto', padding: 'clamp(24px,4vw,48px) clamp(16px,4%,32px)' }}>
+      <div style={{ maxWidth: 760, margin: '0 auto', padding: 'clamp(20px,4vw,48px) clamp(14px,4%,32px)' }}>
 
         {/* Form card */}
         <div style={{
           background: T.white, borderRadius: 18,
-          padding: 'clamp(20px,4vw,36px)',
+          padding: 'clamp(18px,4vw,36px)',
           border: `1px solid ${T.border}`,
           boxShadow: '0 4px 28px rgba(196,122,30,0.07)',
           marginBottom: 24,
@@ -783,14 +820,14 @@ export function CalculatorPage() {
             className="fade-up"
             style={{
               background: T.white, borderRadius: 18,
-              padding: 'clamp(20px,4vw,32px)',
+              padding: 'clamp(18px,4vw,32px)',
               border: `1.5px solid ${accent}55`,
               boxShadow: `0 4px 28px ${accent}22`,
             }}
           >
             <h3 style={{
               margin: '0 0 20px', fontFamily: 'Georgia,serif',
-              color: T.amberDark, fontSize: 20,
+              color: T.amberDark, fontSize: 'clamp(17px,3vw,20px)',
               display: 'flex', alignItems: 'center', gap: 8,
             }}>
               <Icon size={18} color={accent} /> Your Results

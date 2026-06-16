@@ -15,6 +15,7 @@ import Footer from './components/Footer'
 import ReportDetailPage from './components/ReportDetailPage'
 import ConsultationDetailPage from './components/Consultationdetailpage'
 import CourseDetailPage from './components/CourseDetailPage'
+import ConsultationsPage from './components/ConsultationsPage'
 import CoursesPage from './components/Coursespage'
 import AboutUs from './components/AboutUs'
 import ContactUs from './components/ContactUs'
@@ -85,9 +86,11 @@ function App() {
           <PageLayout><ContactUs /></PageLayout>
         } />
 
-        {/* Calculator detail pages */}
         <Route path="/calculators/:type" element={
           <PageLayout><CalculatorPage /></PageLayout>
+        } />
+        <Route path="/consultation" element={
+        <PageLayout><ConsultationsPage /></PageLayout>
         } />
       </Routes>
     </BrowserRouter>
