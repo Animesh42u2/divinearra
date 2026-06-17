@@ -1,8 +1,53 @@
 import { useState } from 'react'
-import { Send } from 'lucide-react'
+import { Send, Loader2, Check } from 'lucide-react'
+
+type Status = 'idle' | 'loading' | 'success' | 'error'
 
 export default function Newsletter() {
   const [email, setEmail] = useState('')
+  const [status, setStatus] = useState<Status>('idle')
+  const [message, setMessage] = useState('')
+
+ const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault()
+  if (status === 'loading') return
+
+  setStatus('loading')
+  setMessage('')
+
+  try {
+    const res = await fetch('https://api.buttondown.email/v1/subscribers', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Token ${import.meta.env.VITE_BUTTONDOWN_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email }),
+    })
+
+    if (res.status === 201) {
+      setStatus('success')
+      setMessage("You're subscribed! Check your inbox.")
+      setEmail('')
+      return
+    }
+
+    const data = await res.json().catch(() => ({}))
+    const alreadySubscribed = JSON.stringify(data).toLowerCase().includes('already')
+
+    if (alreadySubscribed) {
+      setStatus('error')
+      setMessage("You're already subscribed!")
+      return
+    }
+
+    setStatus('error')
+    setMessage('Something went wrong. Please try again.')
+  } catch {
+    setStatus('error')
+    setMessage('Network error. Please check your connection and try again.')
+  }
+}
 
   return (
     <section style={{
@@ -56,6 +101,7 @@ export default function Newsletter() {
           background: rgba(196,122,30,0.18);
           box-shadow: inset 0 0 0 1px #e8a135;
         }
+        .newsletter-input:disabled { opacity: 0.6; }
         .newsletter-btn {
           background: linear-gradient(135deg, #c47a1e 0%, #e8a135 50%, #c47a1e 100%);
           color: #1a0a00;
@@ -73,9 +119,26 @@ export default function Newsletter() {
           box-shadow: 0 4px 16px rgba(196,122,30,0.35);
           transition: background 0.2s, box-shadow 0.2s;
         }
-        .newsletter-btn:hover {
+        .newsletter-btn:hover:not(:disabled) {
           background: linear-gradient(135deg, #e8a135 0%, #ffd700 50%, #e8a135 100%);
           box-shadow: 0 6px 20px rgba(196,122,30,0.55);
+        }
+        .newsletter-btn:disabled {
+          cursor: not-allowed;
+          opacity: 0.75;
+        }
+        .newsletter-message {
+          margin-top: 16px;
+          font-family: sans-serif;
+          font-size: 13px;
+          min-height: 18px;
+        }
+        .newsletter-message.success { color: #7fd99a; }
+        .newsletter-message.error { color: #f08a6c; }
+        .spin { animation: spin 0.8s linear infinite; }
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
         }
         @media (max-width: 520px) {
           .newsletter-title { font-size: 22px; }
@@ -102,19 +165,33 @@ export default function Newsletter() {
         Subscribe to receive personalized astrological insights and predictions directly in your inbox.
       </p>
 
-      <div className="newsletter-form">
+      <form className="newsletter-form" onSubmit={handleSubmit}>
         <input
           className="newsletter-input"
           value={email}
           onChange={e => setEmail(e.target.value)}
           placeholder="Enter your email"
           type="email"
+          required
+          disabled={status === 'loading'}
         />
-        <button className="newsletter-btn">
-          <Send size={15} />
-          Subscribe
+        <button className="newsletter-btn" type="submit" disabled={status === 'loading'}>
+          {status === 'loading' ? (
+            <Loader2 size={15} className="spin" />
+          ) : status === 'success' ? (
+            <Check size={15} />
+          ) : (
+            <Send size={15} />
+          )}
+          {status === 'loading' ? 'Subscribing...' : status === 'success' ? 'Subscribed' : 'Subscribe'}
         </button>
-      </div>
+      </form>
+
+      {message && (
+        <p className={`newsletter-message ${status === 'success' ? 'success' : status === 'error' ? 'error' : ''}`}>
+          {message}
+        </p>
+      )}
     </section>
   )
 }

@@ -6,6 +6,7 @@ import {
   Activity, Moon, Star, Layers
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
+import BookingModal from './BookingModal'
 
 const tabs = ['Consultations', 'Reports', 'Kundli']
 
@@ -43,6 +44,8 @@ const serviceData: Record<string, {
 export default function Services() {
   const [activeTab, setActiveTab] = useState('Consultations')
   const [hoveredCard, setHoveredCard] = useState<string | null>(null)
+  const [activeService, setActiveService] = useState<string | null>(null)
+
   const cards = serviceData[activeTab]
 
   return (
@@ -229,10 +232,23 @@ export default function Services() {
               {s.desc}
             </p>
 
-            <button className="svc-btn">{s.btnLabel}</button>
+            <button
+              className="svc-btn"
+              onClick={() => setActiveService(s.title)}
+            >
+              {s.btnLabel}
+            </button>
           </div>
         ))}
       </div>
+
+      {/* Booking Modal */}
+      {activeService && (
+        <BookingModal
+          service={activeService}
+          onClose={() => setActiveService(null)}
+        />
+      )}
     </section>
   )
 }
