@@ -286,6 +286,47 @@ export default function CourseDetailPage() {
         @media (max-width:480px) {
           .pricing-table th,.pricing-table td { padding:0.75rem 0.75rem !important; font-size:0.8rem !important; }
         }
+
+        /* ── Pricing cards responsive ── */
+        .plan-cards-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+          gap: 1.25rem;
+          margin-top: 2rem;
+        }
+        .plan-card-link {
+          text-decoration: none;
+          display: flex;
+        }
+        .plan-card-inner {
+          background: #fff;
+          border-radius: 18px;
+          padding: 1.5rem 1.25rem 1.25rem;
+          cursor: pointer;
+          position: relative;
+          overflow: hidden;
+          transition: transform 0.2s ease, box-shadow 0.2s ease;
+          text-align: center;
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+        }
+        .plan-card-inner:hover {
+          transform: translateY(-4px);
+        }
+        .plan-card-img-wrap {
+          height: clamp(100px, 18vw, 130px);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.5rem;
+          margin-bottom: 1rem;
+          flex-shrink: 0;
+        }
+        @media (max-width: 480px) {
+          .plan-cards-grid { grid-template-columns: 1fr; }
+          .plan-card-img-wrap { height: 110px; }
+        }
       `}</style>
 
       {/* ── HERO ── */}
@@ -313,7 +354,6 @@ export default function CourseDetailPage() {
               Enroll in {course.title} →
             </a>
           </div>
-          {/* course meta pills */}
           <div style={{ display: 'flex', gap: '0.6rem', flexWrap: 'wrap' }}>
             {[
               ['🕐', course.duration],
@@ -354,7 +394,7 @@ export default function CourseDetailPage() {
                 </li>
               ))}
             </ul>
-            <a href="#pricing" style={{ ...ctaBtn }}>Enroll Now</a>
+            <Link to={`/checkout/course/${slug}`} state={{ planIndex: 0 }} style={{ ...ctaBtn }}>Enroll Now</Link>
           </div>
 
           <div style={{
@@ -406,7 +446,7 @@ export default function CourseDetailPage() {
       </section>
 
       {/* ── FOR WHOM ── */}
-<ForWhomSliding forWhom={course.forWhom} />
+      <ForWhomSliding forWhom={course.forWhom} />
 
       {/* ── PRICING ── */}
       <section id="pricing" style={{ maxWidth: 1100, margin: '0 auto', padding: 'clamp(3rem,6vw,5rem) clamp(1rem,3vw,1.5rem)' }}>
@@ -416,6 +456,7 @@ export default function CourseDetailPage() {
           </h2>
         </div>
 
+        {/* ── Feature comparison table ── */}
         <div className="pricing-scroll" style={{ borderRadius: 16, boxShadow: `0 8px 32px ${AMBER}1a`, border: `1px solid ${AMBER}30` }}>
           <table className="pricing-table" style={{ width: '100%', borderCollapse: 'separate', borderSpacing: 0, background: '#fff' }}>
             <thead>
@@ -467,8 +508,154 @@ export default function CourseDetailPage() {
           </table>
         </div>
 
-        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2rem' }}>
-          <a href="#pricing" style={{ ...ctaBtn }}>Enroll Now</a>
+        {/* ── Plan buy cards ── */}
+        <div className="plan-cards-grid">
+          {course.pricingPlans.map((plan, i) => (
+            <Link
+              key={i}
+              to={`/checkout/course/${slug}`}
+              state={{ planIndex: i }}
+              className="plan-card-link"
+            >
+              <div
+                className="plan-card-inner"
+                style={{
+                  border: i === 1 ? `2px solid ${AMBER}` : `1.5px solid ${AMBER}44`,
+                  boxShadow: i === 1 ? `0 8px 32px ${AMBER}33` : `0 4px 16px ${AMBER}15`,
+                }}
+                onMouseEnter={e => {
+                  (e.currentTarget as HTMLDivElement).style.boxShadow = `0 16px 40px ${AMBER}33`
+                }}
+                onMouseLeave={e => {
+                  (e.currentTarget as HTMLDivElement).style.boxShadow = i === 1
+                    ? `0 8px 32px ${AMBER}33`
+                    : `0 4px 16px ${AMBER}15`
+                }}
+              >
+                {/* Best Value badge */}
+                {i === 1 && (
+                  <div style={{
+                    position: 'absolute', top: 12, right: 12,
+                    background: `linear-gradient(135deg, ${AMBER_DARK}, ${AMBER})`,
+                    color: '#fff', fontSize: '0.6rem', fontWeight: 800,
+                    padding: '3px 10px', borderRadius: 100,
+                    letterSpacing: '0.08em', textTransform: 'uppercase',
+                    zIndex: 2,
+                  }}>
+                    Best Value
+                  </div>
+                )}
+
+                {/* Top accent bar */}
+                <div style={{
+                  position: 'absolute', top: 0, left: 0, right: 0, height: 3,
+                  background: i === 1
+                    ? `linear-gradient(90deg, ${AMBER_DARK}, ${AMBER_LIGHT})`
+                    : `linear-gradient(90deg, ${AMBER}88, transparent)`,
+                  borderRadius: '18px 18px 0 0',
+                }} />
+
+                {/* Images */}
+                <div className="plan-card-img-wrap">
+                  <img
+                    src={course.image}
+                    alt={plan.name}
+                    style={{
+                      height: '100%',
+                      maxWidth: i === 1 ? '45%' : '65%',
+                      objectFit: 'contain',
+                      filter: `drop-shadow(0 6px 16px ${AMBER}44)`,
+                      flexShrink: 0,
+                    }}
+                  />
+                  {i === 1 && (
+                    <>
+                      <span style={{
+                        color: AMBER, fontSize: '1.2rem', fontWeight: 300,
+                        flexShrink: 0, lineHeight: 1,
+                      }}>+</span>
+                      <img
+                        src="/check.png"
+                        alt="Mentored"
+                        style={{
+                          height: '100%',
+                          maxWidth: '45%',
+                          objectFit: 'contain',
+                          filter: `drop-shadow(0 6px 16px ${AMBER}44)`,
+                          flexShrink: 0,
+                        }}
+                      />
+                    </>
+                  )}
+                </div>
+
+                {/* Plan name */}
+                <h3 style={{
+                  fontFamily: "'Playfair Display', serif",
+                  fontSize: 'clamp(0.85rem, 2vw, 1rem)',
+                  fontWeight: 700,
+                  color: BROWN_TEXT,
+                  margin: '0 0 0.3rem',
+                  lineHeight: 1.3,
+                  flexShrink: 0,
+                }}>
+                  {plan.name}
+                </h3>
+
+                {/* Tagline — flex:1 pushes price+CTA to bottom */}
+                <p style={{
+                  fontSize: '0.72rem',
+                  color: BROWN_MID,
+                  margin: '0 0 0.85rem',
+                  lineHeight: 1.5,
+                  flex: 1,
+                }}>
+                  {plan.tagline}
+                </p>
+
+                {/* Price */}
+                <div style={{ marginBottom: '1rem', flexShrink: 0 }}>
+                  <span style={{
+                    color: '#bbb', fontSize: '0.78rem',
+                    textDecoration: 'line-through',
+                    display: 'block', marginBottom: 2,
+                  }}>
+                    {plan.originalPrice}
+                  </span>
+                  <span style={{
+                    fontFamily: "'Playfair Display', serif",
+                    fontSize: 'clamp(1.1rem, 2.5vw, 1.5rem)',
+                    fontWeight: 800,
+                    color: AMBER_DARK,
+                  }}>
+                    {plan.discountedPrice}/-
+                  </span>
+                  <span style={{ fontSize: '0.65rem', color: BROWN_MID, marginLeft: 4 }}>
+                    only
+                  </span>
+                </div>
+
+                {/* CTA */}
+                <div style={{
+                  background: `linear-gradient(135deg, ${AMBER_DARK}, ${AMBER})`,
+                  color: '#fff',
+                  fontWeight: 800,
+                  fontSize: 'clamp(0.75rem, 1.5vw, 0.85rem)',
+                  padding: '0.65rem 1rem',
+                  borderRadius: 50,
+                  letterSpacing: '0.04em',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 6,
+                  boxShadow: `0 4px 14px ${AMBER}44`,
+                  flexShrink: 0,
+                }}>
+                  ENROLL NOW →
+                </div>
+              </div>
+            </Link>
+          ))}
         </div>
       </section>
 
@@ -544,7 +731,7 @@ export default function CourseDetailPage() {
           </p>
           <div className="cta-btn-wrap">
             <div className="cta-pulse-ring" />
-            <a href="#pricing" className="cta-btn">Enroll Now →</a>
+            <Link to={`/checkout/course/${slug}`} state={{ planIndex: 0 }} className="cta-btn">Enroll Now →</Link>
           </div>
           <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 'clamp(0.65rem,1.5vw,0.75rem)', marginTop: '1.2rem', letterSpacing: '0.04em' }}>
             ✦ {course.duration} &nbsp;·&nbsp; {course.language} &nbsp;·&nbsp; Secure Enrollment

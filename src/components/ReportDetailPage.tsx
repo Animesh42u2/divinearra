@@ -1,6 +1,6 @@
 import * as LucideIcons from 'lucide-react'
 import { useState, useEffect } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useParams, useNavigate } from 'react-router-dom'
 import { getReportBySlug } from '../data/reportsConfig'
 import Testimonials from './Testimonials'
 import Navbar from './Navbar'
@@ -280,6 +280,7 @@ export default function ReportDetailPage() {
   const { slug } = useParams<{ slug: string }>()
   const report = getReportBySlug(slug ?? '')
   const [angle, setAngle] = useState(0)
+  const navigate = useNavigate()
 
   useEffect(() => {
     const t = setInterval(() => setAngle(a => (a + 0.3) % 360), 16)
@@ -308,10 +309,12 @@ export default function ReportDetailPage() {
   })
 
   return (
-    <div style={{ background: CREAM, minHeight: '100vh', color: BROWN_TEXT, fontFamily: "'Inter', 'Segoe UI', sans-serif" }}>
+    <div style={{ background: CREAM, minHeight: '100vh', color: BROWN_TEXT, fontFamily: "'Inter', 'Segoe UI', sans-serif", overflowX: 'hidden' }}>
       <Navbar />
 
       <style>{`
+        * { box-sizing: border-box; }
+
         @keyframes fadeSlideUp {
           from { opacity: 0; transform: translateY(14px) }
           to   { opacity: 1; transform: translateY(0) }
@@ -351,6 +354,12 @@ export default function ReportDetailPage() {
           display: flex; align-items: center; justify-content: center;
         }
         .rp-slide-img img { width: 100%; height: 100%; object-fit: contain; object-position: center; display: block; }
+        .rp-hero-badge {
+          border: 1px solid rgba(255,255,255,0.4); border-radius: 20px;
+          padding: 4px 14px; font-size: 11px; margin-bottom: 16px;
+          display: inline-block; letter-spacing: 0.12em; font-weight: 600;
+          max-width: 100%;
+        }
 
         /* ── FLORAL ── */
         .floral-svg { transition: opacity 0.2s; }
@@ -373,10 +382,18 @@ export default function ReportDetailPage() {
         }
 
         /* ── PRICING ── */
-        .pricing-scroll { overflow-x: auto; }
+        .pricing-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
         .pricing-table  { min-width: 480px; }
-        @media (max-width: 480px) {
-          .pricing-table th, .pricing-table td { padding: 0.75rem 0.75rem !important; font-size: 0.8rem !important; }
+        @media (max-width: 560px) {
+          .pricing-table th, .pricing-table td { padding: 0.7rem 0.65rem !important; font-size: 0.78rem !important; }
+        }
+
+        /* ── PRICING CARDS ── */
+        .pricing-cards-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+          gap: 1.25rem;
+          margin-top: 2rem;
         }
 
         /* ── ABOUT ── */
@@ -386,6 +403,11 @@ export default function ReportDetailPage() {
           gap: 3.5rem; align-items: center;
           position: relative; z-index: 1;
         }
+        .about-stats-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(85px, 1fr));
+          gap: 0.55rem;
+        }
         @media (max-width: 780px) {
           .about-grid { grid-template-columns: 1fr !important; justify-items: center; text-align: center; gap: 2rem; }
           .about-photo { max-width: 320px !important; }
@@ -394,7 +416,7 @@ export default function ReportDetailPage() {
         /* ── HERO mobile ── */
         @media (max-width: 640px) {
           .rp-hero { flex-direction: column; align-items: center; text-align: center; padding: 36px 20px 56px; min-height: unset; gap: 24px; }
-          .rp-hero-left  { max-width: 100%; order: 2; }
+          .rp-hero-left  { max-width: 100%; order: 2; width: 100%; }
           .rp-hero-right { order: 1; width: 180px; height: 180px; }
           .rp-hero-btns  { justify-content: center !important; }
           .hero-stats    { justify-content: center !important; }
@@ -402,6 +424,11 @@ export default function ReportDetailPage() {
         @media (max-width: 900px) and (min-width: 641px) {
           .rp-hero-right { width: 240px; height: 240px; }
           .rp-hero { padding: 48px 32px 64px; }
+        }
+        @media (max-width: 380px) {
+          .rp-hero-right { width: 150px !important; height: 150px !important; }
+          .rp-hero { padding: 28px 16px 44px; }
+          .rp-hero-btns a { width: 100%; text-align: center; }
         }
 
         /* ── CTA ── */
@@ -430,7 +457,17 @@ export default function ReportDetailPage() {
           from { transform: rotate(180deg) translateX(160px) rotate(-180deg); }
           to   { transform: rotate(540deg) translateX(160px) rotate(-540deg); }
         }
-        .cta-btn-wrap { position: relative; display: inline-block; }
+        @media (max-width: 480px) {
+          @keyframes ctaOrbit {
+            from { transform: rotate(0deg) translateX(110px) rotate(0deg); }
+            to   { transform: rotate(360deg) translateX(110px) rotate(-360deg); }
+          }
+          @keyframes ctaOrbit2 {
+            from { transform: rotate(180deg) translateX(80px) rotate(-180deg); }
+            to   { transform: rotate(540deg) translateX(80px) rotate(-540deg); }
+          }
+        }
+        .cta-btn-wrap { position: relative; display: inline-block; max-width: 100%; }
         .cta-pulse-ring {
           position: absolute; inset: -8px; border-radius: 60px;
           border: 2px solid rgba(255,255,255,0.5);
@@ -446,6 +483,7 @@ export default function ReportDetailPage() {
           background-size: 200% auto;
           animation: ctaGlowBtn 2.5s ease-in-out infinite, ctaShimmer 3.5s linear infinite;
           transition: transform 0.2s ease;
+          border: none; cursor: pointer; max-width: 100%; white-space: nowrap;
         }
         .cta-btn:hover { transform: scale(1.05) translateY(-2px); }
 
@@ -454,12 +492,18 @@ export default function ReportDetailPage() {
           from { opacity: 0; transform: translateY(16px); }
           to   { opacity: 1; transform: translateY(0); }
         }
+
+        /* ── GLOBAL SMALL-SCREEN SAFETY ── */
+        @media (max-width: 420px) {
+          .rp-hero-badge { font-size: 10px; padding: 3px 10px; }
+        }
+        img { max-width: 100%; }
       `}</style>
 
       {/* ── HERO ── */}
       <section className="rp-hero">
         <div className="rp-hero-anim rp-hero-left">
-          <span style={{ border: '1px solid rgba(255,255,255,0.4)', borderRadius: 20, padding: '4px 14px', fontSize: 11, marginBottom: 16, display: 'inline-block', letterSpacing: '0.12em', fontWeight: 600 }}>
+          <span className="rp-hero-badge">
             ✦ Exclusive Report by Aditya Narayan Panigrahi
           </span>
           <h1 style={{ fontFamily: 'Georgia, serif', fontSize: 'clamp(20px, 3.2vw, 44px)', fontWeight: 800, lineHeight: 1.2, margin: '12px 0 14px' }}>
@@ -473,8 +517,8 @@ export default function ReportDetailPage() {
           </p>
           <div className="rp-hero-btns" style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
             <a href="#pricing" style={{ background: '#fff', color: AMBER_DARK, border: '2px solid #fff', padding: '12px 26px', borderRadius: 30, fontWeight: 700, fontSize: 14, cursor: 'pointer', textDecoration: 'none' }}>
-              Get Your {report.title} →
-            </a>
+  Get Your {report.title} →
+</a>
           </div>
           <div className="hero-stats" style={{ display: 'flex', gap: '1rem', marginTop: '2rem', flexWrap: 'wrap' }}>
             {[['2 Lakh+', 'Kundlis Analyzed'], ['4.8/5 ★', 'Avg Rating'], ['100%', 'Personalized']].map(([v, l]) => (
@@ -513,7 +557,7 @@ export default function ReportDetailPage() {
                 </li>
               ))}
             </ul>
-            <a href="#pricing" style={{ ...ctaBtn }}>Order Now</a>
+            <button onClick={() => navigate(`/checkout/report/${slug}`, { state: { planIndex: 0 } })} style={{ ...ctaBtn, width: '100%', maxWidth: 320 }}>Order Now</button>
           </div>
 
           <div style={{
@@ -748,9 +792,161 @@ export default function ReportDetailPage() {
           </table>
         </div>
 
-        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2rem' }}>
-          <a href="#pricing" style={{ ...ctaBtn }}>Order Now</a>
+        <div className="pricing-cards-grid">
+  {report.pricingPlans.map((plan, i) => (
+    <div
+      key={i}
+      onClick={() => navigate(`/checkout/report/${slug}`, { state: { planIndex: i } })}
+      style={{
+        background: '#fff',
+        border: i === 1 ? `2px solid ${AMBER}` : `1.5px solid ${AMBER}44`,
+        borderRadius: 18,
+        padding: '1.5rem 1.25rem 1.25rem',
+        cursor: 'pointer',
+        position: 'relative',
+        overflow: 'hidden',
+        boxShadow: i === 1
+          ? `0 8px 32px ${AMBER}33`
+          : `0 4px 16px ${AMBER}15`,
+        transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+        textAlign: 'center',
+      }}
+      onMouseEnter={e => {
+        (e.currentTarget as HTMLDivElement).style.transform = 'translateY(-4px)'
+        ;(e.currentTarget as HTMLDivElement).style.boxShadow = `0 16px 40px ${AMBER}33`
+      }}
+      onMouseLeave={e => {
+        (e.currentTarget as HTMLDivElement).style.transform = 'translateY(0)'
+        ;(e.currentTarget as HTMLDivElement).style.boxShadow = i === 1
+          ? `0 8px 32px ${AMBER}33`
+          : `0 4px 16px ${AMBER}15`
+      }}
+    >
+      {/* Best Value badge */}
+      {i === 1 && (
+        <div style={{
+          position: 'absolute', top: 12, right: 12,
+          background: `linear-gradient(135deg, ${AMBER_DARK}, ${AMBER})`,
+          color: '#fff',
+          fontSize: '0.6rem', fontWeight: 800,
+          padding: '3px 10px', borderRadius: 100,
+          letterSpacing: '0.08em', textTransform: 'uppercase',
+        }}>
+          Best Value
         </div>
+      )}
+
+      {/* Top accent bar */}
+      <div style={{
+        position: 'absolute', top: 0, left: 0, right: 0, height: 3,
+        background: i === 1
+          ? `linear-gradient(90deg, ${AMBER_DARK}, ${AMBER_LIGHT})`
+          : `linear-gradient(90deg, ${AMBER}88, transparent)`,
+        borderRadius: '18px 18px 0 0',
+      }} />
+
+      {/* Images */}
+      <div style={{
+        height: 130,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '0.5rem',
+        marginBottom: '1rem',
+      }}>
+        <img
+          src={`/reports/${report.title}.png`}
+          alt={plan.name}
+          style={{
+            height: '100%',
+            maxWidth: i === 1 ? '45%' : '65%',
+            objectFit: 'contain',
+            filter: `drop-shadow(0 6px 16px ${AMBER}44)`,
+          }}
+        />
+        {i === 1 && (
+          <>
+            <span style={{ color: AMBER, fontSize: '1.4rem', fontWeight: 300 }}>+</span>
+            <img
+              src="/check.png"
+              alt="Consultation"
+              style={{
+                height: '100%',
+                maxWidth: '45%',
+                objectFit: 'contain',
+                filter: `drop-shadow(0 6px 16px ${AMBER}44)`,
+              }}
+            />
+          </>
+        )}
+      </div>
+
+      {/* Plan name */}
+      <h3 style={{
+        fontFamily: "'Playfair Display', serif",
+        fontSize: 'clamp(0.85rem, 2vw, 1rem)',
+        fontWeight: 700,
+        color: BROWN_TEXT,
+        margin: '0 0 0.3rem',
+        lineHeight: 1.3,
+      }}>
+        {plan.name}
+      </h3>
+
+      {/* Tagline */}
+      <p style={{
+        fontSize: '0.72rem',
+        color: BROWN_MID,
+        margin: '0 0 0.85rem',
+        lineHeight: 1.5,
+      }}>
+        {plan.tagline}
+      </p>
+
+      {/* Price */}
+      <div style={{ marginBottom: '1rem' }}>
+        <span style={{
+          color: '#bbb',
+          fontSize: '0.78rem',
+          textDecoration: 'line-through',
+          display: 'block',
+          marginBottom: 2,
+        }}>
+          {plan.originalPrice}
+        </span>
+        <span style={{
+          fontFamily: "'Playfair Display', serif",
+          fontSize: 'clamp(1.2rem, 3vw, 1.6rem)',
+          fontWeight: 800,
+          color: AMBER_DARK,
+        }}>
+          {plan.discountedPrice}/-
+        </span>
+        <span style={{ fontSize: '0.65rem', color: BROWN_MID, marginLeft: 4 }}>
+          only
+        </span>
+      </div>
+
+      {/* CTA button */}
+      <div style={{
+        background: `linear-gradient(135deg, ${AMBER_DARK}, ${AMBER})`,
+        color: '#fff',
+        fontWeight: 800,
+        fontSize: '0.85rem',
+        padding: '0.65rem 1rem',
+        borderRadius: 50,
+        letterSpacing: '0.04em',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 6,
+        boxShadow: `0 4px 14px ${AMBER}44`,
+      }}>
+        BUY NOW →
+      </div>
+    </div>
+  ))}
+</div>
       </section>
 
       {/* ── ABOUT ── */}
@@ -766,7 +962,7 @@ export default function ReportDetailPage() {
             />
           </div>
 
-          <div>
+          <div style={{ minWidth: 0 }}>
             <div style={{ marginBottom: '0.75rem' }}>
               <span style={{ background: 'rgba(255,255,255,0.18)', border: '1px solid rgba(255,255,255,0.3)', borderRadius: 20, padding: '0.28rem 0.9rem', fontSize: '0.72rem', color: '#fff', fontWeight: 600 }}>
                 📜 Know Your Astrologer
@@ -787,7 +983,7 @@ export default function ReportDetailPage() {
             }}>
               "Astrology is not about fear — it is about awareness, alignment, and awakening your inner power."
             </blockquote>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.55rem' }}>
+            <div className="about-stats-grid">
               {[['100K+','Consultations Delivered'],['7+','Years of Experience'],['59+','Years of Legacy'],['8+','Professional Awards'],['30K+','Hours of Expert Guidance']].map(([v, l]) => (
                 <div key={l} style={{ background: 'rgba(255,255,255,0.11)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 8, padding: '0.5rem 0.5rem', textAlign: 'center' }}>
                   <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(0.85rem,1.5vw,1rem)', fontWeight: 800, color: '#fff' }}>{v}</div>
@@ -854,8 +1050,10 @@ export default function ReportDetailPage() {
           <div style={{ animation: 'ctaFadeUp 0.6s ease both 0.5s' }}>
             <div className="cta-btn-wrap">
               <div className="cta-pulse-ring" />
-              <a href="#pricing" className="cta-btn">Order Your Report →</a>
-            </div>
+              <button onClick={() => navigate(`/checkout/report/${slug}`, { state: { planIndex: 0 } })} className="cta-btn">
+  Order Your Report →
+</button>  
+          </div>
           </div>
           <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 'clamp(0.65rem,1.5vw,0.75rem)', marginTop: '1.2rem', letterSpacing: '0.04em', animation: 'ctaFadeUp 0.6s ease both 0.65s' }}>
             ✦ Delivered within 24 hours &nbsp;·&nbsp; 100% personalised &nbsp;·&nbsp; Secure checkout
