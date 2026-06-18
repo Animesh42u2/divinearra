@@ -8,7 +8,7 @@ export default function Newsletter() {
   const [status, setStatus] = useState<Status>('idle')
   const [message, setMessage] = useState('')
 
- const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault()
   if (status === 'loading') return
 
@@ -17,13 +17,18 @@ export default function Newsletter() {
 
   try {
     const res = await fetch('https://api.buttondown.email/v1/subscribers', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Token ${import.meta.env.VITE_BUTTONDOWN_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email }),
-    })
+  method: 'POST',
+  headers: {
+    'Authorization': `Token ${import.meta.env.VITE_BUTTONDOWN_API_KEY}`,
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    email_address: email,  // ✅ correct field, no extra fields
+  }),
+})
+
+    const data = await res.json().catch(() => ({}))
+    console.log('Buttondown response:', res.status, JSON.stringify(data))
 
     if (res.status === 201) {
       setStatus('success')
@@ -32,17 +37,25 @@ export default function Newsletter() {
       return
     }
 
-    const data = await res.json().catch(() => ({}))
-    const alreadySubscribed = JSON.stringify(data).toLowerCase().includes('already')
+    const dataStr = JSON.stringify(data).toLowerCase()
 
-    if (alreadySubscribed) {
+    if (dataStr.includes('already') || res.status === 409) {
       setStatus('error')
       setMessage("You're already subscribed!")
       return
     }
 
+    // ✅ Fixed: always extract a plain string
+    const apiError =
+      typeof data?.detail === 'string'
+        ? data.detail
+        : Array.isArray(data?.detail)
+        ? data.detail[0]?.detail ?? 'Something went wrong. Please try again.'
+        : 'Something went wrong. Please try again.'
+
     setStatus('error')
-    setMessage('Something went wrong. Please try again.')
+    setMessage(apiError)
+
   } catch {
     setStatus('error')
     setMessage('Network error. Please check your connection and try again.')

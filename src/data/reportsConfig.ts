@@ -188,7 +188,7 @@ export const reportsConfig: ReportConfig[] = [
         name: 'Lal Kitab Report + Consultation',
         tagline: 'Personalized Remedies with Expert Advice',
         originalPrice: '₹8,499',
-        discountedPrice: '₹951',
+        discountedPrice: '₹999',
         highlight: true,
         features: [
           { label: 'Personalized Lal Kitab Chart', included: true },
@@ -277,7 +277,7 @@ export const reportsConfig: ReportConfig[] = [
         name: 'Career Report + 1-on-1 Consultation',
         tagline: 'Deep-Dive Career Strategy Session with an Expert',
         originalPrice: '₹6,000',
-        discountedPrice: '₹951',
+        discountedPrice: '₹999',
         highlight: true,
         features: [
           { label: 'Personalized Career Report', included: true },
@@ -364,7 +364,7 @@ export const reportsConfig: ReportConfig[] = [
         name: 'Finance Report + Consultation',
         tagline: 'Expert Guidance on Your Financial Journey',
         originalPrice: '₹6,000',
-        discountedPrice: '₹951',
+        discountedPrice: '₹999',
         highlight: true,
         features: [
           { label: 'Personalized Finance Report', included: true },
@@ -539,7 +539,7 @@ export const reportsConfig: ReportConfig[] = [
         name: 'Education Report + 1-on-1 Consultation',
         tagline: 'Personal Guidance Session for Academic Direction',
         originalPrice: '₹5,000',
-        discountedPrice: '₹951',
+        discountedPrice: '₹999',
         highlight: true,
         features: [
           { label: 'Personalized Education Report', included: true },
@@ -626,7 +626,7 @@ export const reportsConfig: ReportConfig[] = [
         name: 'Health Report + Consultation',
         tagline: 'Expert Health Guidance with Personal Consultation',
         originalPrice: '₹6,000',
-        discountedPrice: '₹951',
+        discountedPrice: '₹999',
         highlight: true,
         features: [
           { label: 'Personalized Health Report', included: true },
@@ -714,7 +714,7 @@ export const reportsConfig: ReportConfig[] = [
         name: 'Fortune Report + 1-on-1 Consultation',
         tagline: 'Complete Life Reading with Expert Walkthrough',
         originalPrice: '₹10,000',
-        discountedPrice: '₹951',
+        discountedPrice: '₹999',
         highlight: true,
         features: [
           { label: 'Complete 12-House Analysis', included: true },
@@ -802,7 +802,7 @@ export const reportsConfig: ReportConfig[] = [
         name: 'Shani Sadesati + Consultation',
         tagline: 'Navigate Saturn\'s Cycle with Expert Personal Guidance',
         originalPrice: '₹7,000',
-        discountedPrice: '₹951',
+        discountedPrice: '₹999',
         highlight: true,
         features: [
           { label: 'Sadesati Phase Identification', included: true },
@@ -890,7 +890,7 @@ export const reportsConfig: ReportConfig[] = [
         name: 'Varshaphal + Consultation',
         tagline: 'Year-Ahead Forecast with Expert Planning Session',
         originalPrice: '₹6,000',
-        discountedPrice: '₹951',
+        discountedPrice: '₹999',
         highlight: true,
         features: [
           { label: 'Personalized Varshaphal Report', included: true },
@@ -978,7 +978,7 @@ export const reportsConfig: ReportConfig[] = [
         name: 'Premium Kundali + Consultation',
         tagline: 'Complete Kundali with Personal Expert Walkthrough',
         originalPrice: '₹15,000',
-        discountedPrice: '₹951',
+        discountedPrice: '₹999',
         highlight: true,
         features: [
           { label: 'Complete Birth & Divisional Charts', included: true },

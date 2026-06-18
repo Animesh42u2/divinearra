@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   MessageCircle, Briefcase, Users, Gem,
   BookOpen, Sun, ClipboardList, Heart,
@@ -6,7 +7,6 @@ import {
   Activity, Moon, Star, Layers
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
-import BookingModal from './BookingModal'
 
 const tabs = ['Consultations', 'Reports', 'Kundli']
 
@@ -16,35 +16,41 @@ const serviceData: Record<string, {
   title: string
   desc: string
   btnLabel: string
+  route: string
 }[]> = {
   Consultations: [
-    { tag: '1-on-1', Icon: MessageCircle, title: 'Personalized Consultation', desc: 'Get personalized guidance directly from the leading expert for clear life decisions.', btnLabel: 'Book Now' },
-    { tag: 'Expert', Icon: Briefcase, title: 'Tarot Card Reading Consultation', desc: 'Get expert guidance for your career growth and professional success.', btnLabel: 'Book Now' },
-    { tag: 'Couple', Icon: Users, title: 'Couple Consultation', desc: 'Understand your relationship dynamics and get clarity for your future together.', btnLabel: 'Book Now' },
-    { tag: 'Special', Icon: Gem, title: 'Gemstone & Rudraksha', desc: 'Get the right gemstone recommendations based on your birth chart analysis.', btnLabel: 'Book Now' },
+    { tag: '1-on-1', Icon: MessageCircle, title: 'Personalized Consultation', desc: 'Get personalized guidance directly from the leading expert for clear life decisions.', btnLabel: 'Book Now', route: '/consultation/personal' },
+    { tag: 'Expert', Icon: Briefcase, title: 'Tarot Card Reading Consultation', desc: 'Get expert guidance for your career growth and professional success.', btnLabel: 'Book Now', route: '/consultation/tarot-card-reading' },
+    { tag: 'Couple', Icon: Users, title: 'Couple Consultation', desc: 'Understand your relationship dynamics and get clarity for your future together.', btnLabel: 'Book Now', route: '/consultation/couple' },
+    { tag: 'Special', Icon: Gem, title: 'Gemstone & Rudraksha', desc: 'Get the right gemstone recommendations based on your birth chart analysis.', btnLabel: 'Book Now', route: '/consultation/gemstone-rudraksha' },
   ],
   Reports: [
-    { tag: "Premium", Icon: Star, title: 'Premium Personalized Kundali', desc: 'A deeply detailed, fully personalized Kundali report crafted just for you.', btnLabel: 'Order Now' },
-    { tag: 'Expert', Icon: Briefcase, title: 'Career Report', desc: 'Detailed career guidance through planetary analysis and life path insights.', btnLabel: 'Order Now' },
-    { tag: 'Popular', Icon: DollarSign, title: 'Finance Report', desc: 'Understand your financial destiny and wealth-building potential through Vedic astrology.', btnLabel: 'Order Now' },
-    { tag: 'New', Icon: Calendar, title: 'Varshaphal Report', desc: 'Your 2026 + 4 years astrological forecast with detailed yearly insights.', btnLabel: 'Order Now' },
-    { tag: 'Ancient', Icon: BookOpen, title: 'Lal Kitab Report', desc: 'Remedies and predictions based on the powerful ancient Lal Kitab system.', btnLabel: 'Order Now' },
-    { tag: 'New', Icon: GraduationCap, title: 'Education Report', desc: 'Find the right field of study and timing for academic success.', btnLabel: 'Order Now' },
-    { tag: 'Wellness', Icon: Activity, title: 'Health Report', desc: 'Astrological insights into your health patterns and preventive guidance.', btnLabel: 'Order Now' },
-    { tag: 'Saturn', Icon: Moon, title: 'Shani Sadesati Report', desc: 'Understand and navigate the 7.5-year Saturn transit with confidence.', btnLabel: 'Order Now' },
-    { tag: 'Lucky', Icon: Sun, title: 'Fortune Report', desc: 'Discover your lucky periods, numbers, and life opportunities ahead.', btnLabel: 'Order Now' },
-    { tag: 'Ideal', Icon: Heart, title: 'Couple Matching Report', desc: 'Check deep compatibility and marriage suitability through Guna Milan.', btnLabel: 'Order Now' },
-  ],
+  { tag: 'Premium', Icon: Star, title: 'Premium Personalized Kundali', desc: 'A deeply detailed, fully personalized Kundali report crafted just for you.', btnLabel: 'Order Now', route: '/reports/premium-kundali' },
+  { tag: 'Expert', Icon: Briefcase, title: 'Career Report', desc: 'Detailed career guidance through planetary analysis and life path insights.', btnLabel: 'Order Now', route: '/reports/career-report' },
+  { tag: 'Popular', Icon: DollarSign, title: 'Finance Report', desc: 'Understand your financial destiny and wealth-building potential through Vedic astrology.', btnLabel: 'Order Now', route: '/reports/finance-report' },
+  { tag: 'New', Icon: Calendar, title: 'Varshaphal Report', desc: 'Your 2026 + 4 years astrological forecast with detailed yearly insights.', btnLabel: 'Order Now', route: '/reports/varshaphal-report' },
+  { tag: 'Ancient', Icon: BookOpen, title: 'Lal Kitab Report', desc: 'Remedies and predictions based on the powerful ancient Lal Kitab system.', btnLabel: 'Order Now', route: '/reports/lal-kitab-report' },
+  { tag: 'New', Icon: GraduationCap, title: 'Education Report', desc: 'Find the right field of study and timing for academic success.', btnLabel: 'Order Now', route: '/reports/education-report' },
+  { tag: 'Wellness', Icon: Activity, title: 'Health Report', desc: 'Astrological insights into your health patterns and preventive guidance.', btnLabel: 'Order Now', route: '/reports/health-report' },
+  { tag: 'Saturn', Icon: Moon, title: 'Shani Sadesati Report', desc: 'Understand and navigate the 7.5-year Saturn transit with confidence.', btnLabel: 'Order Now', route: '/reports/shani-sadesati-report' },
+  { tag: 'Lucky', Icon: Sun, title: 'Fortune Report', desc: 'Discover your lucky periods, numbers, and life opportunities ahead.', btnLabel: 'Order Now', route: '/reports/fortune-report' },
+  { tag: 'Ideal', Icon: Heart, title: 'Couple Matching Report', desc: 'Check deep compatibility and marriage suitability through Guna Milan.', btnLabel: 'Order Now', route: '/reports/couple-matching-report' },
+],
   Kundli: [
-    { tag: 'FREE', Icon: ClipboardList, title: 'Free Kundli Calculator', desc: 'Generate your accurate birth chart instantly for fundamental celestial insights.', btnLabel: 'Check Now' },
-    { tag: 'Ideal', Icon: Layers, title: 'Matchmaking Kundli', desc: 'Check marriage compatibility with detailed Guna Milan analysis.', btnLabel: 'Check Now' },
-  ],
+  { tag: 'FREE', Icon: ClipboardList, title: 'Free Kundli Calculator',
+    desc: 'Generate your accurate birth chart instantly for fundamental celestial insights.',
+    btnLabel: 'Check Now', route: '#kundli-section' },          
+
+  { tag: 'Ideal', Icon: Layers, title: 'Matchmaking Kundli',
+    desc: 'Check marriage compatibility with detailed Guna Milan analysis.',
+    btnLabel: 'Check Now', route: '#calculators-section' },     
+],
 }
 
 export default function Services() {
   const [activeTab, setActiveTab] = useState('Consultations')
   const [hoveredCard, setHoveredCard] = useState<string | null>(null)
-  const [activeService, setActiveService] = useState<string | null>(null)
+  const navigate = useNavigate()
 
   const cards = serviceData[activeTab]
 
@@ -233,22 +239,21 @@ export default function Services() {
             </p>
 
             <button
-              className="svc-btn"
-              onClick={() => setActiveService(s.title)}
-            >
-              {s.btnLabel}
-            </button>
+  className="svc-btn"
+  onClick={() => {
+    if (s.route.startsWith('#')) {
+      const el = document.querySelector(s.route)
+      el?.scrollIntoView({ behavior: 'smooth' })
+    } else {
+      navigate(s.route)
+    }
+  }}
+>
+  {s.btnLabel}
+</button>
           </div>
         ))}
       </div>
-
-      {/* Booking Modal */}
-      {activeService && (
-        <BookingModal
-          service={activeService}
-          onClose={() => setActiveService(null)}
-        />
-      )}
     </section>
   )
 }

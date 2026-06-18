@@ -34,8 +34,12 @@ function HomePage() {
       <Navbar />
       <Hero />
       <Services />
-      <KundliSection />
-      <Calculators />
+      <div id="kundli-section">
+        <KundliSection />
+      </div>
+      <div id="calculators-section">
+        <Calculators />
+      </div>
       <OneCall />
       <Stats />
       <Testimonials />

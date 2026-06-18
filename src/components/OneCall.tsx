@@ -13,6 +13,7 @@ interface Feature {
   title: string
   desc: string
 }
+import { useNavigate } from 'react-router-dom'
 
 const features: Feature[] = [
   {
@@ -62,6 +63,7 @@ export default function OneCall() {
   const [hovered, setHovered] = useState<number | null>(null)
   const [visible, setVisible] = useState<boolean>(false)
   const sectionRef = useRef<HTMLElement>(null)
+  const navigate = useNavigate()
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -464,11 +466,15 @@ export default function OneCall() {
           </div>
 
           <div className={`oc-cta-wrap${visible ? ' visible' : ''}`}>
-            <button className="oc-btn-primary" type="button">
-              <Phone size={16} strokeWidth={2} />
-              Schedule Your Call
-              <ArrowRight size={16} strokeWidth={2} />
-            </button>
+            <button
+  className="oc-btn-primary"
+  type="button"
+  onClick={() => navigate('/consultation')}   // ✅ add this
+>
+  <Phone size={16} strokeWidth={2} />
+  Schedule Your Call
+  <ArrowRight size={16} strokeWidth={2} />
+</button>
           </div>
         </div>
       </section>
