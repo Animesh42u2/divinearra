@@ -398,7 +398,12 @@ export default function CourseDetailPage() {
                 </li>
               ))}
             </ul>
-            <Link to={`/checkout/course/${slug}`} state={{ planIndex: 0 }} style={{ ...ctaBtn }}>Enroll Now</Link>
+            <button
+  onClick={() => document.getElementById('plan-cards')?.scrollIntoView({ behavior: 'smooth' })}
+  style={{ ...ctaBtn }}
+>
+  Enroll Now
+</button>
           </div>
 
           <div style={{
@@ -512,155 +517,185 @@ export default function CourseDetailPage() {
           </table>
         </div>
 
-        {/* ── Plan buy cards ── */}
-        <div className="plan-cards-grid">
-          {course.pricingPlans.map((plan, i) => (
-            <Link
-              key={i}
-              to={`/checkout/course/${slug}`}
-              state={{ planIndex: i }}
-              className="plan-card-link"
-            >
-              <div
-                className="plan-card-inner"
+       {/* ── Plan buy cards ── */}
+<div className="plan-cards-grid" id="plan-cards">
+  {course.pricingPlans.map((plan, i) => {
+
+    const palette = [
+      { header: '#EF9F27', cta: '#BA7517', border: `1.5px solid #EF9F2744` },
+      { header: '#533AB7', cta: '#3C2A99', border: `2.5px solid #533AB7` },
+      { header: '#0F6E56', cta: '#0B5B46', border: `1.5px solid #0F6E5644` },
+    ]
+    const { header: hColor, cta: ctaColor, border } = palette[i] ?? palette[0]
+
+    const features: { label: string; included: boolean }[][] = [
+      [
+        { label: 'Lifetime video access', included: true },
+        { label: 'Downloadable resources', included: true },
+        { label: 'Certificate of completion', included: true },
+        { label: 'Live mentorship sessions', included: false },
+        { label: 'Doubt-clearing support', included: false },
+      ],
+      [
+        { label: 'Lifetime video access', included: true },
+        { label: 'Downloadable resources', included: true },
+        { label: 'Certificate of completion', included: true },
+        { label: 'Live mentorship sessions', included: true },
+        { label: 'Doubt-clearing support', included: true },
+      ],
+      [
+        { label: 'Lifetime video access', included: true },
+        { label: 'Downloadable resources', included: true },
+        { label: 'Certificate of completion', included: true },
+        { label: 'Live mentorship sessions', included: true },
+        { label: '1-on-1 career & placement support', included: true },
+      ],
+    ]
+
+    return (
+      <Link key={i} to={`/checkout/course/${slug}`} state={{ planIndex: i }} className="plan-card-link">
+        <div
+          className="plan-card-inner"
+          style={{
+            borderRadius: 20,
+            overflow: 'hidden',
+            border,
+            display: 'flex',
+            flexDirection: 'column',
+            background: '#fff',
+            transition: 'transform 0.2s, box-shadow 0.2s',
+          }}
+          onMouseEnter={e => {
+            const el = e.currentTarget as HTMLDivElement
+            el.style.transform = 'translateY(-6px)'
+            el.style.boxShadow = `0 20px 48px ${hColor}44`
+          }}
+          onMouseLeave={e => {
+            const el = e.currentTarget as HTMLDivElement
+            el.style.transform = 'translateY(0)'
+            el.style.boxShadow = i === 1 ? `0 8px 28px ${hColor}33` : 'none'
+          }}
+        >
+          {/* ── Coloured header ── */}
+          <div style={{
+            background: hColor,
+            padding: '22px 18px 40px',
+            position: 'relative',
+            overflow: 'hidden',
+            borderRadius: '0 0 55% 55% / 0 0 32px 32px',
+            display: 'flex',
+            flexDirection: 'column',
+          }}>
+            {/* Decorative circles */}
+            <span style={{ position:'absolute', width:130, height:130, borderRadius:'50%', background:'#fff', opacity:0.15, top:-45, left:-35 }} />
+            <span style={{ position:'absolute', width:75, height:75, borderRadius:'50%', background:'#fff', opacity:0.15, top:15, right:-25 }} />
+
+            {/* Best Value badge */}
+            {i === 1 && (
+              <div style={{
+                position:'absolute', top:11, right:11, zIndex:2,
+                background:'rgba(255,255,255,0.2)',
+                border:'1px solid rgba(255,255,255,0.35)',
+                color:'#fff', fontSize:'0.6rem', fontWeight:800,
+                padding:'3px 9px', borderRadius:100,
+                letterSpacing:'0.08em', textTransform:'uppercase',
+              }}>⭐ Best Value</div>
+            )}
+
+            {/* Plan label */}
+            <p style={{ position:'relative', zIndex:1, margin:'0 0 4px', color:'rgba(255,255,255,0.75)', fontSize:'0.65rem', fontWeight:700, letterSpacing:'0.12em', textTransform:'uppercase' }}>
+              {plan.name}
+            </p>
+
+            {/* Images */}
+            <div className="plan-card-img-wrap" style={{ position:'relative', zIndex:1, margin:'8px 0 12px' }}>
+              <img
+                src={course.image}
+                alt={plan.name}
                 style={{
-                  border: i === 1 ? `2px solid ${AMBER}` : `1.5px solid ${AMBER}44`,
-                  boxShadow: i === 1 ? `0 8px 32px ${AMBER}33` : `0 4px 16px ${AMBER}15`,
+                  height: '100%',
+                  maxWidth: i === 1 ? '42%' : '60%',
+                  objectFit: 'contain',
+                  filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.2))',
+                  flexShrink: 0,
                 }}
-                onMouseEnter={e => {
-                  (e.currentTarget as HTMLDivElement).style.boxShadow = `0 16px 40px ${AMBER}33`
-                }}
-                onMouseLeave={e => {
-                  (e.currentTarget as HTMLDivElement).style.boxShadow = i === 1
-                    ? `0 8px 32px ${AMBER}33`
-                    : `0 4px 16px ${AMBER}15`
-                }}
-              >
-                {/* Best Value badge */}
-                {i === 1 && (
-                  <div style={{
-                    position: 'absolute', top: 12, right: 12,
-                    background: `linear-gradient(135deg, ${AMBER_DARK}, ${AMBER})`,
-                    color: '#fff', fontSize: '0.6rem', fontWeight: 800,
-                    padding: '3px 10px', borderRadius: 100,
-                    letterSpacing: '0.08em', textTransform: 'uppercase',
-                    zIndex: 2,
-                  }}>
-                    Best Value
-                  </div>
-                )}
-
-                {/* Top accent bar */}
-                <div style={{
-                  position: 'absolute', top: 0, left: 0, right: 0, height: 3,
-                  background: i === 1
-                    ? `linear-gradient(90deg, ${AMBER_DARK}, ${AMBER_LIGHT})`
-                    : `linear-gradient(90deg, ${AMBER}88, transparent)`,
-                  borderRadius: '18px 18px 0 0',
-                }} />
-
-                {/* Images */}
-                <div className="plan-card-img-wrap">
+              />
+              {i === 1 && (
+                <>
+                  <span style={{ color:'rgba(255,255,255,0.7)', fontSize:'1.2rem', fontWeight:300, flexShrink:0, lineHeight:1 }}>+</span>
                   <img
-                    src={course.image}
-                    alt={plan.name}
+                    src="/check.png"
+                    alt="Mentored"
                     style={{
                       height: '100%',
-                      maxWidth: i === 1 ? '45%' : '65%',
+                      maxWidth: '42%',
                       objectFit: 'contain',
-                      filter: `drop-shadow(0 6px 16px ${AMBER}44)`,
+                      filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.2))',
                       flexShrink: 0,
                     }}
                   />
-                  {i === 1 && (
-                    <>
-                      <span style={{
-                        color: AMBER, fontSize: '1.2rem', fontWeight: 300,
-                        flexShrink: 0, lineHeight: 1,
-                      }}>+</span>
-                      <img
-                        src="/check.png"
-                        alt="Mentored"
-                        style={{
-                          height: '100%',
-                          maxWidth: '45%',
-                          objectFit: 'contain',
-                          filter: `drop-shadow(0 6px 16px ${AMBER}44)`,
-                          flexShrink: 0,
-                        }}
-                      />
-                    </>
-                  )}
-                </div>
+                </>
+              )}
+            </div>
 
-                {/* Plan name */}
-                <h3 style={{
-                  fontFamily: "'Playfair Display', serif",
-                  fontSize: 'clamp(0.85rem, 2vw, 1rem)',
-                  fontWeight: 700,
-                  color: BROWN_TEXT,
-                  margin: '0 0 0.3rem',
-                  lineHeight: 1.3,
-                  flexShrink: 0,
-                }}>
-                  {plan.name}
-                </h3>
+            {/* Price */}
+            <p style={{ position:'relative', zIndex:1, margin:'0 0 2px', color:'rgba(255,255,255,0.55)', fontSize:'0.72rem', textDecoration:'line-through' }}>
+              {plan.originalPrice}
+            </p>
+            <p style={{ position:'relative', zIndex:1, margin:0, fontFamily:"'Playfair Display', serif", fontSize:'clamp(1.3rem,2.5vw,1.7rem)', fontWeight:800, color:'#fff' }}>
+              {plan.discountedPrice}/-
+            </p>
+          </div>
 
-                {/* Tagline — flex:1 pushes price+CTA to bottom */}
-                <p style={{
-                  fontSize: '0.72rem',
-                  color: BROWN_MID,
-                  margin: '0 0 0.85rem',
-                  lineHeight: 1.5,
-                  flex: 1,
-                }}>
-                  {plan.tagline}
-                </p>
+          {/* ── White body ── */}
+          <div style={{ padding:'18px 18px 18px', flex:1, display:'flex', flexDirection:'column' }}>
 
-                {/* Price */}
-                <div style={{ marginBottom: '1rem', flexShrink: 0 }}>
+            {/* Tagline */}
+            <p style={{ fontSize:'0.7rem', color:'#7a6555', margin:'0 0 14px', lineHeight:1.5 }}>
+              {plan.tagline}
+            </p>
+
+            {/* Features */}
+            <ul style={{ listStyle:'none', margin:'0 0 auto', padding:0, display:'flex', flexDirection:'column', gap:8 }}>
+              {(features[i] ?? []).map((feat, fi) => (
+                <li key={fi} style={{ display:'flex', alignItems:'flex-start', gap:8, fontSize:'0.72rem', color:'#5a4a3a', lineHeight:1.4 }}>
                   <span style={{
-                    color: '#bbb', fontSize: '0.78rem',
-                    textDecoration: 'line-through',
-                    display: 'block', marginBottom: 2,
+                    flexShrink:0, width:16, height:16, borderRadius:'50%', marginTop:1,
+                    display:'flex', alignItems:'center', justifyContent:'center',
+                    fontSize:9, fontWeight:700,
+                    background: feat.included ? '#dcf5e9' : '#fde8e8',
+                    color: feat.included ? '#1a9e5c' : '#d94040',
                   }}>
-                    {plan.originalPrice}
+                    {feat.included ? '✓' : '✕'}
                   </span>
-                  <span style={{
-                    fontFamily: "'Playfair Display', serif",
-                    fontSize: 'clamp(1.1rem, 2.5vw, 1.5rem)',
-                    fontWeight: 800,
-                    color: AMBER_DARK,
-                  }}>
-                    {plan.discountedPrice}/-
-                  </span>
-                  <span style={{ fontSize: '0.65rem', color: BROWN_MID, marginLeft: 4 }}>
-                    only
-                  </span>
-                </div>
+                  {feat.label}
+                </li>
+              ))}
+            </ul>
 
-                {/* CTA */}
-                <div style={{
-                  background: `linear-gradient(135deg, ${AMBER_DARK}, ${AMBER})`,
-                  color: '#fff',
-                  fontWeight: 800,
-                  fontSize: 'clamp(0.75rem, 1.5vw, 0.85rem)',
-                  padding: '0.65rem 1rem',
-                  borderRadius: 50,
-                  letterSpacing: '0.04em',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: 6,
-                  boxShadow: `0 4px 14px ${AMBER}44`,
-                  flexShrink: 0,
-                }}>
-                  ENROLL NOW →
-                </div>
-              </div>
-            </Link>
-          ))}
+            {/* CTA */}
+            <div style={{
+              marginTop: 16,
+              background: ctaColor,
+              color: '#fff',
+              fontWeight: 800,
+              fontSize: 'clamp(0.72rem,1.5vw,0.82rem)',
+              padding: '0.65rem 1rem',
+              borderRadius: 50,
+              letterSpacing: '0.05em',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: `0 4px 16px ${hColor}55`,
+            }}>
+              ENROLL NOW →
+            </div>
+          </div>
         </div>
+      </Link>
+    )
+  })}
+</div>
       </section>
 
       {/* ── ABOUT INSTRUCTOR ── */}

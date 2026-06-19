@@ -44,7 +44,7 @@ function HowItWorks({ steps }: { steps: { title: string; description: string }[]
       </div>
 
       <style>{`
-      html, body { overflow-x: hidden; max-width: 100vw; }
+      html, body {max-width: 100vw; }
         /* ── How It Works responsive overrides ── */
         .hiw-container { position: relative; }
 
@@ -272,8 +272,8 @@ export default function ConsultationDetailPage() {
   })
 
   return (
-    <div style={{ background: CREAM, minHeight: '100vh', color: BROWN_TEXT, fontFamily: "'Inter', 'Segoe UI', sans-serif", overflowX: 'hidden' }}>
-      <Navbar />
+    <div style={{ background: CREAM, minHeight: '100vh', color: BROWN_TEXT, fontFamily: "'Inter', 'Segoe UI', sans-serif" }}>
+          <Navbar />
 
       <style>{`
         @keyframes fadeSlideUp {
@@ -619,7 +619,12 @@ export default function ConsultationDetailPage() {
                 </li>
               ))}
             </ul>
-            <Link to={`/checkout/consultation/${slug}`} state={{ planIndex: 0 }} style={{ ...ctaBtn }}>Book Now</Link>
+<button
+  onClick={() => document.getElementById('pricing-cards')?.scrollIntoView({ behavior: 'smooth' })}
+  style={{ ...ctaBtn }}
+>
+  Book Now
+</button>
           </div>
 
           <div style={{
@@ -921,99 +926,168 @@ export default function ConsultationDetailPage() {
             </tbody>
           </table>
         </div>
+<div className="pricing-cards-grid" id="pricing-cards">
+  {consultation.pricingPlans.map((plan, i) => {
 
-        <div className="pricing-cards-grid">
-          {consultation.pricingPlans.map((plan, i) => (
-            <Link
-              key={i}
-              to={`/checkout/consultation/${slug}`}
-              state={{ planIndex: i }}
-              style={{ textDecoration: 'none' }}
+    const gradients = [
+      { from: '#5B9DF0', to: '#3B6FD6' },   // Card 1 — blue
+      { from: '#9B6BE0', to: '#6B3FC4' },   // Card 2 — purple
+      { from: '#F25CA8', to: '#E83E8C' },   // Card 3 — pink
+    ]
+    const { from, to } = gradients[i] ?? gradients[0]
+    const headerGradient = `linear-gradient(160deg, ${from}, ${to})`
+
+    return (
+      <Link
+        key={i}
+        to={`/checkout/consultation/${slug}`}
+        state={{ planIndex: i }}
+        style={{ textDecoration: 'none' }}
+      >
+        <div
+          style={{
+            background: '#fff',
+            borderRadius: 18,
+            overflow: 'hidden',
+            cursor: 'pointer',
+            position: 'relative',
+            boxShadow: i === 1 ? `0 8px 32px ${to}44` : '0 8px 28px rgba(0,0,0,0.12)',
+            transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+            textAlign: 'center',
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+          onMouseEnter={e => {
+            (e.currentTarget as HTMLDivElement).style.transform = 'translateY(-6px)'
+            ;(e.currentTarget as HTMLDivElement).style.boxShadow = `0 18px 40px ${to}55`
+          }}
+          onMouseLeave={e => {
+            (e.currentTarget as HTMLDivElement).style.transform = 'translateY(0)'
+            ;(e.currentTarget as HTMLDivElement).style.boxShadow = i === 1 ? `0 8px 32px ${to}44` : '0 8px 28px rgba(0,0,0,0.12)'
+          }}
+        >
+          {/* ── Gradient header ── */}
+          <div style={{
+            background: headerGradient,
+            padding: '24px 18px 50px',
+            position: 'relative',
+            overflow: 'hidden',
+          }}>
+            {/* Scattered decorative icons */}
+            <span style={{ position:'absolute', top:18, left:22, color:'rgba(255,255,255,0.55)', fontSize:'1.1rem', fontWeight:300 }}>+</span>
+            <span style={{ position:'absolute', top:34, left:55, width:0, height:0, borderLeft:'5px solid transparent', borderRight:'5px solid transparent', borderBottom:'8px solid rgba(255,255,255,0.4)' }} />
+            <span style={{ position:'absolute', top:16, right:60, color:'rgba(255,255,255,0.5)', fontSize:'0.9rem', fontWeight:300 }}>✦</span>
+            <span style={{ position:'absolute', top:50, right:24, color:'rgba(255,255,255,0.55)', fontSize:'1.3rem', fontWeight:300 }}>+</span>
+            <span style={{ position:'absolute', bottom:62, left:30, width:0, height:0, borderLeft:'4px solid transparent', borderRight:'4px solid transparent', borderTop:'7px solid rgba(255,255,255,0.35)' }} />
+
+            {/* Best Value badge */}
+            {i === 1 && (
+              <div style={{
+                position:'absolute', top:11, right:11, zIndex:2,
+                background:'rgba(255,255,255,0.22)',
+                border:'1px solid rgba(255,255,255,0.4)',
+                color:'#fff', fontSize:'0.6rem', fontWeight:800,
+                padding:'3px 9px', borderRadius:100,
+                letterSpacing:'0.08em', textTransform:'uppercase',
+              }}>⭐ Best Value</div>
+            )}
+
+            {/* Title */}
+            <h3 style={{
+              position:'relative', zIndex:1,
+              fontFamily:"'Playfair Display', serif",
+              fontSize:'clamp(1rem, 2vw, 1.2rem)',
+              fontWeight:700, color:'#fff', margin:'0 0 16px',
+            }}>
+              {plan.name}
+            </h3>
+
+            {/* Image row — increase height here too if making images bigger */}
+<div style={{
+  position:'relative', zIndex:1,
+  height: 110,        // ← was 90 — increase to give both images more vertical room
+  display:'flex', alignItems:'center', justifyContent:'center',
+  gap:'0.5rem', width:'100%',
+}}>
+  <img
+    src={consultation.image2}
+    alt={plan.name}
+    style={{
+      height:'100%',
+      flex: i === 1 ? '1.6 1 0%' : '0 1 auto',   // ← slightly reduced from 2 so check.png gets more room
+      maxWidth: i === 1 ? '52%' : '70%',
+      minWidth: 0,
+      objectFit:'cover',
+      borderRadius:10,
+      boxShadow:'0 6px 16px rgba(0,0,0,0.18)',
+    }}
+  />
+  {i === 1 && (
+    <>
+      <span style={{ color:'rgba(255,255,255,0.7)', fontSize:'1.1rem', fontWeight:300, flexShrink:0 }}>+</span>
+      <img
+        src="/check.png"
+        alt="Consultation"
+        style={{
+          height:'100%',
+          flex:'1.2 1 0%',     // ← was 1 — increase this number to claim more of the shared space
+          maxWidth:'45%',       // ← was 35% — raise this cap to let it grow wider
+          minWidth: 80,
+          objectFit:'contain',
+        }}
+      />
+    </>
+  )}
+</div>
+
+            {/* Wavy divider into white body */}
+            <svg
+              viewBox="0 0 300 50"
+              preserveAspectRatio="none"
+              style={{ position:'absolute', bottom:-1, left:0, width:'100%', height:50 }}
             >
-              <div
-                style={{
-                  background: '#fff',
-                  border: i === 1 ? `2px solid ${AMBER}` : `1.5px solid ${AMBER}44`,
-                  borderRadius: 18,
-                  padding: '1.5rem 1.25rem 1.25rem',
-                  cursor: 'pointer',
-                  position: 'relative',
-                  overflow: 'hidden',
-                  boxShadow: i === 1 ? `0 8px 32px ${AMBER}33` : `0 4px 16px ${AMBER}15`,
-                  transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-                  textAlign: 'center',
-                  height: '100%',
-                }}
-                onMouseEnter={e => {
-                  (e.currentTarget as HTMLDivElement).style.transform = 'translateY(-4px)'
-                  ;(e.currentTarget as HTMLDivElement).style.boxShadow = `0 16px 40px ${AMBER}33`
-                }}
-                onMouseLeave={e => {
-                  (e.currentTarget as HTMLDivElement).style.transform = 'translateY(0)'
-                  ;(e.currentTarget as HTMLDivElement).style.boxShadow = i === 1 ? `0 8px 32px ${AMBER}33` : `0 4px 16px ${AMBER}15`
-                }}
-              >
-                {i === 1 && (
-                  <div style={{
-                    position: 'absolute', top: 12, right: 12,
-                    background: `linear-gradient(135deg, ${AMBER_DARK}, ${AMBER})`,
-                    color: '#fff', fontSize: '0.6rem', fontWeight: 800,
-                    padding: '3px 10px', borderRadius: 100,
-                    letterSpacing: '0.08em', textTransform: 'uppercase',
-                  }}>
-                    Best Value
-                  </div>
-                )}
+              <path
+                d="M0,30 C40,10 80,45 120,28 C160,10 200,45 240,25 C265,12 285,28 300,18 L300,50 L0,50 Z"
+                fill="#fff"
+              />
+            </svg>
+          </div>
 
-                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3,
-                  background: i === 1 ? `linear-gradient(90deg, ${AMBER_DARK}, ${AMBER_LIGHT})` : `linear-gradient(90deg, ${AMBER}88, transparent)`,
-                  borderRadius: '18px 18px 0 0',
-                }} />
+          {/* ── White body ── */}
+          <div style={{ padding:'10px 20px 24px', flex:1, display:'flex', flexDirection:'column', alignItems:'center' }}>
 
-                <div style={{ height: 120, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', marginBottom: '1rem' }}>
-                  <img src={consultation.image2} alt={plan.name} style={{
-                    height: '100%', maxWidth: i === 1 ? '45%' : '65%', objectFit: 'contain',
-                    filter: `drop-shadow(0 6px 16px ${AMBER}44)`,
-                  }} />
-                  {i === 1 && (
-                    <>
-                      <span style={{ color: AMBER, fontSize: '1.4rem', fontWeight: 300 }}>+</span>
-                      <img src="/check.png" alt="Consultation" style={{
-                        height: '100%', maxWidth: '45%', objectFit: 'contain',
-                        filter: `drop-shadow(0 6px 16px ${AMBER}44)`,
-                      }} />
-                    </>
-                  )}
-                </div>
+            <p style={{ fontSize:'0.78rem', color:'#7a7a8a', margin:'0 0 16px', lineHeight:1.6, maxWidth:200 }}>
+              {plan.tagline}
+            </p>
 
-                <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(0.82rem, 2vw, 1rem)', fontWeight: 700, color: BROWN_TEXT, margin: '0 0 0.3rem', lineHeight: 1.3 }}>
-                  {plan.name}
-                </h3>
-                <p style={{ fontSize: '0.72rem', color: BROWN_MID, margin: '0 0 0.85rem', lineHeight: 1.5 }}>
-                  {plan.tagline}
-                </p>
-                <div style={{ marginBottom: '1rem' }}>
-                  <span style={{ color: '#bbb', fontSize: '0.78rem', textDecoration: 'line-through', display: 'block', marginBottom: 2 }}>
-                    {plan.originalPrice}
-                  </span>
-                  <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.1rem, 3vw, 1.6rem)', fontWeight: 800, color: AMBER_DARK }}>
-                    {plan.discountedPrice}/-
-                  </span>
-                  <span style={{ fontSize: '0.65rem', color: BROWN_MID, marginLeft: 4 }}>only</span>
-                </div>
-                <div style={{
-                  background: `linear-gradient(135deg, ${AMBER_DARK}, ${AMBER})`,
-                  color: '#fff', fontWeight: 800, fontSize: '0.85rem',
-                  padding: '0.65rem 1rem', borderRadius: 50, letterSpacing: '0.04em',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
-                  boxShadow: `0 4px 14px ${AMBER}44`,
-                }}>
-                  BOOK NOW →
-                </div>
-              </div>
-            </Link>
-          ))}
+            <span style={{ color:'#bbb', fontSize:'0.78rem', textDecoration:'line-through', display:'block', marginBottom:2 }}>
+              {plan.originalPrice}
+            </span>
+            <p style={{ fontFamily:"'Playfair Display', serif", fontSize:'clamp(1.1rem, 2.5vw, 1.5rem)', fontWeight:800, color:to, margin:'0 0 20px' }}>
+              {plan.discountedPrice}/- <span style={{ fontSize:'0.65rem', color:'#9a9aa8', fontWeight:500, fontFamily:'inherit' }}>only</span>
+            </p>
+
+            <div style={{
+              marginTop:'auto',
+              background:'#fff',
+              color: to,
+              fontWeight:800,
+              fontSize:'0.78rem',
+              padding:'0.65rem 1.8rem',
+              borderRadius:50,
+              border:`1.5px solid ${to}55`,
+              letterSpacing:'0.04em',
+              boxShadow:'0 4px 12px rgba(0,0,0,0.06)',
+            }}>
+              BOOK NOW →
+            </div>
+          </div>
         </div>
+      </Link>
+    )
+  })}
+</div>
       </section>
 
       {/* ── ABOUT ── */}

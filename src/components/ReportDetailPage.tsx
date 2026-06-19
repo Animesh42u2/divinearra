@@ -289,8 +289,8 @@ export default function ReportDetailPage() {
 
   if (!report) {
     return (
-      <div style={{ background: CREAM, minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-        <Navbar />
+      <div style={{ background: CREAM, minHeight: '100vh', color: BROWN_TEXT, fontFamily: "'Inter', 'Segoe UI', sans-serif" }}>
+            <Navbar />
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '4rem 2rem', textAlign: 'center' }}>
           <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: '2rem', color: BROWN_TEXT, marginBottom: '1rem' }}>Report Not Found</h1>
           <p style={{ color: BROWN_MID, marginBottom: '2rem' }}>We couldn't find a report matching <strong>"{slug}"</strong>.</p>
@@ -309,8 +309,8 @@ export default function ReportDetailPage() {
   })
 
   return (
-    <div style={{ background: CREAM, minHeight: '100vh', color: BROWN_TEXT, fontFamily: "'Inter', 'Segoe UI', sans-serif", overflowX: 'hidden' }}>
-      <Navbar />
+   <div style={{ background: CREAM, minHeight: '100vh', color: BROWN_TEXT, fontFamily: "'Inter', 'Segoe UI', sans-serif" }}>
+         <Navbar />
 
       <style>{`
         * { box-sizing: border-box; }
@@ -561,7 +561,12 @@ export default function ReportDetailPage() {
                 </li>
               ))}
             </ul>
-            <button onClick={() => navigate(`/checkout/report/${slug}`, { state: { planIndex: 0 } })} style={{ ...ctaBtn, width: '100%', maxWidth: 320 }}>Order Now</button>
+<button 
+  onClick={() => document.getElementById('pricing-cards')?.scrollIntoView({ behavior: 'smooth' })} 
+  style={{ ...ctaBtn, width: '100%', maxWidth: 320 }}
+>
+  Order Now
+</button>
           </div>
 
           <div style={{
@@ -796,160 +801,141 @@ export default function ReportDetailPage() {
           </table>
         </div>
 
-        <div className="pricing-cards-grid">
-  {report.pricingPlans.map((plan, i) => (
-    <div
-      key={i}
-      onClick={() => navigate(`/checkout/report/${slug}`, { state: { planIndex: i } })}
-      style={{
-        background: '#fff',
-        border: i === 1 ? `2px solid ${AMBER}` : `1.5px solid ${AMBER}44`,
-        borderRadius: 18,
-        padding: '1.5rem 1.25rem 1.25rem',
-        cursor: 'pointer',
-        position: 'relative',
-        overflow: 'hidden',
-        boxShadow: i === 1
-          ? `0 8px 32px ${AMBER}33`
-          : `0 4px 16px ${AMBER}15`,
-        transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-        textAlign: 'center',
-      }}
-      onMouseEnter={e => {
-        (e.currentTarget as HTMLDivElement).style.transform = 'translateY(-4px)'
-        ;(e.currentTarget as HTMLDivElement).style.boxShadow = `0 16px 40px ${AMBER}33`
-      }}
-      onMouseLeave={e => {
-        (e.currentTarget as HTMLDivElement).style.transform = 'translateY(0)'
-        ;(e.currentTarget as HTMLDivElement).style.boxShadow = i === 1
-          ? `0 8px 32px ${AMBER}33`
-          : `0 4px 16px ${AMBER}15`
-      }}
-    >
-      {/* Best Value badge */}
-      {i === 1 && (
-        <div style={{
-          position: 'absolute', top: 12, right: 12,
-          background: `linear-gradient(135deg, ${AMBER_DARK}, ${AMBER})`,
-          color: '#fff',
-          fontSize: '0.6rem', fontWeight: 800,
-          padding: '3px 10px', borderRadius: 100,
-          letterSpacing: '0.08em', textTransform: 'uppercase',
-        }}>
-          Best Value
-        </div>
-      )}
+        <div className="pricing-cards-grid" id="pricing-cards">
+  {report.pricingPlans.map((plan, i) => {
 
-      {/* Top accent bar */}
-      <div style={{
-        position: 'absolute', top: 0, left: 0, right: 0, height: 3,
-        background: i === 1
-          ? `linear-gradient(90deg, ${AMBER_DARK}, ${AMBER_LIGHT})`
-          : `linear-gradient(90deg, ${AMBER}88, transparent)`,
-        borderRadius: '18px 18px 0 0',
-      }} />
+    const colors = ['#3FC1D6', '#6C4CD9', '#F2A93C']
+    const color = colors[i] ?? colors[0]
+    const liquidY = [78, 65, 50][i] ?? 70
 
-      {/* Images */}
-      <div style={{
-        height: 130,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: '0.5rem',
-        marginBottom: '1rem',
-      }}>
-        <img
-          src={`/reports/${report.title}.png`}
-          alt={plan.name}
-          style={{
-            height: '100%',
-            maxWidth: i === 1 ? '45%' : '65%',
-            objectFit: 'contain',
-            filter: `drop-shadow(0 6px 16px ${AMBER}44)`,
-          }}
-        />
+    return (
+      <div
+        key={i}
+        onClick={() => navigate(`/checkout/report/${slug}`, { state: { planIndex: i } })}
+        style={{
+          background: '#fff',
+          border: i === 1 ? `2px solid ${color}` : `1.5px solid ${color}44`,
+          borderRadius: 18,
+          padding: '1.75rem 1.25rem 1.25rem',
+          cursor: 'pointer',
+          position: 'relative',
+          overflow: 'hidden',
+          boxShadow: i === 1 ? `0 8px 32px ${color}33` : `0 4px 16px ${color}15`,
+          transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+          textAlign: 'center',
+        }}
+        onMouseEnter={e => {
+          (e.currentTarget as HTMLDivElement).style.transform = 'translateY(-4px)'
+          ;(e.currentTarget as HTMLDivElement).style.boxShadow = `0 16px 40px ${color}33`
+        }}
+        onMouseLeave={e => {
+          (e.currentTarget as HTMLDivElement).style.transform = 'translateY(0)'
+          ;(e.currentTarget as HTMLDivElement).style.boxShadow = i === 1 ? `0 8px 32px ${color}33` : `0 4px 16px ${color}15`
+        }}
+      >
         {i === 1 && (
-          <>
-            <span style={{ color: AMBER, fontSize: '1.4rem', fontWeight: 300 }}>+</span>
-            <img
-              src="/check.png"
-              alt="Consultation"
-              style={{
-                height: '100%',
-                maxWidth: '45%',
-                objectFit: 'contain',
-                filter: `drop-shadow(0 6px 16px ${AMBER}44)`,
-              }}
-            />
-          </>
+          <div style={{
+            position: 'absolute', top: 12, right: 12,
+            background: color, color: '#fff',
+            fontSize: '0.6rem', fontWeight: 800,
+            padding: '3px 10px', borderRadius: 100,
+            letterSpacing: '0.08em', textTransform: 'uppercase',
+          }}>
+            Best Value
+          </div>
         )}
-      </div>
 
-      {/* Plan name */}
-      <h3 style={{
-        fontFamily: "'Playfair Display', serif",
-        fontSize: 'clamp(0.85rem, 2vw, 1rem)',
-        fontWeight: 700,
-        color: BROWN_TEXT,
-        margin: '0 0 0.3rem',
-        lineHeight: 1.3,
-      }}>
-        {plan.name}
-      </h3>
+        {/* ── Animated liquid-fill circle ── */}
+        <div style={{ width: 160, height: 160, margin: '0 auto 1rem', position: 'relative' }}>
+          <svg viewBox="0 0 160 160" width="100%" height="100%">
+            <defs>
+              <clipPath id={`liquidClip-${i}`}>
+                <circle cx="80" cy="80" r="70" />
+              </clipPath>
+            </defs>
 
-      {/* Tagline */}
-      <p style={{
-        fontSize: '0.72rem',
-        color: BROWN_MID,
-        margin: '0 0 0.85rem',
-        lineHeight: 1.5,
-      }}>
-        {plan.tagline}
-      </p>
+            <circle cx="80" cy="80" r="76" fill="none" stroke={color} strokeWidth="1.5" opacity="0.5" />
+            <circle cx="80" cy="80" r="70" fill="#fff" stroke={color} strokeWidth="2.5" />
 
-      {/* Price */}
-      <div style={{ marginBottom: '1rem' }}>
-        <span style={{
-          color: '#bbb',
-          fontSize: '0.78rem',
-          textDecoration: 'line-through',
-          display: 'block',
-          marginBottom: 2,
+            <g clipPath={`url(#liquidClip-${i})`}>
+              <g>
+                <animateTransform attributeName="transform" type="translate" from="0 0" to="-80 0" dur="3s" repeatCount="indefinite" />
+                <path
+                  d={`M0 ${liquidY} Q20 ${liquidY - 9} 40 ${liquidY} T80 ${liquidY} T120 ${liquidY} T160 ${liquidY} T200 ${liquidY} T240 ${liquidY} V160 H0 Z`}
+                  fill={color}
+                  opacity="0.92"
+                />
+              </g>
+              <g>
+                <animateTransform attributeName="transform" type="translate" from="-80 0" to="0 0" dur="4.5s" repeatCount="indefinite" />
+                <path
+                  d={`M0 ${liquidY + 4} Q20 ${liquidY - 5} 40 ${liquidY + 4} T80 ${liquidY + 4} T120 ${liquidY + 4} T160 ${liquidY + 4} T200 ${liquidY + 4} T240 ${liquidY + 4} V160 H0 Z`}
+                  fill={color}
+                  opacity="0.55"
+                />
+              </g>
+            </g>
+
+            {/* Book image — sized to fit fully inside the ring, no overflow */}
+            <image
+              href={`/reports/${report.title}.png`}
+              x="30"
+              y="20"
+              width="100"
+              height="120"
+              preserveAspectRatio="xMidYMid meet"
+              style={{ filter: 'drop-shadow(0 6px 10px rgba(0,0,0,0.3))' }}
+            />
+          </svg>
+
+          {i === 1 && (
+            <div style={{
+              position: 'absolute', bottom: -4, right: -4,
+              width: 58, height: 58, borderRadius: '50%',
+              background: '#fff', border: `2.5px solid ${color}`,
+              boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              overflow: 'hidden',
+            }}>
+              <img
+                src="/check.png"
+                alt="Consultation"
+                style={{ width: '78%', height: '78%', objectFit: 'contain' }}
+              />
+            </div>
+          )}
+        </div>
+
+        {/* Plan name */}
+        <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(0.85rem, 2vw, 1rem)', fontWeight: 700, color: BROWN_TEXT, margin: '0 0 0.3rem', lineHeight: 1.3 }}>
+          {plan.name}
+        </h3>
+
+        <p style={{ fontSize: '0.72rem', color: BROWN_MID, margin: '0 0 0.85rem', lineHeight: 1.5 }}>
+          {plan.tagline}
+        </p>
+
+        <div style={{ marginBottom: '1rem' }}>
+          <span style={{ color: '#bbb', fontSize: '0.78rem', textDecoration: 'line-through', display: 'block', marginBottom: 2 }}>
+            {plan.originalPrice}
+          </span>
+          <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.2rem, 3vw, 1.6rem)', fontWeight: 800, color }}>
+            {plan.discountedPrice}/-
+          </span>
+          <span style={{ fontSize: '0.65rem', color: BROWN_MID, marginLeft: 4 }}>only</span>
+        </div>
+
+        <div style={{
+          background: color, color: '#fff', fontWeight: 800, fontSize: '0.85rem',
+          padding: '0.65rem 1rem', borderRadius: 50, letterSpacing: '0.04em',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+          boxShadow: `0 4px 14px ${color}44`,
         }}>
-          {plan.originalPrice}
-        </span>
-        <span style={{
-          fontFamily: "'Playfair Display', serif",
-          fontSize: 'clamp(1.2rem, 3vw, 1.6rem)',
-          fontWeight: 800,
-          color: AMBER_DARK,
-        }}>
-          {plan.discountedPrice}/-
-        </span>
-        <span style={{ fontSize: '0.65rem', color: BROWN_MID, marginLeft: 4 }}>
-          only
-        </span>
+          BUY NOW →
+        </div>
       </div>
-
-      {/* CTA button */}
-      <div style={{
-        background: `linear-gradient(135deg, ${AMBER_DARK}, ${AMBER})`,
-        color: '#fff',
-        fontWeight: 800,
-        fontSize: '0.85rem',
-        padding: '0.65rem 1rem',
-        borderRadius: 50,
-        letterSpacing: '0.04em',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: 6,
-        boxShadow: `0 4px 14px ${AMBER}44`,
-      }}>
-        BUY NOW →
-      </div>
-    </div>
-  ))}
+    )
+  })}
 </div>
       </section>
 
