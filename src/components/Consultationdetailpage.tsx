@@ -44,6 +44,7 @@ function HowItWorks({ steps }: { steps: { title: string; description: string }[]
       </div>
 
       <style>{`
+      html, body { overflow-x: hidden; max-width: 100vw; }
         /* ── How It Works responsive overrides ── */
         .hiw-container { position: relative; }
 
@@ -271,7 +272,7 @@ export default function ConsultationDetailPage() {
   })
 
   return (
-    <div style={{ background: CREAM, minHeight: '100vh', color: BROWN_TEXT, fontFamily: "'Inter', 'Segoe UI', sans-serif" }}>
+    <div style={{ background: CREAM, minHeight: '100vh', color: BROWN_TEXT, fontFamily: "'Inter', 'Segoe UI', sans-serif", overflowX: 'hidden' }}>
       <Navbar />
 
       <style>{`
@@ -325,7 +326,7 @@ export default function ConsultationDetailPage() {
             min-height: unset;
             gap: 20px;
           }
-          .cp-hero-left  { order: 2; }
+          .cp-hero-left  { order: 2; width: 100%; min-width: 0; }
           .cp-hero-right { order: 1; width: 140px; height: 140px; }
           .cp-hero-btns  { justify-content: center !important; }
           .hero-stats    { justify-content: center !important; }
@@ -381,32 +382,18 @@ export default function ConsultationDetailPage() {
         /* ── KUNDLI / WHAT'S INSIDE ── */
         /* Default: 4-col grid */
         .kg {
-          display: grid;
-          grid-template-columns: 1fr 1fr 1fr 1fr;
-          border: 2px solid #3a5070;
-          position: relative;
-        }
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  border: 2px solid #3a5070;
+  position: relative;
+  min-width: 340px;
+}
         /* Tablet: compact but still grid */
-        @media (max-width: 680px) {
-          .kg {
-            grid-template-columns: 1fr 1fr;
-            grid-template-rows: auto;
-          }
-          /* Re-lay corners & center for 2-col */
-          .kg-corner-tl { grid-column: 1; grid-row: 1; display: none; }
-          .kg-corner-tr { grid-column: 2; grid-row: 1; display: none; }
-          .kg-corner-bl { display: none; }
-          .kg-corner-br { display: none; }
-          /* Items: force 2-column layout */
-          .kg-house { grid-column: unset !important; grid-row: unset !important; }
-          .kg-center { grid-column: 1 / 3 !important; grid-row: unset !important; min-height: 100px; }
-          .kg-item5  { grid-column: 1 / 3 !important; grid-row: unset !important; }
-        }
-        @media (max-width: 400px) {
-          .kg { grid-template-columns: 1fr; }
-          .kg-center { grid-column: 1 !important; }
-          .kg-item5  { grid-column: 1 !important; }
-        }
+       @media (max-width: 680px) {
+  .kg-title { font-size: clamp(.5rem, 2.2vw, .75rem); }
+  .kg-desc  { font-size: clamp(.42rem, 1.8vw, .62rem); }
+  .kg-icon  { width: 20px; height: 20px; }
+}
         .kg-house {
           border: 1.5px solid #3a5070;
           padding: clamp(.4rem,.8vw,.65rem) clamp(.4rem,.8vw,.6rem);
@@ -471,13 +458,14 @@ export default function ConsultationDetailPage() {
         .roller-knob-r { right: clamp(-11px,-2vw,-9px); }
 
         .parchment {
-          background: linear-gradient(160deg,#f7ecc8 0%,#ead8a0 25%,#f2e0b0 55%,#e8d49a 100%);
-          margin: 0 clamp(10px,2vw,14px);
-          padding: clamp(.5rem,2vw,1.2rem) clamp(.5rem,2vw,1rem);
-          border-left: 2px solid #c0a050;
-          border-right: 2px solid #c0a050;
-          box-shadow: inset 0 0 40px rgba(120,80,20,.12);
-        }
+  background: linear-gradient(160deg,#f7ecc8 0%,#ead8a0 25%,#f2e0b0 55%,#e8d49a 100%);
+  margin: 0 clamp(10px,2vw,14px);
+  padding: clamp(.5rem,2vw,1.2rem) clamp(.5rem,2vw,1rem);
+  border-left: 2px solid #c0a050;
+  border-right: 2px solid #c0a050;
+  box-shadow: inset 0 0 40px rgba(120,80,20,.12);
+  overflow-x: auto;
+}
 
         /* ── CTA ── */
         @keyframes ctaPulseRing {
@@ -568,6 +556,10 @@ export default function ConsultationDetailPage() {
         @media (max-width: 380px) {
           .hero-stats-item { padding: 0.4rem 0.6rem; }
         }
+        @media (max-width: 640px) {
+  .what-is-grid > *:first-child { order: 2; }
+  .what-is-grid > *:last-child  { order: 1; }
+}
       `}</style>
 
       {/* ── HERO ── */}
@@ -610,7 +602,7 @@ export default function ConsultationDetailPage() {
 
       {/* ── WHAT IS ── */}
       <section style={{ maxWidth: 1100, margin: '0 auto', padding: 'clamp(2.5rem,6vw,5rem) clamp(1rem,3vw,1.5rem)' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(280px,100%), 1fr))', gap: 'clamp(2rem,5vw,4rem)', alignItems: 'center' }}>
+        <div className="what-is-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(280px,100%), 1fr))', gap: 'clamp(2rem,5vw,4rem)', alignItems: 'center' }}>
           <div>
             <SectionLabel>What is the {consultation.title}?</SectionLabel>
             <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.3rem, 3vw, 2.1rem)', color: BROWN_TEXT, marginBottom: '1.25rem', lineHeight: 1.35 }}>

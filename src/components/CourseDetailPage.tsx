@@ -286,6 +286,10 @@ export default function CourseDetailPage() {
         @media (max-width:480px) {
           .pricing-table th,.pricing-table td { padding:0.75rem 0.75rem !important; font-size:0.8rem !important; }
         }
+        @media (max-width: 640px) {
+  .what-is-grid > *:first-child { order: 2; }
+  .what-is-grid > *:last-child  { order: 1; }
+}
 
         /* ── Pricing cards responsive ── */
         .plan-cards-grid {
@@ -377,7 +381,7 @@ export default function CourseDetailPage() {
 
       {/* ── WHAT YOU LEARN ── */}
       <section style={{ maxWidth: 1100, margin: '0 auto', padding: 'clamp(3rem,6vw,5rem) clamp(1rem,3vw,1.5rem)' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(300px,100%), 1fr))', gap: 'clamp(2rem,5vw,4rem)', alignItems: 'center' }}>
+        <div className="what-is-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(300px,100%), 1fr))', gap: 'clamp(2rem,5vw,4rem)', alignItems: 'center' }}>
           <div>
             <SectionLabel>What You'll Learn</SectionLabel>
             <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.4rem,3vw,2.1rem)', color: BROWN_TEXT, marginBottom: '1.25rem', lineHeight: 1.35 }}>

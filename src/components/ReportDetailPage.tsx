@@ -498,6 +498,10 @@ export default function ReportDetailPage() {
           .rp-hero-badge { font-size: 10px; padding: 3px 10px; }
         }
         img { max-width: 100%; }
+        @media (max-width: 640px) {
+  .what-is-grid > *:first-child { order: 2; }
+  .what-is-grid > *:last-child  { order: 1; }
+}
       `}</style>
 
       {/* ── HERO ── */}
@@ -540,7 +544,7 @@ export default function ReportDetailPage() {
 
       {/* ── WHAT IS ── */}
       <section style={{ maxWidth: 1100, margin: '0 auto', padding: 'clamp(3rem,6vw,5rem) clamp(1rem,3vw,1.5rem)' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(300px,100%), 1fr))', gap: 'clamp(2rem,5vw,4rem)', alignItems: 'center' }}>
+        <div className="what-is-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(300px,100%), 1fr))', gap: 'clamp(2rem,5vw,4rem)', alignItems: 'center' }}>
           <div>
             <SectionLabel>What is the {report.title}?</SectionLabel>
             <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.4rem, 3vw, 2.1rem)', color: BROWN_TEXT, marginBottom: '1.25rem', lineHeight: 1.35 }}>
