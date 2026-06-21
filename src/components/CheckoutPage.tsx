@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useParams, useLocation } from 'react-router-dom'
+import { useParams, useLocation, useNavigate } from 'react-router-dom'
 import { getReportBySlug } from '../data/reportsConfig'
 import { getConsultationBySlug } from '../data/Consultationsconfig'
 import { getCourseBySlug } from '../data/CoursesConfig'
@@ -8,7 +8,6 @@ import Footer from './Footer'
 
 type CheckoutType = 'report' | 'consultation' | 'course'
 
-// Shared shape every config exposes
 interface CheckoutItem {
   title: string
   image: string
@@ -20,6 +19,39 @@ interface CheckoutItem {
     features: { label: string; included: boolean }[]
   }[]
 }
+
+// ── Razorpay types ───────────────────────────────────────────
+interface RazorpayResponse {
+  razorpay_payment_id: string
+}
+
+interface RazorpayFailureResponse {
+  error: { description: string }
+}
+
+interface RazorpayWindow extends Window {
+  Razorpay: new (options: RazorpayOptions) => RazorpayInstance
+}
+
+interface RazorpayInstance {
+  open: () => void
+  on: (event: string, handler: (resp: RazorpayFailureResponse) => void) => void
+}
+
+interface RazorpayOptions {
+  key: string
+  amount: number
+  currency: string
+  name: string
+  description: string
+  image?: string
+  prefill?: { name: string; email: string; contact: string }
+  notes?: Record<string, string>
+  theme?: { color: string }
+  handler: (response: RazorpayResponse) => void
+  modal?: { ondismiss: () => void }
+}
+// ────────────────────────────────────────────────────────────
 
 function resolveItem(type: CheckoutType, slug: string): CheckoutItem | undefined {
   if (type === 'report')       return getReportBySlug(slug)       as CheckoutItem | undefined
@@ -45,16 +77,34 @@ const formSubtitle: Record<CheckoutType, string> = {
   course:       'Fill in your details to complete enrollment.',
 }
 
-// Consultations and courses don't need birth details
 const needsBirthDetails: Record<CheckoutType, boolean> = {
   report:       true,
   consultation: false,
   course:       false,
 }
 
+// ── Razorpay script loader ───────────────────────────────────
+function loadRazorpayScript(): Promise<boolean> {
+  return new Promise(resolve => {
+    if ((window as unknown as RazorpayWindow).Razorpay) { resolve(true); return }
+    const script = document.createElement('script')
+    script.src = 'https://checkout.razorpay.com/v1/checkout.js'
+    script.onload  = () => resolve(true)
+    script.onerror = () => resolve(false)
+    document.body.appendChild(script)
+  })
+}
+
+// ── Parse "₹349" or "349" → paise ───────────────────────────
+function toPaise(priceStr: string): number {
+  const digits = priceStr.replace(/[^\d]/g, '')
+  return parseInt(digits, 10) * 100
+}
+
 export default function CheckoutPage({ type }: { type: CheckoutType }) {
-  const { slug } = useParams()
-  const location = useLocation()
+  const { slug }  = useParams()
+  const location  = useLocation()
+  const navigate  = useNavigate()
 
   const item = resolveItem(type, slug ?? '')
   const planIndex: number = location.state?.planIndex ?? 0
@@ -65,6 +115,7 @@ export default function CheckoutPage({ type }: { type: CheckoutType }) {
     dob: '', time: '', place: '',
     gender: '', pincode: '', language: '',
   })
+  const [paying, setPaying] = useState(false)
 
   if (!item || !plan) {
     return <div style={{ padding: 80, textAlign: 'center' }}>Item not found.</div>
@@ -75,6 +126,94 @@ export default function CheckoutPage({ type }: { type: CheckoutType }) {
       setForm(p => ({ ...p, [k]: e.target.value }))
 
   const showBirth = needsBirthDetails[type]
+
+  // ── Validation ───────────────────────────────────────────
+  function validate(): string | null {
+    if (!form.name.trim())      return 'Please enter your full name.'
+    if (!form.email.trim())     return 'Please enter your email address.'
+    if (!form.whatsapp.trim())  return 'Please enter your WhatsApp number.'
+    if (!form.gender)           return 'Please select your gender.'
+    if (showBirth) {
+      if (!form.dob)            return 'Please enter your date of birth.'
+      if (!form.time)           return 'Please enter your time of birth.'
+      if (!form.place.trim())   return 'Please enter your birth place.'
+      if (!form.pincode.trim()) return 'Please enter your pin code.'
+      if (!form.language)       return 'Please select a report language.'
+    }
+    return null
+  }
+
+  // ── Payment handler ──────────────────────────────────────
+  async function handlePayment() {
+    const err = validate()
+    if (err) { alert(err); return }
+    if (!item || !plan) return
+
+    setPaying(true)
+
+    const loaded = await loadRazorpayScript()
+    if (!loaded) {
+      alert('Failed to load payment gateway. Please check your internet connection.')
+      setPaying(false)
+      return
+    }
+
+    const options: RazorpayOptions = {
+      key:         import.meta.env.VITE_RAZORPAY_KEY_ID as string,
+      amount:      toPaise(plan.discountedPrice),
+      currency:    'INR',
+      name:        'Divine Arra',
+      description: `${plan.name} — ${item.title}`,
+      image:       '/logo.png',
+      prefill: {
+        name:    form.name,
+        email:   form.email,
+        contact: form.whatsapp,
+      },
+      notes: {
+        plan:    plan.name,
+        product: item.title,
+        type,
+        ...(showBirth && {
+          dob:      form.dob,
+          time:     form.time,
+          place:    form.place,
+          pincode:  form.pincode,
+          language: form.language,
+          gender:   form.gender,
+        }),
+      },
+      theme: { color: '#c47a1e' },
+
+      handler(response: RazorpayResponse) {
+        setPaying(false)
+        navigate('/payment-success', {
+          state: {
+            paymentId: response.razorpay_payment_id,
+            planName:  plan.name,
+            product:   item.title,
+            amount:    plan.discountedPrice,
+            name:      form.name,
+            whatsapp:  form.whatsapp,
+            type,
+          },
+        })
+      },
+
+      modal: {
+        ondismiss() { setPaying(false) },
+      },
+    }
+
+    const rzp = new (window as unknown as RazorpayWindow).Razorpay(options)
+
+    rzp.on('payment.failed', (resp: RazorpayFailureResponse) => {
+      setPaying(false)
+      alert(`Payment failed: ${resp.error.description}. Please try again.`)
+    })
+
+    rzp.open()
+  }
 
   return (
     <>
@@ -87,7 +226,6 @@ export default function CheckoutPage({ type }: { type: CheckoutType }) {
           font-family: 'Georgia', serif;
         }
 
-        /* ── Hero ── */
         .co-hero {
           background: linear-gradient(135deg, #fff8ee 0%, #fdedc8 100%);
           border-bottom: 2px solid rgba(196,122,30,0.25);
@@ -137,7 +275,6 @@ export default function CheckoutPage({ type }: { type: CheckoutType }) {
         }
         .co-hero h1 span { color: #b86010; }
 
-        /* ── Trust bar ── */
         .co-trust-bar {
           background: #fff;
           border-bottom: 1px solid rgba(196,122,30,0.15);
@@ -157,7 +294,6 @@ export default function CheckoutPage({ type }: { type: CheckoutType }) {
           font-weight: 600;
         }
 
-        /* ── Layout ── */
         .co-inner {
           max-width: 1060px;
           margin: 0 auto;
@@ -167,11 +303,8 @@ export default function CheckoutPage({ type }: { type: CheckoutType }) {
           gap: 28px;
           align-items: start;
         }
-        @media (max-width: 800px) {
-          .co-inner { grid-template-columns: 1fr; }
-        }
+        @media (max-width: 800px) { .co-inner { grid-template-columns: 1fr; } }
 
-        /* ── Plan Card ── */
         .co-plan-card {
           background: #fff;
           border-radius: 20px;
@@ -181,9 +314,8 @@ export default function CheckoutPage({ type }: { type: CheckoutType }) {
           position: sticky;
           top: 24px;
         }
-        @media (max-width: 800px) {
-          .co-plan-card { position: static; }
-        }
+        @media (max-width: 800px) { .co-plan-card { position: static; } }
+
         .co-plan-img {
           background: linear-gradient(160deg, #fff3d6 0%, #f5d990 100%);
           height: 210px;
@@ -195,289 +327,113 @@ export default function CheckoutPage({ type }: { type: CheckoutType }) {
           border-bottom: 1px solid rgba(196,122,30,0.15);
         }
         .co-plan-img img {
-          height: 100%;
-          max-height: 170px;
-          object-fit: contain;
+          height: 100%; max-height: 170px; object-fit: contain;
           filter: drop-shadow(0 6px 20px rgba(100,50,0,0.2));
-          position: relative;
-          z-index: 1;
+          position: relative; z-index: 1;
         }
         .co-plan-badge {
-          position: absolute;
-          top: 12px; right: 12px;
-          background: #c47a1e;
-          color: #fff;
-          font-family: sans-serif;
-          font-size: 10px;
-          font-weight: 800;
-          letter-spacing: 1.5px;
-          text-transform: uppercase;
-          padding: 4px 10px;
-          border-radius: 100px;
-          z-index: 2;
+          position: absolute; top: 12px; right: 12px;
+          background: #c47a1e; color: #fff;
+          font-family: sans-serif; font-size: 10px; font-weight: 800;
+          letter-spacing: 1.5px; text-transform: uppercase;
+          padding: 4px 10px; border-radius: 100px; z-index: 2;
         }
         .co-plan-body { padding: 22px 22px 24px; }
-        .co-plan-name {
-          font-family: 'Georgia', serif;
-          font-size: 18px;
-          font-weight: 700;
-          color: #1a0a00;
-          margin: 0 0 5px;
-        }
-        .co-plan-tagline {
-          font-family: sans-serif;
-          font-size: 12.5px;
-          color: #9a7050;
-          margin: 0 0 16px;
-          line-height: 1.55;
-        }
+        .co-plan-name { font-family: 'Georgia', serif; font-size: 18px; font-weight: 700; color: #1a0a00; margin: 0 0 5px; }
+        .co-plan-tagline { font-family: sans-serif; font-size: 12.5px; color: #9a7050; margin: 0 0 16px; line-height: 1.55; }
         .co-price-box {
           background: linear-gradient(135deg, #fff8e8, #fdeabb);
           border: 1px solid rgba(196,122,30,0.25);
-          border-radius: 12px;
-          padding: 14px 16px;
-          margin-bottom: 20px;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
+          border-radius: 12px; padding: 14px 16px; margin-bottom: 20px;
+          display: flex; align-items: center; justify-content: space-between;
         }
-        .co-price-orig {
-          font-family: sans-serif;
-          font-size: 12px;
-          color: #b09070;
-          text-decoration: line-through;
-        }
-        .co-price-disc {
-          font-family: 'Georgia', serif;
-          font-size: 26px;
-          font-weight: 700;
-          color: #b86010;
-        }
+        .co-price-orig { font-family: sans-serif; font-size: 12px; color: #b09070; text-decoration: line-through; }
+        .co-price-disc { font-family: 'Georgia', serif; font-size: 26px; font-weight: 700; color: #b86010; }
         .co-price-save {
-          font-family: sans-serif;
-          font-size: 10px;
-          font-weight: 700;
-          background: rgba(196,122,30,0.15);
-          color: #a06010;
-          padding: 3px 10px;
-          border-radius: 100px;
-          letter-spacing: 0.5px;
+          font-family: sans-serif; font-size: 10px; font-weight: 700;
+          background: rgba(196,122,30,0.15); color: #a06010;
+          padding: 3px 10px; border-radius: 100px; letter-spacing: 0.5px;
           border: 1px solid rgba(196,122,30,0.2);
         }
-        .co-features-title {
-          font-family: sans-serif;
-          font-size: 10px;
-          font-weight: 800;
-          color: #c47a1e;
-          text-transform: uppercase;
-          letter-spacing: 1.5px;
-          margin-bottom: 12px;
-        }
+        .co-features-title { font-family: sans-serif; font-size: 10px; font-weight: 800; color: #c47a1e; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 12px; }
         .co-features { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
-        .co-feature-item {
-          font-family: sans-serif;
-          font-size: 13px;
-          color: #4a2a0a;
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          line-height: 1.4;
-        }
+        .co-feature-item { font-family: sans-serif; font-size: 13px; color: #4a2a0a; display: flex; align-items: center; gap: 10px; line-height: 1.4; }
         .co-feature-item.off { color: #c0a080; text-decoration: line-through; }
-        .co-feature-dot {
-          width: 18px; height: 18px;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-shrink: 0;
-          font-size: 10px;
-        }
-        .co-feature-dot.on { background: rgba(196,122,30,0.12); color: #c47a1e; }
+        .co-feature-dot { width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 10px; }
+        .co-feature-dot.on  { background: rgba(196,122,30,0.12); color: #c47a1e; }
         .co-feature-dot.off { background: rgba(0,0,0,0.05); color: #c0a080; }
         .co-plan-divider { height: 1px; background: rgba(196,122,30,0.12); margin: 20px 0; }
-        .co-secure-note {
-          display: flex;
-          align-items: center;
-          gap: 7px;
-          font-family: sans-serif;
-          font-size: 11.5px;
-          color: #9a7050;
-        }
+        .co-secure-note { display: flex; align-items: center; gap: 7px; font-family: sans-serif; font-size: 11.5px; color: #9a7050; }
 
-        /* ── Form Card ── */
         .co-form-card {
-          background: #fff;
-          border-radius: 20px;
+          background: #fff; border-radius: 20px;
           border: 1px solid rgba(196,122,30,0.15);
           box-shadow: 0 1px 0 rgba(196,122,30,0.08), 0 8px 32px rgba(196,122,30,0.06);
           padding: clamp(24px, 4vw, 40px);
         }
-        .co-form-header {
-          display: flex;
-          align-items: flex-start;
-          justify-content: space-between;
-          gap: 12px;
-          margin-bottom: 28px;
-        }
-        .co-form-title {
-          font-family: 'Georgia', serif;
-          font-size: 24px;
-          font-weight: 700;
-          color: #1a0a00;
-          margin: 0 0 5px;
-        }
-        .co-form-sub {
-          font-family: sans-serif;
-          font-size: 13px;
-          color: #9a7050;
-          margin: 0;
-          line-height: 1.55;
-        }
+        .co-form-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 28px; }
+        .co-form-title { font-family: 'Georgia', serif; font-size: 24px; font-weight: 700; color: #1a0a00; margin: 0 0 5px; }
+        .co-form-sub { font-family: sans-serif; font-size: 13px; color: #9a7050; margin: 0; line-height: 1.55; }
         .co-step-badge {
-          flex-shrink: 0;
-          background: #fff8e8;
-          color: #a06010;
+          flex-shrink: 0; background: #fff8e8; color: #a06010;
           border: 1px solid rgba(196,122,30,0.3);
-          font-family: sans-serif;
-          font-size: 11px;
-          font-weight: 700;
-          padding: 6px 14px;
-          border-radius: 100px;
-          white-space: nowrap;
-          letter-spacing: 0.5px;
+          font-family: sans-serif; font-size: 11px; font-weight: 700;
+          padding: 6px 14px; border-radius: 100px; white-space: nowrap; letter-spacing: 0.5px;
         }
         .co-section-label {
-          font-family: sans-serif;
-          font-size: 10px;
-          font-weight: 800;
-          letter-spacing: 2px;
-          text-transform: uppercase;
-          color: #c47a1e;
-          margin: 0 0 16px;
-          display: flex;
-          align-items: center;
-          gap: 8px;
+          font-family: sans-serif; font-size: 10px; font-weight: 800;
+          letter-spacing: 2px; text-transform: uppercase; color: #c47a1e;
+          margin: 0 0 16px; display: flex; align-items: center; gap: 8px;
         }
-        .co-section-label::after {
-          content: '';
-          flex: 1;
-          height: 1px;
-          background: rgba(196,122,30,0.15);
-        }
-        .co-form-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 18px 20px;
-          margin-bottom: 24px;
-        }
-        @media (max-width: 540px) {
-          .co-form-grid { grid-template-columns: 1fr; }
-        }
+        .co-section-label::after { content: ''; flex: 1; height: 1px; background: rgba(196,122,30,0.15); }
+        .co-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 20px; margin-bottom: 24px; }
+        @media (max-width: 540px) { .co-form-grid { grid-template-columns: 1fr; } }
         .co-field { display: flex; flex-direction: column; gap: 7px; }
         .co-field.span-2 { grid-column: span 2; }
-        @media (max-width: 540px) {
-          .co-field.span-2 { grid-column: span 1; }
-        }
-        .co-label {
-          font-family: sans-serif;
-          font-size: 11px;
-          font-weight: 700;
-          color: #8a6030;
-          text-transform: uppercase;
-          letter-spacing: 0.8px;
-        }
+        @media (max-width: 540px) { .co-field.span-2 { grid-column: span 1; } }
+        .co-label { font-family: sans-serif; font-size: 11px; font-weight: 700; color: #8a6030; text-transform: uppercase; letter-spacing: 0.8px; }
         .co-label span { color: #c47a1e; margin-left: 1px; }
         .co-input {
-          padding: 11px 14px;
-          border: 1.5px solid #e4cfa8;
-          border-radius: 10px;
-          font-size: 14px;
-          color: #1a0a00;
-          background: #fffcf7;
-          outline: none;
-          font-family: sans-serif;
-          transition: border-color 0.18s, box-shadow 0.18s;
-          width: 100%;
+          padding: 11px 14px; border: 1.5px solid #e4cfa8; border-radius: 10px;
+          font-size: 14px; color: #1a0a00; background: #fffcf7; outline: none;
+          font-family: sans-serif; transition: border-color 0.18s, box-shadow 0.18s; width: 100%;
         }
         .co-input::placeholder { color: #c0a07080; }
-        .co-input:hover { border-color: #d4a860; }
-        .co-input:focus {
-          border-color: #c47a1e;
-          box-shadow: 0 0 0 3px rgba(196,122,30,0.1);
-          background: #fff;
-        }
+        .co-input:hover  { border-color: #d4a860; }
+        .co-input:focus  { border-color: #c47a1e; box-shadow: 0 0 0 3px rgba(196,122,30,0.1); background: #fff; }
 
-        /* ── Summary ── */
         .co-summary {
-          background: #fffbf2;
-          border: 1px solid rgba(196,122,30,0.2);
-          border-radius: 14px;
-          padding: 16px 18px;
-          margin-bottom: 18px;
+          background: #fffbf2; border: 1px solid rgba(196,122,30,0.2);
+          border-radius: 14px; padding: 16px 18px; margin-bottom: 18px;
         }
-        .co-summary-row {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          font-family: sans-serif;
-          font-size: 13px;
-          color: #7a5030;
-          padding: 5px 0;
-        }
-        .co-summary-row.total {
-          border-top: 1px dashed rgba(196,122,30,0.25);
-          margin-top: 8px;
-          padding-top: 12px;
-        }
-        .co-summary-row.total span:first-child {
-          font-weight: 700;
-          font-size: 14px;
-          color: #1a0a00;
-        }
-        .co-summary-row.total span:last-child {
-          font-family: 'Georgia', serif;
-          font-size: 22px;
-          font-weight: 700;
-          color: #b86010;
-        }
-        .co-terms {
-          font-family: sans-serif;
-          font-size: 12px;
-          color: #9a7050;
-          margin-bottom: 18px;
-          line-height: 1.65;
-          text-align: center;
-        }
+        .co-summary-row { display: flex; justify-content: space-between; align-items: center; font-family: sans-serif; font-size: 13px; color: #7a5030; padding: 5px 0; }
+        .co-summary-row.total { border-top: 1px dashed rgba(196,122,30,0.25); margin-top: 8px; padding-top: 12px; }
+        .co-summary-row.total span:first-child { font-weight: 700; font-size: 14px; color: #1a0a00; }
+        .co-summary-row.total span:last-child  { font-family: 'Georgia', serif; font-size: 22px; font-weight: 700; color: #b86010; }
+
+        .co-terms { font-family: sans-serif; font-size: 12px; color: #9a7050; margin-bottom: 18px; line-height: 1.65; text-align: center; }
         .co-terms a { color: #c47a1e; text-decoration: underline; text-underline-offset: 2px; }
+
         .co-pay-btn {
-  width: 100%;
-  padding: 17px 24px;
-  background: linear-gradient(135deg, #f0a830, #c47a1e);
-  color: #fff;
-  border: none;
-  border-radius: 14px;
-  font-family: 'Georgia', serif;
-  font-size: 17px;
-  font-weight: 700;
-  cursor: pointer;
-  letter-spacing: 0.02em;
-  transition: opacity 0.18s, transform 0.15s, box-shadow 0.18s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  box-shadow: none;
-}
-.co-pay-btn:hover {
-  opacity: 0.92;
-  transform: translateY(-2px);
-  box-shadow: none;
-}
-.co-pay-btn:active {
-  transform: translateY(0);
-  box-shadow: none;
-}
+          width: 100%; padding: 17px 24px;
+          background: linear-gradient(135deg, #f0a830, #c47a1e);
+          color: #fff; border: none; border-radius: 14px;
+          font-family: 'Georgia', serif; font-size: 17px; font-weight: 700;
+          cursor: pointer; letter-spacing: 0.02em;
+          transition: opacity 0.18s, transform 0.15s;
+          display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+        .co-pay-btn:hover:not(:disabled)  { opacity: 0.92; transform: translateY(-2px); }
+        .co-pay-btn:active:not(:disabled) { transform: translateY(0); }
+        .co-pay-btn:disabled { opacity: 0.65; cursor: not-allowed; }
+
+        @keyframes co-spin { to { transform: rotate(360deg); } }
+        .co-spinner {
+          width: 18px; height: 18px;
+          border: 2px solid rgba(255,255,255,0.4);
+          border-top-color: #fff; border-radius: 50%;
+          animation: co-spin 0.7s linear infinite; flex-shrink: 0;
+        }
         .co-form-divider { height: 1px; background: rgba(196,122,30,0.12); margin: 24px 0; }
       `}</style>
 
@@ -485,13 +441,11 @@ export default function CheckoutPage({ type }: { type: CheckoutType }) {
 
       <div className="co-page">
 
-        {/* ── Hero ── */}
         <div className="co-hero">
           <div className="co-hero-eyebrow">Secure Checkout</div>
           <h1>{heroLabel[type]} <span>{item.title}</span></h1>
         </div>
 
-        {/* ── Trust bar ── */}
         <div className="co-trust-bar">
           {[
             { icon: '🔒', label: '100% Secure Payment' },
@@ -553,7 +507,6 @@ export default function CheckoutPage({ type }: { type: CheckoutType }) {
               <div className="co-step-badge">Step 1 of 2</div>
             </div>
 
-            {/* Personal Info — always shown */}
             <p className="co-section-label">Personal Information</p>
             <div className="co-form-grid">
               <div className="co-field">
@@ -579,7 +532,6 @@ export default function CheckoutPage({ type }: { type: CheckoutType }) {
               </div>
             </div>
 
-            {/* Birth Details — only for reports */}
             {showBirth && (
               <>
                 <p className="co-section-label">Birth Details</p>
@@ -614,7 +566,6 @@ export default function CheckoutPage({ type }: { type: CheckoutType }) {
 
             <div className="co-form-divider" />
 
-            {/* Order Summary */}
             <div className="co-summary">
               <div className="co-summary-row">
                 <span>{plan.name}</span>
@@ -635,13 +586,12 @@ export default function CheckoutPage({ type }: { type: CheckoutType }) {
               <a href="#">Terms & Conditions</a> and <a href="#">Privacy Policy</a>.
             </p>
 
-            <button
-              className="co-pay-btn"
-              onClick={() => {
-                alert(`${ctaLabel[type]} — ${plan.name}! We will contact you on WhatsApp shortly.`)
-              }}
-            >
-              🔒 {ctaLabel[type]} — {plan.discountedPrice}/-
+            <button className="co-pay-btn" onClick={handlePayment} disabled={paying}>
+              {paying ? (
+                <><span className="co-spinner" /> Processing Payment…</>
+              ) : (
+                <>🔒 {ctaLabel[type]} — {plan.discountedPrice}/-</>
+              )}
             </button>
           </div>
 

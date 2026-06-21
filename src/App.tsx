@@ -18,6 +18,7 @@ import CourseDetailPage from './components/CourseDetailPage'
 import ConsultationsPage from './components/ConsultationsPage'
 import CoursesPage from './components/Coursespage'
 import CheckoutPage from './components/CheckoutPage'
+import PaymentSuccess from './components/Paymentsuccess'
 import AboutUs from './components/AboutUs'
 import ContactUs from './components/ContactUs'
 
@@ -79,6 +80,7 @@ function App() {
         <Route path="/checkout/report/:slug"       element={<PageLayout><CheckoutPage type="report" /></PageLayout>} />
         <Route path="/checkout/consultation/:slug" element={<PageLayout><CheckoutPage type="consultation" /></PageLayout>} />
         <Route path="/checkout/course/:slug"       element={<PageLayout><CheckoutPage type="course" /></PageLayout>} />
+        <Route path="/payment-success" element={<PaymentSuccess />} />
       </Routes>
     </BrowserRouter>
   )

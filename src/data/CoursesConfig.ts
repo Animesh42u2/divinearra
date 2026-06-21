@@ -478,7 +478,7 @@ export const coursesConfig: CourseConfig[] = [
         name: 'Live + Mentored',
         tagline: 'Join Live Sessions with Direct Mentor Access',
         originalPrice: '₹8,999',
-        discountedPrice: '₹3,799',
+        discountedPrice: '₹1',
         highlight: true,
         features: [
           { label: 'All 6 Course Modules', included: true },
