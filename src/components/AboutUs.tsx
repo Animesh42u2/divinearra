@@ -513,7 +513,7 @@ export default function AboutUs() {
             <p style={{ color:'rgba(255,255,255,0.85)', fontSize:'clamp(0.875rem,1.8vw,0.97rem)', margin:'0 0 1.75rem', lineHeight:1.75, maxWidth:500, marginLeft:'auto', marginRight:'auto' }}>
               Your transformation begins with a single consultation. Step into clarity, confidence, and cosmic support today. Let Astro Aaditya Narayan illuminate the path ahead.
             </p>
-            <button className="au-cta" onClick={() => navigate('/reports')} style={{ background:'#fff', color:AMBER_DARK, border:'none', borderRadius:30, padding:'0.95rem 2.6rem', fontWeight:700, fontSize:'clamp(0.9rem,2vw,1rem)', cursor:'pointer', boxShadow:'0 4px 18px rgba(0,0,0,0.2)', transition:'all 0.25s ease', display:'inline-flex', alignItems:'center', gap:8 }}>
+            <button className="au-cta" onClick={() => navigate('/consultation')} style={{ background:'#fff', color:AMBER_DARK, border:'none', borderRadius:30, padding:'0.95rem 2.6rem', fontWeight:700, fontSize:'clamp(0.9rem,2vw,1rem)', cursor:'pointer', boxShadow:'0 4px 18px rgba(0,0,0,0.2)', transition:'all 0.25s ease', display:'inline-flex', alignItems:'center', gap:8 }}>
               Book Your Consultation →
             </button>
           </div>

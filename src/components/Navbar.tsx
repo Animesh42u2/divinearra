@@ -23,6 +23,14 @@ export default function Navbar() {
         .mobile-menu.open::-webkit-scrollbar-thumb { background: #c47a1e; border-radius: 4px; }
         .mobile-sub { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
         .mobile-sub.open { max-height: 500px; }
+        .hamburger-bar {
+          display: block;
+          width: 24px;
+          height: 2px;
+          background: #e8c97a;
+          border-radius: 2px;
+          transition: all 0.3s ease;
+        }
         @media (max-width: 768px) {
           .desktop-nav { display: none !important; }
           .hamburger { display: flex !important; }
@@ -148,25 +156,37 @@ export default function Navbar() {
             </a>
           </div>
 
-          {/* Hamburger */}
-          <button onClick={() => setMobileOpen(!mobileOpen)}
+          {/* Hamburger — FIX: removed inline display:none so CSS media query can take over */}
+          <button
+            onClick={() => setMobileOpen(!mobileOpen)}
             className="hamburger"
+            aria-label="Toggle navigation menu"
+            aria-expanded={mobileOpen}
             style={{
-              display: 'none', background: 'none', border: 'none',
-              cursor: 'pointer', padding: 8, flexDirection: 'column', gap: 5
+              background: 'none', border: 'none',
+              cursor: 'pointer', padding: 8,
+              flexDirection: 'column', gap: 5,
+              alignItems: 'center', justifyContent: 'center',
             }}>
-            {[0, 1, 2].map(i => (
-              <span key={i} style={{
-                display: 'block', width: 24, height: 2,
-                background: '#e8c97a', borderRadius: 2,
-                transition: 'all 0.3s',
-                transform: mobileOpen
-                  ? i === 0 ? 'rotate(45deg) translate(5px, 5px)'
-                    : i === 2 ? 'rotate(-45deg) translate(5px, -5px)'
-                    : 'scaleX(0)'
-                  : 'none'
-              }} />
-            ))}
+            <span
+              className="hamburger-bar"
+              style={{
+                transform: mobileOpen ? 'rotate(45deg) translate(5px, 5px)' : 'none',
+              }}
+            />
+            <span
+              className="hamburger-bar"
+              style={{
+                opacity: mobileOpen ? 0 : 1,
+                transform: mobileOpen ? 'scaleX(0)' : 'none',
+              }}
+            />
+            <span
+              className="hamburger-bar"
+              style={{
+                transform: mobileOpen ? 'rotate(-45deg) translate(5px, -5px)' : 'none',
+              }}
+            />
           </button>
         </div>
 

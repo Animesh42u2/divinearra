@@ -172,29 +172,117 @@ function HowItWorks({ steps }: { steps: { title: string; description: string }[]
               />
 
               {/* card */}
-              <motion.div
-                className="hiw-card"
-                initial={{ opacity: 0, x: isLeft ? -60 : 60 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: '-60px' }}
-                transition={{ duration: 0.6, delay: i * 0.1 + 0.1, ease: [0.25, 0.1, 0.25, 1] }}
-                whileHover={{ y: -4, boxShadow: `0 8px 28px ${AMBER}33` }}
-                style={{
-                  width: 'calc(50% - 48px)',
-                  background: '#fff', borderRadius: 14, padding: '1.25rem 1.5rem',
-                  border: `1px solid ${AMBER}33`,
-                  boxShadow: `0 4px 20px ${AMBER}15`,
-                  textAlign: isLeft ? 'right' : 'left',
-                  cursor: 'default',
-                }}
-              >
-                <h3 style={{ color: BROWN_TEXT, fontFamily: "'Playfair Display', serif", fontSize: 'clamp(0.95rem, 2vw, 1.05rem)', marginBottom: '0.4rem' }}>
-                  {step.title}
-                </h3>
-                <p style={{ color: BROWN_MID, fontSize: 'clamp(0.8rem, 1.5vw, 0.88rem)', lineHeight: 1.65, margin: 0 }}>
-                  {step.description}
-                </p>
-              </motion.div>
+<motion.div
+  className="hiw-card"
+  initial={{ opacity: 0, x: isLeft ? -60 : 60 }}
+  whileInView={{ opacity: 1, x: 0 }}
+  viewport={{ once: true, margin: '-60px' }}
+  transition={{ duration: 0.6, delay: i * 0.1 + 0.1, ease: [0.25, 0.1, 0.25, 1] }}
+  whileHover={{ y: -4 }}
+  style={{
+    width: 'calc(50% - 48px)',
+    background: '#fff',
+    borderRadius: 18,
+    border: `1.5px solid #1a0a00`,
+    boxShadow: `0 2px 0 ${AMBER}55, 0 8px 32px ${AMBER}18`,
+    textAlign: isLeft ? 'right' : 'left',
+    cursor: 'default',
+    position: 'relative',
+    overflow: 'hidden',
+  }}
+>
+  {/* step badge */}
+  <div style={{ padding: '1.25rem 1.75rem 0' }}>
+    <div style={{
+      display: 'inline-block',
+      fontFamily: "'Playfair Display', serif",
+      fontSize: '0.65rem', fontWeight: 700,
+      color: AMBER_DARK, letterSpacing: '0.15em', textTransform: 'uppercase',
+      background: `${AMBER}15`,
+      border: `1px solid ${AMBER}44`,
+      borderRadius: 20, padding: '3px 12px',
+    }}>
+      Step {i + 1}
+    </div>
+  </div>
+
+  {/* title + divider + desc */}
+  <div style={{ padding: '0.75rem 1.75rem 1rem' }}>
+    <h3 style={{
+      color: BROWN_TEXT, fontFamily: "'Playfair Display', serif",
+      fontSize: 'clamp(0.95rem, 2vw, 1.1rem)', fontWeight: 700,
+      marginBottom: '0.5rem', lineHeight: 1.35,
+    }}>
+      {step.title}
+    </h3>
+    <div style={{
+      width: 32, height: 2, borderRadius: 1,
+      background: `linear-gradient(90deg, ${isLeft ? 'transparent' : AMBER}, ${isLeft ? AMBER : 'transparent'})`,
+      marginBottom: '0.6rem',
+      marginLeft: isLeft ? 'auto' : 0,
+      marginRight: isLeft ? 0 : 'auto',
+    }} />
+    <p style={{ color: BROWN_MID, fontSize: 'clamp(0.8rem, 1.5vw, 0.88rem)', lineHeight: 1.7, margin: 0 }}>
+      {step.description}
+    </p>
+  </div>
+
+  {/* Wave ribbon at bottom */}
+  <style>{`
+    @keyframes waveMove1 {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    @keyframes waveMove2 {
+      0%   { transform: translateX(-50%); }
+      100% { transform: translateX(0); }
+    }
+    @keyframes waveMove3 {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+  `}</style>
+  <div style={{ position: 'relative', height: 80, background: '#fff', overflow: 'hidden' }}>
+
+    {/* Grey wave back — moves right to left */}
+    <div style={{ position: 'absolute', top: 0, left: 0, width: '200%', height: '100%', animation: 'waveMove1 6s linear infinite' }}>
+      <svg style={{ width: '50%', height: '100%', display: 'inline-block' }}
+        viewBox="0 0 400 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,35 C60,15 130,55 200,35 C270,15 340,50 400,30 L400,80 L0,80 Z" fill="#e2e2e2"/>
+      </svg>
+      <svg style={{ width: '50%', height: '100%', display: 'inline-block' }}
+        viewBox="0 0 400 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,35 C60,15 130,55 200,35 C270,15 340,50 400,30 L400,80 L0,80 Z" fill="#e2e2e2"/>
+      </svg>
+    </div>
+
+    {/* Gold wave — moves left to right (opposite) */}
+    <div style={{ position: 'absolute', top: 0, left: 0, width: '200%', height: '100%', animation: 'waveMove2 5s linear infinite' }}>
+      <svg style={{ width: '50%', height: '100%', display: 'inline-block' }}
+        viewBox="0 0 400 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,42 C70,18 150,58 220,38 C290,18 350,52 400,36 L400,80 L0,80 Z" fill="#f0c060"/>
+      </svg>
+      <svg style={{ width: '50%', height: '100%', display: 'inline-block' }}
+        viewBox="0 0 400 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,42 C70,18 150,58 220,38 C290,18 350,52 400,36 L400,80 L0,80 Z" fill="#f0c060"/>
+      </svg>
+    </div>
+
+    {/* Grey wave front — moves right to left slower */}
+    <div style={{ position: 'absolute', top: 0, left: 0, width: '200%', height: '100%', animation: 'waveMove3 8s linear infinite' }}>
+      <svg style={{ width: '50%', height: '100%', display: 'inline-block' }}
+        viewBox="0 0 400 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,55 C70,35 150,68 220,52 C290,36 350,64 400,50 L400,80 L0,80 Z" fill="#e8d5b0"/>
+      </svg>
+      <svg style={{ width: '50%', height: '100%', display: 'inline-block' }}
+        viewBox="0 0 400 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,55 C70,35 150,68 220,52 C290,36 350,64 400,50 L400,80 L0,80 Z" fill="#e8d5b0"/>
+      </svg>
+    </div>
+
+  </div>
+
+</motion.div>
             </div>
           )
         })}
@@ -508,7 +596,7 @@ export default function ReportDetailPage() {
       <section className="rp-hero">
         <div className="rp-hero-anim rp-hero-left">
           <span className="rp-hero-badge">
-            ✦ Exclusive Report by Aditya Narayan Panigrahi
+            ✦ Exclusive Report by Astro Aditya Narayan
           </span>
           <h1 style={{ fontFamily: 'Georgia, serif', fontSize: 'clamp(20px, 3.2vw, 44px)', fontWeight: 800, lineHeight: 1.2, margin: '12px 0 14px' }}>
             {report.tagline}
@@ -804,7 +892,7 @@ export default function ReportDetailPage() {
         <div className="pricing-cards-grid" id="pricing-cards">
   {report.pricingPlans.map((plan, i) => {
 
-    const colors = ['#3FC1D6', '#6C4CD9', '#F2A93C']
+    const colors = ['#c8791a', '#8b4e0a','#8b4e0a']
     const color = colors[i] ?? colors[0]
     const liquidY = [78, 65, 50][i] ?? 70
 

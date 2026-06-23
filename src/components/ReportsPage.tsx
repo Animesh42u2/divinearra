@@ -85,6 +85,22 @@ const BorderBeam = ({
 }
 
 // ─────────────────────────────────────────
+// Randomised ratings per report (stable — generated once)
+// ─────────────────────────────────────────
+function randomRating() {
+  // e.g. 4.0, 4.1 … 5.0
+  return (4.0 + Math.random()).toFixed(1)
+}
+function randomReviews() {
+  // e.g. 87, 134, 312 …
+  const bands = [
+    [60, 120], [120, 200], [200, 350], [350, 500],
+  ]
+  const [lo, hi] = bands[Math.floor(Math.random() * bands.length)]
+  return Math.floor(lo + Math.random() * (hi - lo))
+}
+
+// ─────────────────────────────────────────
 // Data
 // ─────────────────────────────────────────
 const allReports = [
@@ -98,7 +114,11 @@ const allReports = [
   { title: 'Shani Sadesati Report', desc: "Navigate Saturn's most challenging transit with confidence. Understand its exact impact on your life and how to sail through it.", image: '/reports/Shani Sadesati Report.png', originalPrice: '₹799', price: '₹499', tag: 'popular' },
   { title: 'Fortune Report', desc: "Your personalised roadmap to life's big opportunities. Discover lucky windows, fortune activators, and the stars aligned for you.", image: '/reports/Fortune Report.png', originalPrice: '₹1,199', price: '₹699', tag: 'trending' },
   { title: 'Couple Matching Report', desc: 'Before you say yes, let the universe speak. An in-depth Kundali compatibility report for love, values, and a lifetime together.', image: '/reports/Couple Matching Report.png', originalPrice: '₹1,399', price: '₹799', tag: 'popular' },
-]
+].map(r => ({
+  ...r,
+  rating: randomRating(),
+  reviews: randomReviews(),
+}))
 
 const heroBooks = allReports.map(r => r.image)
 const TOTAL = heroBooks.length
@@ -120,18 +140,28 @@ const beamColors = [
 // ─────────────────────────────────────────
 // Icons
 // ─────────────────────────────────────────
-const CartIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
-    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-  </svg>
-)
-
-const StarIcon = () => (
-  <svg width="11" height="11" viewBox="0 0 24 24" fill="#f0a830" stroke="#f0a830" strokeWidth="1">
+const StarIcon = ({ filled }: { filled: boolean }) => (
+  <svg width="11" height="11" viewBox="0 0 24 24"
+    fill={filled ? '#f0a830' : 'none'}
+    stroke={filled ? '#f0a830' : '#d4a850'}
+    strokeWidth="1.5">
     <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
   </svg>
 )
+
+// Render 5 stars where the fractional one is half-filled via a clip trick
+const StarRating = ({ rating }: { rating: string }) => {
+  const num = parseFloat(rating)
+  const full = Math.floor(num)
+  const half = num - full >= 0.5
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+      {[1,2,3,4,5].map(s => (
+        <StarIcon key={s} filled={s <= full || (s === full + 1 && half)} />
+      ))}
+    </div>
+  )
+}
 
 // ─────────────────────────────────────────
 // Main Page
@@ -218,9 +248,19 @@ export default function ReportsPage() {
           .carousel-scene { height: 380px !important; }
           .carousel-ring  { width: 160px !important; height: 230px !important; }
         }
-        .reports-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
-        @media (max-width: 960px) { .reports-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; } }
-        @media (max-width: 560px) { .reports-grid { grid-template-columns: 1fr; gap: 16px; } }
+
+        /* GRID — 3 col → 2 col → 1 col */
+        .reports-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 28px;
+        }
+        @media (max-width: 960px) {
+          .reports-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+        }
+        @media (max-width: 560px) {
+          .reports-grid { grid-template-columns: 1fr; gap: 16px; }
+        }
 
         /* CARD */
         .report-card {
@@ -242,6 +282,9 @@ export default function ReportsPage() {
           background: linear-gradient(160deg, #f8e8c0 0%, #e8cc88 60%, #d4a850 100%);
           height: 240px; display: flex; align-items: flex-end; justify-content: center;
           padding: 24px 24px 0; overflow: hidden;
+        }
+        @media (max-width: 560px) {
+          .card-img-zone { height: 200px; }
         }
         .card-img-zone::before {
           content: ''; position: absolute; inset: 0;
@@ -266,7 +309,13 @@ export default function ReportsPage() {
           backdrop-filter: blur(8px); z-index: 2;
         }
         .card-body { padding: 20px 22px 24px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+        @media (max-width: 560px) {
+          .card-body { padding: 16px 18px 20px; }
+        }
         .card-title { font-family: 'Georgia', serif; font-size: 17px; font-weight: 700; color: #1a0a00; margin: 0; line-height: 1.3; }
+        @media (max-width: 560px) {
+          .card-title { font-size: 15px; }
+        }
         .card-stars { display: flex; align-items: center; gap: 3px; }
         .card-stars span { font-family: sans-serif; font-size: 11px; color: #a08060; margin-left: 4px; }
         .card-desc {
@@ -282,10 +331,9 @@ export default function ReportsPage() {
           width: 100%; box-shadow: 0 4px 16px rgba(196,122,30,0.35);
           display: flex; align-items: center; justify-content: center; gap: 8px;
         }
-        .report-card:hover .buy-btn { background: linear-gradient(90deg, #f8b840 0%, #d4870e 100%); box-shadow: 0 8px 24px rgba(196,122,30,0.55); }
-        .buy-btn-icon {
-          display: flex; align-items: center; justify-content: center;
-          background: rgba(255,255,255,0.22); border-radius: 8px; padding: 3px 4px; transition: background 0.2s;
+        .report-card:hover .buy-btn {
+          background: linear-gradient(90deg, #f8b840 0%, #d4870e 100%);
+          box-shadow: 0 8px 24px rgba(196,122,30,0.55);
         }
         .tabs-wrap { display: flex; gap: 8px; margin-bottom: 36px; flex-wrap: wrap; }
         .tab-btn {
@@ -369,7 +417,6 @@ export default function ReportsPage() {
           {filtered.map((r, i) => {
             const tc = tagConfig[r.tag]
             const bc = beamColors[i % beamColors.length]
-            // ── find slug from reportsConfig ──
             const reportData = reportsConfig.find(rc => rc.title === r.title)
             const slug = reportData?.slug ?? ''
 
@@ -404,12 +451,12 @@ export default function ReportsPage() {
                 <div className="card-body">
                   <h3 className="card-title">{r.title}</h3>
                   <div className="card-stars">
-                    {[1,2,3,4,5].map(s => <StarIcon key={s} />)}
-                    <span>5.0 · 200+ reviews</span>
+                    <StarRating rating={r.rating} />
+                    <span>{r.rating} · {r.reviews}+ reviews</span>
                   </div>
                   <p className="card-desc">{r.desc}</p>
+                  {/* No cart icon — plain text CTA */}
                   <div className="buy-btn">
-                    <span className="buy-btn-icon"><CartIcon /></span>
                     View Report →
                   </div>
                 </div>

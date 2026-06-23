@@ -229,7 +229,7 @@ export default function ContactUs() {
       <section className="cu-hero">
         <video
           className="cu-hero-video"
-          src="https://res.cloudinary.com/dcse27hnb/video/upload/v1781451698/galaxy_stock_video..._copyright_free_galaxy_video_rrheky.mp4"
+          src="https://res.cloudinary.com/dcse27hnb/video/upload/v1782254689/vidssave.com_Complete_Solar_system_copyright_free_video_Stock_video_stockfootage_istock_video_720p_wbv3le.mp4"
           autoPlay loop muted playsInline
         />
         <div className="cu-hero-overlay" />
@@ -240,7 +240,7 @@ export default function ContactUs() {
           </span>
           <h1 className="cu-hero-title">
             <span style={{ color: '#fff' }}>Contact </span>
-            <span style={{ color: '#ffeaa0' }}>Astro Aaditya Narayan</span>
+            <span style={{ color: '#ffeaa0' }}>Divine Arra Team</span>
           </h1>
           <p className="cu-hero-sub">
             Have a question or want to book a consultation? Reach out and we'll get back to you as soon as possible.
