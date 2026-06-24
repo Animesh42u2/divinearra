@@ -222,6 +222,13 @@ function HowItWorks({ steps }: { steps: { title: string; description: string }[]
                   }}>
                     {step.title}
                   </h3>
+                  <div style={{
+                    width: 32, height: 2, borderRadius: 1,
+                    background: `linear-gradient(90deg, ${isLeft ? 'transparent' : AMBER}, ${isLeft ? AMBER : 'transparent'})`,
+                    marginBottom: '0.6rem',
+                    marginLeft: isLeft ? 'auto' : 0,
+                    marginRight: isLeft ? 0 : 'auto',
+                  }} />
                   <p style={{ color: BROWN_MID, fontSize: 'clamp(0.8rem, 1.5vw, 0.88rem)', lineHeight: 1.7, margin: 0 }}>
                     {step.description}
                   </p>
@@ -1058,14 +1065,36 @@ export default function ReportDetailPage() {
                     <circle cx="80" cy="80" r="76" fill="none" stroke={color} strokeWidth="1.5" opacity="0.5" />
                     <circle cx="80" cy="80" r="70" fill="#fff" stroke={color} strokeWidth="2.5" />
                     <g clipPath={`url(#liquidClip-${i})`}>
+                      {/* Back wave — slower, more transparent */}
                       <path
-                        d={`M0 ${liquidY} Q20 ${liquidY - 9} 40 ${liquidY} T80 ${liquidY} T120 ${liquidY} T160 ${liquidY} T200 ${liquidY} T240 ${liquidY} V160 H0 Z`}
-                        fill={color} opacity="0.92"
-                      />
+                        d={`M-160 ${liquidY} Q-140 ${liquidY - 11} -120 ${liquidY} Q-100 ${liquidY + 11} -80 ${liquidY} Q-60 ${liquidY - 11} -40 ${liquidY} Q-20 ${liquidY + 11} 0 ${liquidY} Q20 ${liquidY - 11} 40 ${liquidY} Q60 ${liquidY + 11} 80 ${liquidY} Q100 ${liquidY - 11} 120 ${liquidY} Q140 ${liquidY + 11} 160 ${liquidY} Q180 ${liquidY - 11} 200 ${liquidY} Q220 ${liquidY + 11} 240 ${liquidY} Q260 ${liquidY - 11} 280 ${liquidY} Q300 ${liquidY + 11} 320 ${liquidY} V160 H-160 Z`}
+                        fill={color}
+                        opacity="0.5"
+                      >
+                        <animateTransform
+                          attributeName="transform"
+                          type="translate"
+                          from="0 0"
+                          to="160 0"
+                          dur="3s"
+                          repeatCount="indefinite"
+                        />
+                      </path>
+                      {/* Front wave — faster, more opaque */}
                       <path
-                        d={`M0 ${liquidY + 4} Q20 ${liquidY - 5} 40 ${liquidY + 4} T80 ${liquidY + 4} T120 ${liquidY + 4} T160 ${liquidY + 4} T200 ${liquidY + 4} T240 ${liquidY + 4} V160 H0 Z`}
-                        fill={color} opacity="0.55"
-                      />
+                        d={`M-160 ${liquidY + 5} Q-130 ${liquidY - 7} -100 ${liquidY + 5} Q-70 ${liquidY + 17} -40 ${liquidY + 5} Q-10 ${liquidY - 7} 20 ${liquidY + 5} Q50 ${liquidY + 17} 80 ${liquidY + 5} Q110 ${liquidY - 7} 140 ${liquidY + 5} Q170 ${liquidY + 17} 200 ${liquidY + 5} Q230 ${liquidY - 7} 260 ${liquidY + 5} Q290 ${liquidY + 17} 320 ${liquidY + 5} V160 H-160 Z`}
+                        fill={color}
+                        opacity="0.92"
+                      >
+                        <animateTransform
+                          attributeName="transform"
+                          type="translate"
+                          from="0 0"
+                          to="120 0"
+                          dur="2s"
+                          repeatCount="indefinite"
+                        />
+                      </path>
                     </g>
                     <image
                       href={`/reports/${report.title}.png`}
