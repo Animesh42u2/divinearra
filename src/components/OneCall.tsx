@@ -18,27 +18,26 @@ import { useNavigate } from 'react-router-dom'
 const features: Feature[] = [
   {
     icon: Star,
-    title: 'Vedic Birth Chart',
-    desc: 'Understand your birth chart, life patterns, and future possibilities.',
+    title: 'Kundali Reading',
+    desc: 'Decode your birth chart to reveal your true strengths, karmic patterns, and life purpose.',
   },
   {
     icon: Briefcase,
-    title: 'Career & Business',
-    desc: 'Get clear direction for career growth and business decisions.',
+    title: 'Career & Profession',
+    desc: 'Discover the right field, the right timing, and the planetary forces shaping your success.',
   },
   {
     icon: Heart,
-    title: 'Relationship & Marriage',
-    desc: 'Understand compatibility, challenges, and the right timing.',
+    title: 'Love & Relationships',
+    desc: 'Gain clarity on compatibility, emotional patterns, and the best time for union.',
   },
   {
     icon: Sparkles,
-    title: 'Remedies & Solutions',
-    desc: 'Get practical remedies to balance planetary influences.',
+    title: 'Vedic Remedies',
+    desc: 'Receive personalised remedies rooted in authentic Vedic tradition to restore balance and peace.',
   },
 ]
 
-// Pre-generate star data so values are stable across renders
 interface StarData {
   width: string
   height: string
@@ -396,7 +395,6 @@ export default function OneCall() {
       `}</style>
 
       <section className="oc-section" ref={sectionRef}>
-        {/* Star field */}
         <div className="oc-stars" aria-hidden="true">
           {STARS.map((star, i) => (
             <div
@@ -420,19 +418,20 @@ export default function OneCall() {
         <div className="oc-inner">
           <div className={`oc-eyebrow${visible ? ' visible' : ''}`}>
             <span className="oc-eyebrow-dot" />
-            Personal Consultation
+            Seek Cosmic Clarity
           </div>
 
           <h2 className={`oc-heading${visible ? ' visible' : ''}`}>
-            One Call Can{' '}
-            <span>Change Everything</span>
+            One Session Can{' '}
+            <span>Illuminate Your Path</span>
           </h2>
 
           <div className={`oc-divider${visible ? ' visible' : ''}`} />
 
           <p className={`oc-subtext${visible ? ' visible' : ''}`}>
-            Connect directly with Acharya for a personal consultation that clears confusion,
-            reveals the right direction, and helps you move forward with confidence.
+            Speak directly with Astro Aditya Narayan and receive honest,
+            heart-centred Vedic guidance tailored to your birth chart,
+            your life, and your exact moment in time.
           </p>
 
           <div className="oc-grid">
@@ -467,14 +466,14 @@ export default function OneCall() {
 
           <div className={`oc-cta-wrap${visible ? ' visible' : ''}`}>
             <button
-  className="oc-btn-primary"
-  type="button"
-  onClick={() => navigate('/consultation')}   // ✅ add this
->
-  <Phone size={16} strokeWidth={2} />
-  Schedule Your Call
-  <ArrowRight size={16} strokeWidth={2} />
-</button>
+              className="oc-btn-primary"
+              type="button"
+              onClick={() => navigate('/consultation')}
+            >
+              <Phone size={16} strokeWidth={2} />
+              Book Your Consultation
+              <ArrowRight size={16} strokeWidth={2} />
+            </button>
           </div>
         </div>
       </section>

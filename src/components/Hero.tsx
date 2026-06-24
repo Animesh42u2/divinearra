@@ -13,9 +13,9 @@ const slides = [
     image: '/slide1.png',
   },
   {
-    tag: '✦ Meet Astro Aditya Narayan Panigrahi',
+    tag: '✦ Meet Astro Aditya Narayan',
     title: 'Thousands Have Transformed Their Lives. Your Turn Starts Here.',
-    desc: 'With years of Vedic expertise and a heart for genuine guidance, Astro Aditya Narayan Panigrahi has helped people across the world find clarity, purpose, and peace.',
+    desc: 'With years of Vedic expertise and a heart for genuine guidance, Astro Aditya Narayan has helped people across the world find clarity, purpose, and peace.',
     btn1: 'Book a Session', btn1Route: '/consultation',
     btn2: 'Learn More',     btn2Route: '/about',
     image: '/slide2.png',
@@ -158,7 +158,6 @@ export default function Hero() {
 
 const CSS = `
   /* ── Keyframes ───────────────────────────────────────────────────────────── */
-  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&display=swap');
   @keyframes hero-fadeSlide {
     from { opacity: 0; transform: translateY(16px); }
     to   { opacity: 1; transform: translateY(0); }

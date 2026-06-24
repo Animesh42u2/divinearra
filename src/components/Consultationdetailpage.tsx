@@ -566,7 +566,7 @@ export default function ConsultationDetailPage() {
       <section className="cp-hero">
         <div className="cp-hero-anim cp-hero-left">
           <span style={{ border: '1px solid rgba(255,255,255,0.4)', borderRadius: 20, padding: '4px 14px', fontSize: 11, marginBottom: 16, display: 'inline-block', letterSpacing: '0.12em', fontWeight: 600 }}>
-            ✦ Live Consultation with Aditya Narayan Panigrahi
+            ✦ Live Consultation with Astro Aditya Narayan
           </span>
           <h1 style={{ fontFamily: 'Georgia, serif', fontSize: 'clamp(18px, 3.2vw, 44px)', fontWeight: 800, lineHeight: 1.2, margin: '12px 0 14px' }}>
             {consultation.tagline}

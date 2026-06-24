@@ -92,16 +92,23 @@ function HowItWorks({ steps }: { steps: { title: string; description: string }[]
       </div>
 
       <style>{`
+        /* ── HOW IT WORKS MOBILE ── */
         @media (max-width: 600px) {
           .hiw-row  { justify-content: flex-start !important; }
-          .hiw-card { width: calc(100% - 2.5rem) !important; text-align: left !important; margin-left: 2.5rem !important; }
-          .hiw-dot  { left: 0 !important; transform: translateY(-50%) !important; }
+          .hiw-card {
+            width: calc(100% - 44px) !important;
+            text-align: left !important;
+            margin-left: 44px !important;
+          }
+          .hiw-dot  { left: 4px !important; transform: translateY(-50%) !important; }
           .hiw-line-track,
           .hiw-line-fill,
           .hiw-comet {
-            left: 11px !important;
+            left: 15px !important;
             transform: translateX(-50%) !important;
           }
+          .hiw-card h3 { font-size: 0.95rem !important; }
+          .hiw-card p  { font-size: 0.82rem !important; }
         }
       `}</style>
 
@@ -172,117 +179,66 @@ function HowItWorks({ steps }: { steps: { title: string; description: string }[]
               />
 
               {/* card */}
-<motion.div
-  className="hiw-card"
-  initial={{ opacity: 0, x: isLeft ? -60 : 60 }}
-  whileInView={{ opacity: 1, x: 0 }}
-  viewport={{ once: true, margin: '-60px' }}
-  transition={{ duration: 0.6, delay: i * 0.1 + 0.1, ease: [0.25, 0.1, 0.25, 1] }}
-  whileHover={{ y: -4 }}
-  style={{
-    width: 'calc(50% - 48px)',
-    background: '#fff',
-    borderRadius: 18,
-    border: `1.5px solid #1a0a00`,
-    boxShadow: `0 2px 0 ${AMBER}55, 0 8px 32px ${AMBER}18`,
-    textAlign: isLeft ? 'right' : 'left',
-    cursor: 'default',
-    position: 'relative',
-    overflow: 'hidden',
-  }}
->
-  {/* step badge */}
-  <div style={{ padding: '1.25rem 1.75rem 0' }}>
-    <div style={{
-      display: 'inline-block',
-      fontFamily: "'Playfair Display', serif",
-      fontSize: '0.65rem', fontWeight: 700,
-      color: AMBER_DARK, letterSpacing: '0.15em', textTransform: 'uppercase',
-      background: `${AMBER}15`,
-      border: `1px solid ${AMBER}44`,
-      borderRadius: 20, padding: '3px 12px',
-    }}>
-      Step {i + 1}
-    </div>
-  </div>
+              <motion.div
+                className="hiw-card"
+                initial={{ opacity: 0, x: isLeft ? -60 : 60 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: '-60px' }}
+                transition={{ duration: 0.6, delay: i * 0.1 + 0.1, ease: [0.25, 0.1, 0.25, 1] }}
+                whileHover={{ y: -4 }}
+                style={{
+                  width: 'calc(50% - 48px)',
+                  background: '#fff',
+                  borderRadius: 18,
+                  border: `1.5px solid #1a0a00`,
+                  boxShadow: `0 2px 0 ${AMBER}55, 0 8px 32px ${AMBER}18`,
+                  textAlign: isLeft ? 'right' : 'left',
+                  cursor: 'default',
+                  position: 'relative',
+                  overflow: 'hidden',
+                }}
+              >
+                {/* step badge */}
+                <div style={{ padding: '1.25rem 1.75rem 0' }}>
+                  <div style={{
+                    display: 'inline-block',
+                    fontFamily: "'Playfair Display', serif",
+                    fontSize: '0.65rem', fontWeight: 700,
+                    color: AMBER_DARK, letterSpacing: '0.15em', textTransform: 'uppercase',
+                    background: `${AMBER}15`,
+                    border: `1px solid ${AMBER}44`,
+                    borderRadius: 20, padding: '3px 12px',
+                  }}>
+                    Step {i + 1}
+                  </div>
+                </div>
 
-  {/* title + divider + desc */}
-  <div style={{ padding: '0.75rem 1.75rem 1rem' }}>
-    <h3 style={{
-      color: BROWN_TEXT, fontFamily: "'Playfair Display', serif",
-      fontSize: 'clamp(0.95rem, 2vw, 1.1rem)', fontWeight: 700,
-      marginBottom: '0.5rem', lineHeight: 1.35,
-    }}>
-      {step.title}
-    </h3>
-    <div style={{
-      width: 32, height: 2, borderRadius: 1,
-      background: `linear-gradient(90deg, ${isLeft ? 'transparent' : AMBER}, ${isLeft ? AMBER : 'transparent'})`,
-      marginBottom: '0.6rem',
-      marginLeft: isLeft ? 'auto' : 0,
-      marginRight: isLeft ? 0 : 'auto',
-    }} />
-    <p style={{ color: BROWN_MID, fontSize: 'clamp(0.8rem, 1.5vw, 0.88rem)', lineHeight: 1.7, margin: 0 }}>
-      {step.description}
-    </p>
-  </div>
+                {/* title + divider + desc */}
+                <div style={{ padding: '0.75rem 1.75rem 1rem' }}>
+                  <h3 style={{
+                    color: BROWN_TEXT, fontFamily: "'Playfair Display', serif",
+                    fontSize: 'clamp(0.95rem, 2vw, 1.1rem)', fontWeight: 700,
+                    marginBottom: '0.5rem', lineHeight: 1.35,
+                  }}>
+                    {step.title}
+                  </h3>
+                  <p style={{ color: BROWN_MID, fontSize: 'clamp(0.8rem, 1.5vw, 0.88rem)', lineHeight: 1.7, margin: 0 }}>
+                    {step.description}
+                  </p>
+                </div>
 
-  {/* Wave ribbon at bottom */}
-  <style>{`
-    @keyframes waveMove1 {
-      0%   { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
-    }
-    @keyframes waveMove2 {
-      0%   { transform: translateX(-50%); }
-      100% { transform: translateX(0); }
-    }
-    @keyframes waveMove3 {
-      0%   { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
-    }
-  `}</style>
-  <div style={{ position: 'relative', height: 80, background: '#fff', overflow: 'hidden' }}>
-
-    {/* Grey wave back — moves right to left */}
-    <div style={{ position: 'absolute', top: 0, left: 0, width: '200%', height: '100%', animation: 'waveMove1 6s linear infinite' }}>
-      <svg style={{ width: '50%', height: '100%', display: 'inline-block' }}
-        viewBox="0 0 400 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0,35 C60,15 130,55 200,35 C270,15 340,50 400,30 L400,80 L0,80 Z" fill="#e2e2e2"/>
-      </svg>
-      <svg style={{ width: '50%', height: '100%', display: 'inline-block' }}
-        viewBox="0 0 400 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0,35 C60,15 130,55 200,35 C270,15 340,50 400,30 L400,80 L0,80 Z" fill="#e2e2e2"/>
-      </svg>
-    </div>
-
-    {/* Gold wave — moves left to right (opposite) */}
-    <div style={{ position: 'absolute', top: 0, left: 0, width: '200%', height: '100%', animation: 'waveMove2 5s linear infinite' }}>
-      <svg style={{ width: '50%', height: '100%', display: 'inline-block' }}
-        viewBox="0 0 400 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0,42 C70,18 150,58 220,38 C290,18 350,52 400,36 L400,80 L0,80 Z" fill="#f0c060"/>
-      </svg>
-      <svg style={{ width: '50%', height: '100%', display: 'inline-block' }}
-        viewBox="0 0 400 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0,42 C70,18 150,58 220,38 C290,18 350,52 400,36 L400,80 L0,80 Z" fill="#f0c060"/>
-      </svg>
-    </div>
-
-    {/* Grey wave front — moves right to left slower */}
-    <div style={{ position: 'absolute', top: 0, left: 0, width: '200%', height: '100%', animation: 'waveMove3 8s linear infinite' }}>
-      <svg style={{ width: '50%', height: '100%', display: 'inline-block' }}
-        viewBox="0 0 400 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0,55 C70,35 150,68 220,52 C290,36 350,64 400,50 L400,80 L0,80 Z" fill="#e8d5b0"/>
-      </svg>
-      <svg style={{ width: '50%', height: '100%', display: 'inline-block' }}
-        viewBox="0 0 400 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0,55 C70,35 150,68 220,52 C290,36 350,64 400,50 L400,80 L0,80 Z" fill="#e8d5b0"/>
-      </svg>
-    </div>
-
-  </div>
-
-</motion.div>
+                <div style={{ position: 'relative', height: 80, background: '#fff', overflow: 'hidden' }}>
+                  <svg
+                    viewBox="0 0 400 80"
+                    preserveAspectRatio="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '100%' }}
+                  >
+                    <path d="M0,50 C80,30 160,70 240,45 C300,28 360,60 400,40 L400,80 L0,80 Z" fill="#e8a84b" opacity="0.5"/>
+                    <path d="M0,65 C60,45 140,75 200,58 C270,40 340,68 400,55 L400,80 L0,80 Z" fill="#c47a1e" opacity="0.9"/>
+                  </svg>
+                </div>
+              </motion.div>
             </div>
           )
         })}
@@ -320,15 +276,15 @@ function FaqItem({ faq, index }: { faq: { question: string; answer: string }; in
         boxShadow: open ? `0 8px 32px rgba(139,90,43,0.10)` : '0 1px 4px rgba(0,0,0,0.04)',
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: 'clamp(1rem,3vw,1.35rem) clamp(1rem,3vw,1.6rem)' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: 'clamp(0.85rem,3vw,1.35rem) clamp(0.85rem,3vw,1.6rem)' }}>
         <span style={{ fontFamily: "'Playfair Display', serif", fontSize: '0.78rem', fontWeight: 700, color: AMBER, opacity: 0.75, minWidth: 24, flexShrink: 0 }}>
           {String(index + 1).padStart(2, '0')}
         </span>
-        <span style={{ flex: 1, fontFamily: "'Playfair Display', serif", fontSize: 'clamp(0.95rem, 2vw, 1.15rem)', color: BROWN_TEXT, fontWeight: 700, lineHeight: 1.4 }}>
+        <span style={{ flex: 1, fontFamily: "'Playfair Display', serif", fontSize: 'clamp(0.88rem, 2vw, 1.15rem)', color: BROWN_TEXT, fontWeight: 700, lineHeight: 1.4 }}>
           {faq.question}
         </span>
         <div style={{
-          flexShrink: 0, width: 34, height: 34, borderRadius: '50%',
+          flexShrink: 0, width: 32, height: 32, borderRadius: '50%',
           background: open ? `${AMBER}22` : 'rgba(139,90,43,0.07)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           transform: open ? 'rotate(45deg)' : 'rotate(0deg)',
@@ -341,9 +297,9 @@ function FaqItem({ faq, index }: { faq: { question: string; answer: string }; in
         </div>
       </div>
       <div style={{ maxHeight: open ? 400 : 0, overflow: 'hidden', transition: 'max-height 0.4s cubic-bezier(0.4,0,0.2,1)' }}>
-        <div style={{ padding: '0 clamp(1rem,3vw,1.6rem) clamp(1rem,3vw,1.35rem)' }}>
+        <div style={{ padding: '0 clamp(0.85rem,3vw,1.6rem) clamp(0.85rem,3vw,1.35rem)' }}>
           <div style={{ height: 1, background: `linear-gradient(90deg, ${AMBER}66, transparent)`, marginBottom: '0.9rem' }} />
-          <p style={{ margin: 0, fontSize: 'clamp(0.875rem,2vw,1rem)', color: BROWN_MID, lineHeight: 1.85 }}>
+          <p style={{ margin: 0, fontSize: 'clamp(0.82rem,2vw,1rem)', color: BROWN_MID, lineHeight: 1.85 }}>
             {faq.answer}
           </p>
         </div>
@@ -378,9 +334,9 @@ export default function ReportDetailPage() {
   if (!report) {
     return (
       <div style={{ background: CREAM, minHeight: '100vh', color: BROWN_TEXT, fontFamily: "'Inter', 'Segoe UI', sans-serif" }}>
-            <Navbar />
+        <Navbar />
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '4rem 2rem', textAlign: 'center' }}>
-          <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: '2rem', color: BROWN_TEXT, marginBottom: '1rem' }}>Report Not Found</h1>
+          <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: 'clamp(1.4rem, 4vw, 2rem)', color: BROWN_TEXT, marginBottom: '1rem' }}>Report Not Found</h1>
           <p style={{ color: BROWN_MID, marginBottom: '2rem' }}>We couldn't find a report matching <strong>"{slug}"</strong>.</p>
           <Link to="/reports" style={{ ...ctaBtn }}>View All Reports</Link>
         </div>
@@ -397,11 +353,12 @@ export default function ReportDetailPage() {
   })
 
   return (
-   <div style={{ background: CREAM, minHeight: '100vh', color: BROWN_TEXT, fontFamily: "'Inter', 'Segoe UI', sans-serif" }}>
-         <Navbar />
+    <div style={{ background: CREAM, minHeight: '100vh', color: BROWN_TEXT, fontFamily: "'Inter', 'Segoe UI', sans-serif" }}>
+      <Navbar />
 
       <style>{`
-        * { box-sizing: border-box; }
+        *, *::before, *::after { box-sizing: border-box; }
+        img { max-width: 100%; height: auto; display: block; }
 
         @keyframes fadeSlideUp {
           from { opacity: 0; transform: translateY(14px) }
@@ -409,7 +366,9 @@ export default function ReportDetailPage() {
         }
         .rp-hero-anim { animation: fadeSlideUp 0.45s ease forwards; }
 
-        /* ── HERO ── */
+        /* ══════════════════════════════
+           HERO
+        ══════════════════════════════ */
         .rp-hero {
           background: linear-gradient(135deg, #c47a1e 0%, #b8691a 100%);
           color: #fff;
@@ -419,107 +378,247 @@ export default function ReportDetailPage() {
           justify-content: space-between;
           gap: 32px;
           padding: 60px clamp(20px, 8%, 100px) 70px;
-          min-height: 500px;
           position: relative;
           overflow: hidden;
         }
-        .rp-hero-left  { flex: 1 1 0; min-width: 0; max-width: 520px; z-index: 2; }
+        .rp-hero-left  {
+          flex: 1 1 0;
+          min-width: 0;
+          max-width: 520px;
+          z-index: 2;
+        }
         .rp-hero-right {
-          flex-shrink: 0; position: relative;
+          flex-shrink: 0;
+          position: relative;
           width: clamp(200px, 36vw, 480px);
           height: clamp(200px, 36vw, 480px);
-          display: flex; align-items: center; justify-content: center; z-index: 2;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 2;
         }
         .rp-chakra {
-          position: absolute; top: 50%; left: 50%;
+          position: absolute;
+          top: 50%; left: 50%;
           width: 100%; height: 100%;
-          object-fit: contain; opacity: 0.42;
-          pointer-events: none; z-index: 0;
+          object-fit: contain;
+          opacity: 0.42;
+          pointer-events: none;
+          z-index: 0;
         }
         .rp-slide-img {
-          position: relative; z-index: 1;
-          width: 55%; height: 80%;
-          display: flex; align-items: center; justify-content: center;
+          position: relative;
+          z-index: 1;
+          width: 55%;
+          height: 80%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
-        .rp-slide-img img { width: 100%; height: 100%; object-fit: contain; object-position: center; display: block; }
+        .rp-slide-img img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+          object-position: center;
+        }
         .rp-hero-badge {
-          border: 1px solid rgba(255,255,255,0.4); border-radius: 20px;
-          padding: 4px 14px; font-size: 11px; margin-bottom: 16px;
-          display: inline-block; letter-spacing: 0.12em; font-weight: 600;
+          border: 1px solid rgba(255,255,255,0.4);
+          border-radius: 20px;
+          padding: 4px 14px;
+          font-size: 11px;
+          margin-bottom: 16px;
+          display: inline-block;
+          letter-spacing: 0.12em;
+          font-weight: 600;
           max-width: 100%;
+          word-break: break-word;
+        }
+        .rp-hero-btns {
+          display: flex;
+          gap: 12px;
+          flex-wrap: wrap;
+        }
+        .rp-hero-btns a {
+          white-space: nowrap;
+        }
+        .hero-stats {
+          display: flex;
+          gap: 0.75rem;
+          margin-top: 2rem;
+          flex-wrap: wrap;
+        }
+        .hero-stat-box {
+          background: rgba(255,255,255,0.15);
+          border: 1px solid rgba(255,255,255,0.28);
+          border-radius: 10px;
+          padding: 0.5rem 0.9rem;
+          text-align: center;
+          flex: 1 1 auto;
+          min-width: 80px;
         }
 
-        /* ── FLORAL ── */
+        /* ── HERO: tablet ── */
+        @media (max-width: 900px) and (min-width: 641px) {
+          .rp-hero-right { width: 240px; height: 240px; }
+          .rp-hero { padding: 48px 32px 64px; gap: 24px; }
+        }
+
+        /* ── HERO: mobile ── */
+        @media (max-width: 640px) {
+          .rp-hero {
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 36px 20px 56px;
+            gap: 24px;
+          }
+          .rp-hero-left  { max-width: 100%; order: 2; width: 100%; }
+          .rp-hero-right { order: 1; width: 200px; height: 200px; flex-shrink: 0; }
+          .rp-hero-btns  { justify-content: center; }
+          .hero-stats    { justify-content: center; }
+          .rp-hero-btns a { flex: 1 1 auto; text-align: center; min-width: 0; }
+        }
+
+        @media (max-width: 380px) {
+          .rp-hero-right { width: 150px !important; height: 150px !important; }
+          .rp-hero { padding: 28px 16px 44px; }
+          .rp-hero-btns a { width: 100%; }
+        }
+
+        /* ══════════════════════════════
+           FLORAL
+        ══════════════════════════════ */
         .floral-svg { transition: opacity 0.2s; }
         @media (max-width: 480px) {
           .floral-svg { width: 60px !important; height: 60px !important; opacity: 0.35 !important; }
         }
 
-        /* ── WHAT'S INSIDE ── */
+        /* ══════════════════════════════
+           WHAT IS  (image above text on mobile)
+        ══════════════════════════════ */
+        .what-is-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+          gap: clamp(2rem, 5vw, 4rem);
+          align-items: center;
+        }
+        @media (max-width: 640px) {
+          .what-is-grid > *:first-child { order: 2; }
+          .what-is-grid > *:last-child  { order: 1; }
+        }
+
+        /* ══════════════════════════════
+           WHAT'S INSIDE
+        ══════════════════════════════ */
         .whats-inside-grid {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
           gap: 1.25rem;
         }
+        @media (max-width: 480px) {
+          .whats-inside-grid {
+            grid-template-columns: 1fr;
+          }
+        }
 
-        /* ── FOR WHOM ── */
+        /* ══════════════════════════════
+           FOR WHOM
+        ══════════════════════════════ */
         .for-whom-grid {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
           gap: 1.5rem;
         }
-
-        /* ── PRICING ── */
-        .pricing-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-        .pricing-table  { min-width: 480px; }
-        @media (max-width: 560px) {
-          .pricing-table th, .pricing-table td { padding: 0.7rem 0.65rem !important; font-size: 0.78rem !important; }
+        @media (max-width: 480px) {
+          .for-whom-grid { grid-template-columns: 1fr; }
         }
 
-        /* ── PRICING CARDS ── */
+        /* ══════════════════════════════
+           PRICING TABLE
+        ══════════════════════════════ */
+        .pricing-scroll {
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
+          /* hint for mobile that there's scrollable content */
+          border-radius: 16px;
+          box-shadow: 0 8px 32px ${AMBER}1a;
+          border: 1px solid ${AMBER}30;
+        }
+        .pricing-table {
+          min-width: 480px;
+          width: 100%;
+          border-collapse: separate;
+          border-spacing: 0;
+          background: #fff;
+        }
+        @media (max-width: 560px) {
+          .pricing-table th,
+          .pricing-table td {
+            padding: 0.6rem 0.5rem !important;
+            font-size: 0.72rem !important;
+          }
+        }
+        @media (max-width: 400px) {
+          .pricing-table { min-width: 380px; }
+          .pricing-table th,
+          .pricing-table td {
+            padding: 0.5rem 0.4rem !important;
+            font-size: 0.65rem !important;
+          }
+        }
+
+        /* ══════════════════════════════
+           PRICING CARDS
+        ══════════════════════════════ */
         .pricing-cards-grid {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
           gap: 1.25rem;
           margin-top: 2rem;
         }
+        @media (max-width: 480px) {
+          .pricing-cards-grid { grid-template-columns: 1fr; }
+        }
 
-        /* ── ABOUT ── */
+        /* ══════════════════════════════
+           ABOUT
+        ══════════════════════════════ */
         .about-grid {
-          max-width: 1050px; margin: 0 auto;
-          display: grid; grid-template-columns: 340px 1fr;
-          gap: 3.5rem; align-items: center;
-          position: relative; z-index: 1;
+          max-width: 1050px;
+          margin: 0 auto;
+          display: grid;
+          grid-template-columns: 340px 1fr;
+          gap: 3.5rem;
+          align-items: center;
+          position: relative;
+          z-index: 1;
         }
         .about-stats-grid {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(85px, 1fr));
           gap: 0.55rem;
         }
-        @media (max-width: 780px) {
-          .about-grid { grid-template-columns: 1fr !important; justify-items: center; text-align: center; gap: 2rem; }
-          .about-photo { max-width: 320px !important; }
+        @media (max-width: 900px) {
+          .about-grid {
+            grid-template-columns: 280px 1fr;
+            gap: 2.5rem;
+          }
+        }
+        @media (max-width: 700px) {
+          .about-grid {
+            grid-template-columns: 1fr !important;
+            justify-items: center;
+            text-align: center;
+            gap: 2rem;
+          }
+          .about-photo { max-width: 280px !important; width: 100% !important; }
+          .about-stats-grid { justify-items: center; }
+          blockquote { text-align: left !important; }
         }
 
-        /* ── HERO mobile ── */
-        @media (max-width: 640px) {
-          .rp-hero { flex-direction: column; align-items: center; text-align: center; padding: 36px 20px 56px; min-height: unset; gap: 24px; }
-          .rp-hero-left  { max-width: 100%; order: 2; width: 100%; }
-          .rp-hero-right { order: 1; width: 180px; height: 180px; }
-          .rp-hero-btns  { justify-content: center !important; }
-          .hero-stats    { justify-content: center !important; }
-        }
-        @media (max-width: 900px) and (min-width: 641px) {
-          .rp-hero-right { width: 240px; height: 240px; }
-          .rp-hero { padding: 48px 32px 64px; }
-        }
-        @media (max-width: 380px) {
-          .rp-hero-right { width: 150px !important; height: 150px !important; }
-          .rp-hero { padding: 28px 16px 44px; }
-          .rp-hero-btns a { width: 100%; text-align: center; }
-        }
-
-        /* ── CTA ── */
+        /* ══════════════════════════════
+           CTA ANIMATIONS
+        ══════════════════════════════ */
         @keyframes ctaPulseRing {
           0%   { transform: scale(0.85); opacity: 0.5; }
           70%  { transform: scale(1.25); opacity: 0; }
@@ -555,7 +654,11 @@ export default function ReportDetailPage() {
             to   { transform: rotate(540deg) translateX(80px) rotate(-540deg); }
           }
         }
-        .cta-btn-wrap { position: relative; display: inline-block; max-width: 100%; }
+        .cta-btn-wrap {
+          position: relative;
+          display: inline-block;
+          max-width: 100%;
+        }
         .cta-pulse-ring {
           position: absolute; inset: -8px; border-radius: 60px;
           border: 2px solid rgba(255,255,255,0.5);
@@ -564,32 +667,33 @@ export default function ReportDetailPage() {
         .cta-btn {
           position: relative; z-index: 1; display: inline-block;
           background: #fff; color: ${AMBER_DARK};
-          font-weight: 700; font-size: clamp(0.9rem, 2vw, 1.05rem);
-          padding: clamp(0.8rem, 2vw, 1rem) clamp(1.5rem, 4vw, 2.4rem);
+          font-weight: 700; font-size: clamp(0.88rem, 2vw, 1.05rem);
+          padding: clamp(0.75rem, 2vw, 1rem) clamp(1.25rem, 4vw, 2.4rem);
           border-radius: 50px; text-decoration: none; letter-spacing: 0.02em;
           background-image: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0) 40%, rgba(255,215,100,0.35) 50%, rgba(255,255,255,0) 60%, transparent 100%);
           background-size: 200% auto;
           animation: ctaGlowBtn 2.5s ease-in-out infinite, ctaShimmer 3.5s linear infinite;
           transition: transform 0.2s ease;
-          border: none; cursor: pointer; max-width: 100%; white-space: nowrap;
+          border: none; cursor: pointer; white-space: nowrap;
+          max-width: 100%;
         }
         .cta-btn:hover { transform: scale(1.05) translateY(-2px); }
 
-        /* ── FAQ ── */
-        @keyframes faqFadeUp {
-          from { opacity: 0; transform: translateY(16px); }
-          to   { opacity: 1; transform: translateY(0); }
+        /* ══════════════════════════════
+           REDUCED MOTION
+        ══════════════════════════════ */
+        @media (prefers-reduced-motion: reduce) {
+          .rp-hero-anim { animation: none; }
+          .cta-btn { animation: none; }
+          .cta-pulse-ring { animation: none; }
         }
 
-        /* ── GLOBAL SMALL-SCREEN SAFETY ── */
+        /* ══════════════════════════════
+           GLOBAL SMALL-SCREEN SAFETY
+        ══════════════════════════════ */
         @media (max-width: 420px) {
-          .rp-hero-badge { font-size: 10px; padding: 3px 10px; }
+          .rp-hero-badge { font-size: 9px; padding: 3px 10px; }
         }
-        img { max-width: 100%; }
-        @media (max-width: 640px) {
-  .what-is-grid > *:first-child { order: 2; }
-  .what-is-grid > *:last-child  { order: 1; }
-}
       `}</style>
 
       {/* ── HERO ── */}
@@ -598,7 +702,7 @@ export default function ReportDetailPage() {
           <span className="rp-hero-badge">
             ✦ Exclusive Report by Astro Aditya Narayan
           </span>
-          <h1 style={{ fontFamily: 'Georgia, serif', fontSize: 'clamp(20px, 3.2vw, 44px)', fontWeight: 800, lineHeight: 1.2, margin: '12px 0 14px' }}>
+          <h1 style={{ fontFamily: 'Georgia, serif', fontSize: 'clamp(18px, 3.2vw, 44px)', fontWeight: 800, lineHeight: 1.2, margin: '12px 0 14px' }}>
             {report.tagline}
           </h1>
           <p style={{ fontSize: 'clamp(12px, 1.4vw, 15px)', opacity: 0.88, marginBottom: 12, fontStyle: 'italic' }}>
@@ -607,16 +711,16 @@ export default function ReportDetailPage() {
           <p style={{ fontSize: 'clamp(12px, 1.4vw, 15px)', opacity: 0.82, marginBottom: 28, lineHeight: 1.7 }}>
             {report.heroDescription}
           </p>
-          <div className="rp-hero-btns" style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-            <a href="#pricing" style={{ background: '#fff', color: AMBER_DARK, border: '2px solid #fff', padding: '12px 26px', borderRadius: 30, fontWeight: 700, fontSize: 14, cursor: 'pointer', textDecoration: 'none' }}>
-  Get Your {report.title} →
-</a>
+          <div className="rp-hero-btns">
+            <a href="#pricing" style={{ background: '#fff', color: AMBER_DARK, border: '2px solid #fff', padding: '12px 26px', borderRadius: 30, fontWeight: 700, fontSize: 14, cursor: 'pointer', textDecoration: 'none', display: 'inline-block' }}>
+              Get Your {report.title} →
+            </a>
           </div>
-          <div className="hero-stats" style={{ display: 'flex', gap: '1rem', marginTop: '2rem', flexWrap: 'wrap' }}>
+          <div className="hero-stats">
             {[['2 Lakh+', 'Kundlis Analyzed'], ['4.8/5 ★', 'Avg Rating'], ['100%', 'Personalized']].map(([v, l]) => (
-              <div key={l} style={{ background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.28)', borderRadius: 10, padding: '0.5rem 0.9rem', textAlign: 'center' }}>
-                <div style={{ fontFamily: 'Georgia, serif', fontSize: 'clamp(0.95rem, 2vw, 1.15rem)', fontWeight: 800 }}>{v}</div>
-                <div style={{ fontSize: '0.68rem', opacity: 0.75, marginTop: 1 }}>{l}</div>
+              <div key={l} className="hero-stat-box">
+                <div style={{ fontFamily: 'Georgia, serif', fontSize: 'clamp(0.9rem, 2vw, 1.15rem)', fontWeight: 800 }}>{v}</div>
+                <div style={{ fontSize: '0.65rem', opacity: 0.75, marginTop: 1 }}>{l}</div>
               </div>
             ))}
           </div>
@@ -632,7 +736,7 @@ export default function ReportDetailPage() {
 
       {/* ── WHAT IS ── */}
       <section style={{ maxWidth: 1100, margin: '0 auto', padding: 'clamp(3rem,6vw,5rem) clamp(1rem,3vw,1.5rem)' }}>
-        <div className="what-is-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(300px,100%), 1fr))', gap: 'clamp(2rem,5vw,4rem)', alignItems: 'center' }}>
+        <div className="what-is-grid">
           <div>
             <SectionLabel>What is the {report.title}?</SectionLabel>
             <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.4rem, 3vw, 2.1rem)', color: BROWN_TEXT, marginBottom: '1.25rem', lineHeight: 1.35 }}>
@@ -649,12 +753,12 @@ export default function ReportDetailPage() {
                 </li>
               ))}
             </ul>
-<button 
-  onClick={() => document.getElementById('pricing-cards')?.scrollIntoView({ behavior: 'smooth' })} 
-  style={{ ...ctaBtn, width: '100%', maxWidth: 320 }}
->
-  Order Now
-</button>
+            <button
+              onClick={() => document.getElementById('pricing-cards')?.scrollIntoView({ behavior: 'smooth' })}
+              style={{ ...ctaBtn, width: '100%', maxWidth: 320 }}
+            >
+              Order Now
+            </button>
           </div>
 
           <div style={{
@@ -815,20 +919,30 @@ export default function ReportDetailPage() {
       {/* ── PRICING ── */}
       <section id="pricing" style={{ maxWidth: 1100, margin: '0 auto', padding: 'clamp(3rem,6vw,5rem) clamp(1rem,3vw,1.5rem)' }}>
         <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-          <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.3rem, 3.4vw, 2.3rem)', color: BROWN_TEXT, margin: 0, lineHeight: 1.3 }}>
+          <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.2rem, 3.4vw, 2.3rem)', color: BROWN_TEXT, margin: 0, lineHeight: 1.3 }}>
             Choose your perfect <span style={{ color: AMBER }}>Features Of {report.title}</span>
           </h2>
         </div>
 
-        <div className="pricing-scroll" style={{ borderRadius: 16, boxShadow: `0 8px 32px ${AMBER}1a`, border: `1px solid ${AMBER}30` }}>
-          <table className="pricing-table" style={{ width: '100%', borderCollapse: 'separate', borderSpacing: 0, background: '#fff' }}>
+        {/* Scroll hint label for mobile */}
+        <p style={{ display: 'none', textAlign: 'center', fontSize: '0.72rem', color: BROWN_MID, marginBottom: '0.5rem' }} className="pricing-scroll-hint">
+          ← Scroll to compare →
+        </p>
+        <style>{`
+          @media (max-width: 560px) {
+            .pricing-scroll-hint { display: block !important; }
+          }
+        `}</style>
+
+        <div className="pricing-scroll">
+          <table className="pricing-table">
             <thead>
               <tr>
                 <th style={{
                   textAlign: 'left', padding: '1.1rem 1.5rem',
                   background: `linear-gradient(135deg, ${AMBER_DARK}, ${AMBER})`,
                   color: '#fff', fontFamily: "'Playfair Display', serif",
-                  fontSize: 'clamp(0.85rem,1.8vw,1rem)', fontWeight: 700,
+                  fontSize: 'clamp(0.8rem,1.8vw,1rem)', fontWeight: 700,
                   borderTopLeftRadius: 16, borderRight: '1px solid rgba(255,255,255,0.5)',
                 }}>
                   Features
@@ -838,10 +952,10 @@ export default function ReportDetailPage() {
                     textAlign: 'center', padding: '1.1rem 1.25rem',
                     background: `linear-gradient(135deg, ${AMBER_DARK}, ${AMBER})`,
                     color: '#fff', fontFamily: "'Playfair Display', serif",
-                    fontSize: 'clamp(0.85rem,1.8vw,1rem)', fontWeight: 700, lineHeight: 1.35,
+                    fontSize: 'clamp(0.8rem,1.8vw,1rem)', fontWeight: 700, lineHeight: 1.35,
                     borderTopRightRadius: i === report.pricingPlans.length - 1 ? 16 : 0,
                     borderRight: i < report.pricingPlans.length - 1 ? '2px solid rgba(255,255,255,0.5)' : 'none',
-                    minWidth: 140,
+                    minWidth: 120,
                   }}>
                     {plan.name}
                   </th>
@@ -851,7 +965,7 @@ export default function ReportDetailPage() {
             <tbody>
               {allFeatureLabels.map((label, rowIdx) => (
                 <tr key={label} style={{ background: rowIdx % 2 === 0 ? CREAM : '#fff' }}>
-                  <td style={{ padding: '1rem 1.5rem', fontWeight: 600, color: BROWN_TEXT, fontSize: 'clamp(0.8rem,1.5vw,0.92rem)', whiteSpace: 'nowrap', borderRight: '2px solid rgba(200,121,26,0.35)' }}>
+                  <td style={{ padding: '1rem 1.5rem', fontWeight: 600, color: BROWN_TEXT, fontSize: 'clamp(0.78rem,1.5vw,0.92rem)', whiteSpace: 'nowrap', borderRight: '2px solid rgba(200,121,26,0.35)' }}>
                     {label}
                   </td>
                   {report.pricingPlans.map((plan, i) => {
@@ -865,7 +979,7 @@ export default function ReportDetailPage() {
                 </tr>
               ))}
               <tr style={{ background: CREAM_DARK }}>
-                <td style={{ padding: '1.25rem 1.5rem', fontWeight: 800, color: BROWN_TEXT, fontSize: 'clamp(0.85rem,1.5vw,0.95rem)', borderBottomLeftRadius: 16, borderRight: '2px solid rgba(200,121,26,0.35)' }}>
+                <td style={{ padding: '1.25rem 1.5rem', fontWeight: 800, color: BROWN_TEXT, fontSize: 'clamp(0.82rem,1.5vw,0.95rem)', borderBottomLeftRadius: 16, borderRight: '2px solid rgba(200,121,26,0.35)' }}>
                   Price
                 </td>
                 {report.pricingPlans.map((plan, i) => (
@@ -875,10 +989,10 @@ export default function ReportDetailPage() {
                     borderRight: i < report.pricingPlans.length - 1 ? '2px solid rgba(200,121,26,0.35)' : 'none',
                   }}>
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.2rem' }}>
-                      <span style={{ color: AMBER_DARK, fontSize: 'clamp(1rem,2.5vw,1.3rem)', fontWeight: 800, fontFamily: "'Playfair Display', serif" }}>
+                      <span style={{ color: AMBER_DARK, fontSize: 'clamp(0.95rem,2.5vw,1.3rem)', fontWeight: 800, fontFamily: "'Playfair Display', serif" }}>
                         {plan.discountedPrice}/-
                       </span>
-                      <span style={{ color: '#bbb', textDecoration: 'line-through', fontSize: '0.82rem' }}>
+                      <span style={{ color: '#bbb', textDecoration: 'line-through', fontSize: '0.78rem' }}>
                         {plan.originalPrice}
                       </span>
                     </div>
@@ -889,142 +1003,120 @@ export default function ReportDetailPage() {
           </table>
         </div>
 
+        {/* ── PRICING CARDS ── */}
         <div className="pricing-cards-grid" id="pricing-cards">
-  {report.pricingPlans.map((plan, i) => {
+          {report.pricingPlans.map((plan, i) => {
+            const colors = ['#c8791a', '#8b4e0a', '#8b4e0a']
+            const color = colors[i] ?? colors[0]
+            const liquidY = [78, 65, 50][i] ?? 70
 
-    const colors = ['#c8791a', '#8b4e0a','#8b4e0a']
-    const color = colors[i] ?? colors[0]
-    const liquidY = [78, 65, 50][i] ?? 70
+            return (
+              <div
+                key={i}
+                onClick={() => navigate(`/checkout/report/${slug}`, { state: { planIndex: i } })}
+                style={{
+                  background: '#fff',
+                  border: i === 1 ? `2px solid ${color}` : `1.5px solid ${color}44`,
+                  borderRadius: 18,
+                  padding: 'clamp(1.25rem, 3vw, 1.75rem) clamp(1rem, 2vw, 1.25rem) clamp(1rem, 2vw, 1.25rem)',
+                  cursor: 'pointer',
+                  position: 'relative',
+                  overflow: 'hidden',
+                  boxShadow: i === 1 ? `0 8px 32px ${color}33` : `0 4px 16px ${color}15`,
+                  transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                  textAlign: 'center',
+                }}
+                onMouseEnter={e => {
+                  (e.currentTarget as HTMLDivElement).style.transform = 'translateY(-4px)'
+                  ;(e.currentTarget as HTMLDivElement).style.boxShadow = `0 16px 40px ${color}33`
+                }}
+                onMouseLeave={e => {
+                  (e.currentTarget as HTMLDivElement).style.transform = 'translateY(0)'
+                  ;(e.currentTarget as HTMLDivElement).style.boxShadow = i === 1 ? `0 8px 32px ${color}33` : `0 4px 16px ${color}15`
+                }}
+              >
+                {i === 1 && (
+                  <div style={{
+                    position: 'absolute', top: 12, right: 12,
+                    background: color, color: '#fff',
+                    fontSize: '0.6rem', fontWeight: 800,
+                    padding: '3px 10px', borderRadius: 100,
+                    letterSpacing: '0.08em', textTransform: 'uppercase',
+                  }}>
+                    Best Value
+                  </div>
+                )}
 
-    return (
-      <div
-        key={i}
-        onClick={() => navigate(`/checkout/report/${slug}`, { state: { planIndex: i } })}
-        style={{
-          background: '#fff',
-          border: i === 1 ? `2px solid ${color}` : `1.5px solid ${color}44`,
-          borderRadius: 18,
-          padding: '1.75rem 1.25rem 1.25rem',
-          cursor: 'pointer',
-          position: 'relative',
-          overflow: 'hidden',
-          boxShadow: i === 1 ? `0 8px 32px ${color}33` : `0 4px 16px ${color}15`,
-          transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-          textAlign: 'center',
-        }}
-        onMouseEnter={e => {
-          (e.currentTarget as HTMLDivElement).style.transform = 'translateY(-4px)'
-          ;(e.currentTarget as HTMLDivElement).style.boxShadow = `0 16px 40px ${color}33`
-        }}
-        onMouseLeave={e => {
-          (e.currentTarget as HTMLDivElement).style.transform = 'translateY(0)'
-          ;(e.currentTarget as HTMLDivElement).style.boxShadow = i === 1 ? `0 8px 32px ${color}33` : `0 4px 16px ${color}15`
-        }}
-      >
-        {i === 1 && (
-          <div style={{
-            position: 'absolute', top: 12, right: 12,
-            background: color, color: '#fff',
-            fontSize: '0.6rem', fontWeight: 800,
-            padding: '3px 10px', borderRadius: 100,
-            letterSpacing: '0.08em', textTransform: 'uppercase',
-          }}>
-            Best Value
-          </div>
-        )}
+                {/* Animated liquid-fill circle */}
+                <div style={{ width: 'min(160px, 80%)', aspectRatio: '1', margin: '0 auto 1rem', position: 'relative' }}>
+                  <svg viewBox="0 0 160 160" width="100%" height="100%">
+                    <defs>
+                      <clipPath id={`liquidClip-${i}`}>
+                        <circle cx="80" cy="80" r="70" />
+                      </clipPath>
+                    </defs>
+                    <circle cx="80" cy="80" r="76" fill="none" stroke={color} strokeWidth="1.5" opacity="0.5" />
+                    <circle cx="80" cy="80" r="70" fill="#fff" stroke={color} strokeWidth="2.5" />
+                    <g clipPath={`url(#liquidClip-${i})`}>
+                      <path
+                        d={`M0 ${liquidY} Q20 ${liquidY - 9} 40 ${liquidY} T80 ${liquidY} T120 ${liquidY} T160 ${liquidY} T200 ${liquidY} T240 ${liquidY} V160 H0 Z`}
+                        fill={color} opacity="0.92"
+                      />
+                      <path
+                        d={`M0 ${liquidY + 4} Q20 ${liquidY - 5} 40 ${liquidY + 4} T80 ${liquidY + 4} T120 ${liquidY + 4} T160 ${liquidY + 4} T200 ${liquidY + 4} T240 ${liquidY + 4} V160 H0 Z`}
+                        fill={color} opacity="0.55"
+                      />
+                    </g>
+                    <image
+                      href={`/reports/${report.title}.png`}
+                      x="30" y="20" width="100" height="120"
+                      preserveAspectRatio="xMidYMid meet"
+                      style={{ filter: 'drop-shadow(0 6px 10px rgba(0,0,0,0.3))' }}
+                    />
+                  </svg>
 
-        {/* ── Animated liquid-fill circle ── */}
-        <div style={{ width: 160, height: 160, margin: '0 auto 1rem', position: 'relative' }}>
-          <svg viewBox="0 0 160 160" width="100%" height="100%">
-            <defs>
-              <clipPath id={`liquidClip-${i}`}>
-                <circle cx="80" cy="80" r="70" />
-              </clipPath>
-            </defs>
+                  {i === 1 && (
+                    <div style={{
+                      position: 'absolute', bottom: -4, right: -4,
+                      width: 52, height: 52, borderRadius: '50%',
+                      background: '#fff', border: `2.5px solid ${color}`,
+                      boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      overflow: 'hidden',
+                    }}>
+                      <img src="/check.png" alt="Consultation" style={{ width: '78%', height: '78%', objectFit: 'contain' }} />
+                    </div>
+                  )}
+                </div>
 
-            <circle cx="80" cy="80" r="76" fill="none" stroke={color} strokeWidth="1.5" opacity="0.5" />
-            <circle cx="80" cy="80" r="70" fill="#fff" stroke={color} strokeWidth="2.5" />
+                <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(0.85rem, 2vw, 1rem)', fontWeight: 700, color: BROWN_TEXT, margin: '0 0 0.3rem', lineHeight: 1.3 }}>
+                  {plan.name}
+                </h3>
+                <p style={{ fontSize: '0.72rem', color: BROWN_MID, margin: '0 0 0.85rem', lineHeight: 1.5 }}>
+                  {plan.tagline}
+                </p>
+                <div style={{ marginBottom: '1rem' }}>
+                  <span style={{ color: '#bbb', fontSize: '0.78rem', textDecoration: 'line-through', display: 'block', marginBottom: 2 }}>
+                    {plan.originalPrice}
+                  </span>
+                  <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.1rem, 3vw, 1.6rem)', fontWeight: 800, color }}>
+                    {plan.discountedPrice}/-
+                  </span>
+                  <span style={{ fontSize: '0.65rem', color: BROWN_MID, marginLeft: 4 }}>only</span>
+                </div>
 
-            <g clipPath={`url(#liquidClip-${i})`}>
-              <g>
-                <animateTransform attributeName="transform" type="translate" from="0 0" to="-80 0" dur="3s" repeatCount="indefinite" />
-                <path
-                  d={`M0 ${liquidY} Q20 ${liquidY - 9} 40 ${liquidY} T80 ${liquidY} T120 ${liquidY} T160 ${liquidY} T200 ${liquidY} T240 ${liquidY} V160 H0 Z`}
-                  fill={color}
-                  opacity="0.92"
-                />
-              </g>
-              <g>
-                <animateTransform attributeName="transform" type="translate" from="-80 0" to="0 0" dur="4.5s" repeatCount="indefinite" />
-                <path
-                  d={`M0 ${liquidY + 4} Q20 ${liquidY - 5} 40 ${liquidY + 4} T80 ${liquidY + 4} T120 ${liquidY + 4} T160 ${liquidY + 4} T200 ${liquidY + 4} T240 ${liquidY + 4} V160 H0 Z`}
-                  fill={color}
-                  opacity="0.55"
-                />
-              </g>
-            </g>
-
-            {/* Book image — sized to fit fully inside the ring, no overflow */}
-            <image
-              href={`/reports/${report.title}.png`}
-              x="30"
-              y="20"
-              width="100"
-              height="120"
-              preserveAspectRatio="xMidYMid meet"
-              style={{ filter: 'drop-shadow(0 6px 10px rgba(0,0,0,0.3))' }}
-            />
-          </svg>
-
-          {i === 1 && (
-            <div style={{
-              position: 'absolute', bottom: -4, right: -4,
-              width: 58, height: 58, borderRadius: '50%',
-              background: '#fff', border: `2.5px solid ${color}`,
-              boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              overflow: 'hidden',
-            }}>
-              <img
-                src="/check.png"
-                alt="Consultation"
-                style={{ width: '78%', height: '78%', objectFit: 'contain' }}
-              />
-            </div>
-          )}
+                <div style={{
+                  background: color, color: '#fff', fontWeight: 800, fontSize: 'clamp(0.78rem, 2vw, 0.85rem)',
+                  padding: '0.65rem 1rem', borderRadius: 50, letterSpacing: '0.04em',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+                  boxShadow: `0 4px 14px ${color}44`,
+                }}>
+                  BUY NOW →
+                </div>
+              </div>
+            )
+          })}
         </div>
-
-        {/* Plan name */}
-        <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(0.85rem, 2vw, 1rem)', fontWeight: 700, color: BROWN_TEXT, margin: '0 0 0.3rem', lineHeight: 1.3 }}>
-          {plan.name}
-        </h3>
-
-        <p style={{ fontSize: '0.72rem', color: BROWN_MID, margin: '0 0 0.85rem', lineHeight: 1.5 }}>
-          {plan.tagline}
-        </p>
-
-        <div style={{ marginBottom: '1rem' }}>
-          <span style={{ color: '#bbb', fontSize: '0.78rem', textDecoration: 'line-through', display: 'block', marginBottom: 2 }}>
-            {plan.originalPrice}
-          </span>
-          <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.2rem, 3vw, 1.6rem)', fontWeight: 800, color }}>
-            {plan.discountedPrice}/-
-          </span>
-          <span style={{ fontSize: '0.65rem', color: BROWN_MID, marginLeft: 4 }}>only</span>
-        </div>
-
-        <div style={{
-          background: color, color: '#fff', fontWeight: 800, fontSize: '0.85rem',
-          padding: '0.65rem 1rem', borderRadius: 50, letterSpacing: '0.04em',
-          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
-          boxShadow: `0 4px 14px ${color}44`,
-        }}>
-          BUY NOW →
-        </div>
-      </div>
-    )
-  })}
-</div>
       </section>
 
       {/* ── ABOUT ── */}
@@ -1036,7 +1128,7 @@ export default function ReportDetailPage() {
           <div className="about-photo" style={{ position: 'relative', width: '100%', maxWidth: 340 }}>
             <img
               src="/Aditya.png" alt="Astro Aaditya Narayan"
-              style={{ width: '100%', height: 'clamp(280px, 46vw, 440px)', objectFit: 'cover', objectPosition: 'top center', display: 'block', borderRadius: 18 }}
+              style={{ width: '100%', height: 'auto', maxHeight: 440, objectFit: 'cover', objectPosition: 'top center', display: 'block', borderRadius: 18 }}
             />
           </div>
 
@@ -1055,7 +1147,7 @@ export default function ReportDetailPage() {
             <blockquote style={{
               background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)',
               borderLeft: '3px solid rgba(255,255,255,0.5)', borderRadius: 8,
-              padding: '0.75rem 1rem', marginBottom: '1.4rem',
+              padding: '0.75rem 1rem', marginBottom: '1.4rem', marginLeft: 0, marginRight: 0,
               fontStyle: 'italic', color: 'rgba(255,255,255,0.88)',
               fontSize: 'clamp(0.8rem,1.4vw,0.85rem)', lineHeight: 1.65,
             }}>
@@ -1064,8 +1156,8 @@ export default function ReportDetailPage() {
             <div className="about-stats-grid">
               {[['100K+','Consultations Delivered'],['7+','Years of Experience'],['59+','Years of Legacy'],['8+','Professional Awards'],['30K+','Hours of Expert Guidance']].map(([v, l]) => (
                 <div key={l} style={{ background: 'rgba(255,255,255,0.11)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 8, padding: '0.5rem 0.5rem', textAlign: 'center' }}>
-                  <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(0.85rem,1.5vw,1rem)', fontWeight: 800, color: '#fff' }}>{v}</div>
-                  <div style={{ fontSize: 'clamp(0.55rem,1vw,0.6rem)', color: 'rgba(255,255,255,0.65)', marginTop: 2, textTransform: 'uppercase', letterSpacing: '0.07em' }}>{l}</div>
+                  <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(0.82rem,1.5vw,1rem)', fontWeight: 800, color: '#fff' }}>{v}</div>
+                  <div style={{ fontSize: 'clamp(0.52rem,1vw,0.6rem)', color: 'rgba(255,255,255,0.65)', marginTop: 2, textTransform: 'uppercase', letterSpacing: '0.07em' }}>{l}</div>
                 </div>
               ))}
             </div>
@@ -1129,11 +1221,11 @@ export default function ReportDetailPage() {
             <div className="cta-btn-wrap">
               <div className="cta-pulse-ring" />
               <button onClick={() => navigate(`/checkout/report/${slug}`, { state: { planIndex: 0 } })} className="cta-btn">
-  Order Your Report →
-</button>  
+                Order Your Report →
+              </button>
+            </div>
           </div>
-          </div>
-          <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 'clamp(0.65rem,1.5vw,0.75rem)', marginTop: '1.2rem', letterSpacing: '0.04em', animation: 'ctaFadeUp 0.6s ease both 0.65s' }}>
+          <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 'clamp(0.62rem,1.5vw,0.75rem)', marginTop: '1.2rem', letterSpacing: '0.04em', animation: 'ctaFadeUp 0.6s ease both 0.65s' }}>
             ✦ Delivered within 24 hours &nbsp;·&nbsp; 100% personalised &nbsp;·&nbsp; Secure checkout
           </p>
         </div>

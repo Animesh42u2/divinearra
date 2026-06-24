@@ -88,18 +88,13 @@ const BorderBeam = ({
 // Randomised ratings per report (stable — generated once)
 // ─────────────────────────────────────────
 function randomRating() {
-  // e.g. 4.0, 4.1 … 5.0
-  return (4.0 + Math.random()).toFixed(1)
-}
-function randomReviews() {
-  // e.g. 87, 134, 312 …
-  const bands = [
-    [60, 120], [120, 200], [200, 350], [350, 500],
-  ]
-  const [lo, hi] = bands[Math.floor(Math.random() * bands.length)]
-  return Math.floor(lo + Math.random() * (hi - lo))
+  const ratings = ['4.8', '4.9', '5.0']
+  return ratings[Math.floor(Math.random() * ratings.length)]
 }
 
+function randomReviews() {
+  return Math.floor(1500 + Math.random() * 700)
+}
 // ─────────────────────────────────────────
 // Data
 // ─────────────────────────────────────────

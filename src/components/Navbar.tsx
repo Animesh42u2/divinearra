@@ -11,8 +11,6 @@ export default function Navbar() {
   return (
     <>
       <style>{`
-        .desktop-nav { display: flex !important; }
-        .hamburger { display: none !important; }
         .nav-link { color: #e8c97a !important; }
         .nav-link:hover { color: #ffd700 !important; background: rgba(196,122,30,0.2) !important; }
         .dropdown-item:hover { background: rgba(196,122,30,0.25) !important; color: #ffd700 !important; padding-left: 26px !important; }
@@ -31,10 +29,6 @@ export default function Navbar() {
           border-radius: 2px;
           transition: all 0.3s ease;
         }
-        @media (max-width: 768px) {
-          .desktop-nav { display: none !important; }
-          .hamburger { display: flex !important; }
-        }
       `}</style>
 
       <nav style={{
@@ -45,7 +39,7 @@ export default function Navbar() {
       }}>
         <div style={{
           maxWidth: 1200, margin: '0 auto',
-          padding: '0 24px', height: 72,
+          padding: '0 24px', height: 75,
           display: 'flex', alignItems: 'center', justifyContent: 'space-between'
         }}>
 
@@ -58,7 +52,7 @@ export default function Navbar() {
               style={{ width: 46, height: 46, objectFit: 'contain', filter: 'brightness(1.1)' }}
             />
             <div style={{
-              fontWeight: 700, fontSize: 14,
+              fontWeight: 700, fontSize: 15,
               color: '#e8c97a',
               fontFamily: 'Georgia, serif',
               letterSpacing: '0.1em',
@@ -82,7 +76,7 @@ export default function Navbar() {
                   style={{
                     padding: '8px 12px', borderRadius: 8,
                     color: openDropdown === link.label ? '#ffd700' : '#e8c97a',
-                    textDecoration: 'none', fontSize: 13,
+                    textDecoration: 'none', fontSize: 15,
                     fontFamily: 'sans-serif', fontWeight: 500,
                     display: 'flex', alignItems: 'center', gap: 4,
                     background: openDropdown === link.label ? 'rgba(196,122,30,0.2)' : 'transparent',
@@ -110,7 +104,7 @@ export default function Navbar() {
                         style={{
                           display: 'block', padding: '9px 20px',
                           color: '#e8c97a', textDecoration: 'none',
-                          fontSize: 13, fontFamily: 'sans-serif',
+                          fontSize: 15, fontFamily: 'sans-serif',
                           transition: 'all 0.15s',
                           borderBottom: '1px solid rgba(196,122,30,0.15)'
                         }}>
@@ -122,12 +116,12 @@ export default function Navbar() {
               </div>
             ))}
 
-            <a href="/login" style={{
+            {/* <a href="/login" style={{
               display: 'flex', alignItems: 'center', gap: 8,
               background: 'rgba(196,122,30,0.2)',
               color: '#e8c97a',
               padding: '7px 14px 7px 7px', borderRadius: 25,
-              textDecoration: 'none', fontSize: 13,
+              textDecoration: 'none', fontSize: 15,
               fontFamily: 'sans-serif', fontWeight: 500,
               border: '1px solid #c47a1e',
               whiteSpace: 'nowrap',
@@ -153,7 +147,7 @@ export default function Navbar() {
                 </svg>
               </div>
               Customer Login
-            </a>
+            </a> */}
           </div>
 
           {/* Hamburger — FIX: removed inline display:none so CSS media query can take over */}
@@ -229,29 +223,28 @@ export default function Navbar() {
               <div className={`mobile-sub${mobileDropdown === link.label ? ' open' : ''}`}
                 style={{ background: '#150900' }}>
                 {link.dropdown && link.dropdown.map(item => (
-                  <a
-                    key={item.label}
-                    href={item.path}
-                    onClick={(e) => {
-                      e.preventDefault()
-                      navigate(item.path)
-                      setMobileOpen(false)
-                      setMobileDropdown(null)
-                    }}
-                    style={{
-                      display: 'block', padding: '9px 36px',
-                      color: '#b89050', textDecoration: 'none',
-                      fontSize: 13, fontFamily: 'sans-serif',
-                      borderBottom: '1px solid rgba(196,122,30,0.1)'
-                    }}>
-                    {item.label}
-                  </a>
-                ))}
+  <div
+    key={item.label}
+    onClick={() => {
+      navigate(item.path)
+      setMobileOpen(false)
+      setMobileDropdown(null)
+    }}
+    style={{
+      display: 'block', padding: '9px 36px',
+      color: '#b89050',
+      fontSize: 15, fontFamily: 'sans-serif',
+      borderBottom: '1px solid rgba(196,122,30,0.1)',
+      cursor: 'pointer',
+    }}>
+    {item.label}
+  </div>
+))}
               </div>
             </div>
           ))}
 
-          <div style={{ padding: '16px 24px 20px' }}>
+          {/* <div style={{ padding: '16px 24px 20px' }}>
             <a href="/login" style={{
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
               background: 'rgba(196,122,30,0.2)',
@@ -274,7 +267,7 @@ export default function Navbar() {
               </div>
               Customer Login
             </a>
-          </div>
+          </div> */}
         </div>
       </nav>
     </>
