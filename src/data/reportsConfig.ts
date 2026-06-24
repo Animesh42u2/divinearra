@@ -51,7 +51,7 @@ export const reportsConfig: ReportConfig[] = [
     whatIs: {
       heading: 'Your Guide to Understanding Your Love Life',
       description:
-        "Astro Aditya Narayan's Love Report is a personalized astrological guide that reveals deep insights into your emotional world and relationship patterns. Based on your birth chart, planetary positions, and key houses like the 5th and 7th, this report helps you understand how you love, what you seek, and how your journey in relationships unfolds over time.",
+        "Astro Aaditya Narayan's Love Report is a personalized astrological guide that reveals deep insights into your emotional world and relationship patterns. Based on your birth chart, planetary positions, and key houses like the 5th and 7th, this report helps you understand how you love, what you seek, and how your journey in relationships unfolds over time.",
       bullets: [
         'Reveals your natural love patterns and emotional needs.',
         'Explains how Venus and key houses influence your romantic life.',
@@ -116,7 +116,7 @@ export const reportsConfig: ReportConfig[] = [
       },
     ],
     faqs: [
-      { question: 'How is this report created?', answer: 'Based on your birth date, time, and place, Astro Aditya Narayan personally analyzes your chart focusing on Venus, Moon, 5th and 7th houses to craft your personalized Love Report.' },
+      { question: 'How is this report created?', answer: 'Based on your birth date, time, and place, Astro Aaditya Narayan personally analyzes your chart focusing on Venus, Moon, 5th and 7th houses to craft your personalized Love Report.' },
       { question: 'Is this suitable for singles?', answer: 'Absolutely. The report reveals your love patterns, what you seek in a partner, and the best timing for romantic opportunities.' },
       { question: 'How long will it take to receive my report?', answer: 'You will receive your detailed Love Report within 3–5 business days via email and WhatsApp.' },
       { question: 'What if I want deeper guidance?', answer: 'You can opt for the Love Report + 1-on-1 Consultation package for personalized, real-time guidance.' },
@@ -209,7 +209,7 @@ export const reportsConfig: ReportConfig[] = [
       },
     ],
     faqs: [
-      { question: 'How accurate is the Lal Kitab report?', answer: 'Lal Kitab astrology is highly precise when birth details are accurate. Astro Aditya Narayan has analyzed over 2 lakh kundlis and delivers remarkably accurate readings.' },
+      { question: 'How accurate is the Lal Kitab report?', answer: 'Lal Kitab astrology is highly precise when birth details are accurate. Astro Aaditya Narayan has analyzed over 2 lakh kundlis and delivers remarkably accurate readings.' },
       { question: 'How soon can I see results from the remedies?', answer: 'Many users report noticeable improvements within a few weeks of consistently following the Lal Kitab remedies.' },
       { question: 'Is the report personalized?', answer: 'Yes, every report is uniquely prepared based on your specific birth date, time, and place — no two reports are the same.' },
       { question: 'In which format will the report be delivered?', answer: 'The report is delivered as a detailed PDF E-Book via email and WhatsApp.' },
@@ -257,7 +257,7 @@ export const reportsConfig: ReportConfig[] = [
     ],
     steps: [
       { title: 'Share Your Birth Details', description: 'Enter your date, time, and place of birth accurately.' },
-      { title: 'Expert Chart Analysis', description: 'Astro Aditya Narayan analyzes your 10th house, planets, and professional yogas.' },
+      { title: 'Expert Chart Analysis', description: 'Astro Aaditya Narayan analyzes your 10th house, planets, and professional yogas.' },
       { title: 'Receive Your Career Blueprint', description: 'Get your personalized career report with actionable guidance within 3–5 days.' },
     ],
     forWhom: [
@@ -308,7 +308,7 @@ export const reportsConfig: ReportConfig[] = [
     testimonials: [
       { name: 'Vikas R.', text: 'The report told me to wait 6 months before switching jobs. I did, and the offer I got was beyond what I imagined. Incredible accuracy.' },
       { name: 'Meera T.', text: 'I always felt like I was in the wrong field. The career report confirmed it and pointed me toward creative fields — which I am now pursuing successfully.' },
-      { name: 'Aditya P.', text: 'The Saturn analysis explained 3 years of professional struggles in one paragraph. The remedies helped me shift my energy completely.' },
+      { name: 'Aaditya P.', text: 'The Saturn analysis explained 3 years of professional struggles in one paragraph. The remedies helped me shift my energy completely.' },
     ],
   },
 
@@ -688,7 +688,7 @@ export const reportsConfig: ReportConfig[] = [
     whatIs: {
       heading: 'Your Complete Astrological Life Reading',
       description:
-        "The Fortune Report is Astro Aditya Narayan's most comprehensive offering — a full Kundli analysis covering all 12 houses, key planetary yogas, Dasha periods, and life predictions across every major domain: career, wealth, love, health, family, and spiritual growth.",
+        "The Fortune Report is Astro Aaditya Narayan's most comprehensive offering — a full Kundli analysis covering all 12 houses, key planetary yogas, Dasha periods, and life predictions across every major domain: career, wealth, love, health, family, and spiritual growth.",
       bullets: [
         'Complete analysis of all 12 houses and their influence on your life.',
         'Identifies your most powerful yogas and life blessings.',
@@ -708,7 +708,7 @@ export const reportsConfig: ReportConfig[] = [
     ],
     steps: [
       { title: 'Share Your Birth Details', description: 'Provide your date, time, and place of birth for a complete chart analysis.' },
-      { title: 'Full Kundli Analysis', description: 'All 12 houses, yogas, and Dasha periods are thoroughly analyzed by Astro Aditya Narayan.' },
+      { title: 'Full Kundli Analysis', description: 'All 12 houses, yogas, and Dasha periods are thoroughly analyzed by Astro Aaditya Narayan.' },
       { title: 'Receive Your Fortune Report', description: 'Get your comprehensive life reading report within 5–7 business days.' },
     ],
     forWhom: [
@@ -952,7 +952,7 @@ export const reportsConfig: ReportConfig[] = [
     subtitle: 'The Most Detailed Kundli You Will Ever Own',
     tagline: 'A Handcrafted, Expert-Analyzed Kundli That Covers Every Aspect of Your Life',
     heroDescription:
-      'Your Kundli is your life\'s cosmic blueprint. The Premium Personalized Kundali is the most detailed, handcrafted astrological document created exclusively for you by Astro Aditya Narayan.',
+      'Your Kundli is your life\'s cosmic blueprint. The Premium Personalized Kundali is the most detailed, handcrafted astrological document created exclusively for you by Astro Aaditya Narayan.',
     accentColor: '#c8791a',
     gradientFrom: '#2a1500',
     gradientTo: '#150a00',
@@ -961,9 +961,9 @@ export const reportsConfig: ReportConfig[] = [
     whatIs: {
       heading: 'The Ultimate Personalized Kundali Experience',
       description:
-        "The Premium Personalized Kundali is not a computer-generated report. It is a fully handcrafted, expert-analyzed Kundli document prepared by Astro Aditya Narayan — covering your complete birth chart, all planetary yogas, life predictions, and comprehensive remedies in a beautifully formatted, printable document.",
+        "The Premium Personalized Kundali is not a computer-generated report. It is a fully handcrafted, expert-analyzed Kundli document prepared by Astro Aaditya Narayan — covering your complete birth chart, all planetary yogas, life predictions, and comprehensive remedies in a beautifully formatted, printable document.",
       bullets: [
-        'Completely handcrafted by Astro Aditya Narayan — not auto-generated.',
+        'Completely handcrafted by Astro Aaditya Narayan — not auto-generated.',
         'Covers all 12 houses, all planets, all major yogas, and Dasha periods.',
         'Includes detailed predictions for every major life domain.',
         'Delivered as a premium PDF with beautiful formatting — print-ready.',
@@ -981,7 +981,7 @@ export const reportsConfig: ReportConfig[] = [
     ],
     steps: [
       { title: 'Share Your Birth Details', description: 'Provide your complete and accurate birth date, time, and place of birth.' },
-      { title: 'Expert Handcrafted Analysis', description: 'Astro Aditya Narayan personally analyzes your complete chart — this takes dedicated time and expertise.' },
+      { title: 'Expert Handcrafted Analysis', description: 'Astro Aaditya Narayan personally analyzes your complete chart — this takes dedicated time and expertise.' },
       { title: 'Receive Your Premium Kundali', description: 'Your beautifully formatted premium Kundali document is delivered within 7–10 business days.' },
     ],
     forWhom: [
@@ -1026,7 +1026,7 @@ export const reportsConfig: ReportConfig[] = [
       },
     ],
     faqs: [
-      { question: 'Is this really handcrafted?', answer: 'Yes. Unlike automated reports, the Premium Personalized Kundali is personally analyzed and written by Astro Aditya Narayan for each client. This is why it takes 7–10 business days.' },
+      { question: 'Is this really handcrafted?', answer: 'Yes. Unlike automated reports, the Premium Personalized Kundali is personally analyzed and written by Astro Aaditya Narayan for each client. This is why it takes 7–10 business days.' },
       { question: 'How many pages is the Kundali?', answer: 'The Premium Kundali is typically 80–120 pages, covering your complete chart analysis in extraordinary detail.' },
       { question: 'Can I print it?', answer: 'Yes. The Kundali is delivered as a beautifully formatted, print-ready PDF optimized for A4 printing.' },
       { question: 'Is birth time accuracy important?', answer: 'Yes — for the most accurate reading, please provide your exact birth time. Even a 1–2 hour difference can significantly affect the Ascendant and house placements.' },

@@ -429,7 +429,7 @@ export default function OneCall() {
           <div className={`oc-divider${visible ? ' visible' : ''}`} />
 
           <p className={`oc-subtext${visible ? ' visible' : ''}`}>
-            Speak directly with Astro Aditya Narayan and receive honest,
+            Speak directly with Astro Aaditya Narayan and receive honest,
             heart-centred Vedic guidance tailored to your birth chart,
             your life, and your exact moment in time.
           </p>

@@ -707,7 +707,7 @@ export default function ReportDetailPage() {
       <section className="rp-hero">
         <div className="rp-hero-anim rp-hero-left">
           <span className="rp-hero-badge">
-            ✦ Exclusive Report by Astro Aditya Narayan
+            ✦ Exclusive Report by Astro Aaditya Narayan
           </span>
           <h1 style={{ fontFamily: 'Georgia, serif', fontSize: 'clamp(18px, 3.2vw, 44px)', fontWeight: 800, lineHeight: 1.2, margin: '12px 0 14px' }}>
             {report.tagline}
@@ -1118,24 +1118,24 @@ export default function ReportDetailPage() {
                   )}
                 </div>
 
-                <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(0.85rem, 2vw, 1rem)', fontWeight: 700, color: BROWN_TEXT, margin: '0 0 0.3rem', lineHeight: 1.3 }}>
+                <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1rem, 2vw, 1.3rem)', fontWeight: 700, color: BROWN_TEXT, margin: '0 0 0.3rem', lineHeight: 1.3 }}>
                   {plan.name}
                 </h3>
-                <p style={{ fontSize: '0.72rem', color: BROWN_MID, margin: '0 0 0.85rem', lineHeight: 1.5 }}>
+                <p style={{ fontSize: '0.9rem', color: BROWN_MID, margin: '0 0 0.85rem', lineHeight: 1.5 }}>
                   {plan.tagline}
                 </p>
                 <div style={{ marginBottom: '1rem' }}>
-                  <span style={{ color: '#bbb', fontSize: '0.78rem', textDecoration: 'line-through', display: 'block', marginBottom: 2 }}>
+                  <span style={{ color: '#bbb', fontSize: '0.95rem', textDecoration: 'line-through', display: 'block', marginBottom: 2 }}>
                     {plan.originalPrice}
                   </span>
-                  <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.1rem, 3vw, 1.6rem)', fontWeight: 800, color }}>
+                  <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.3rem, 3vw, 2rem)', fontWeight: 800, color }}>
                     {plan.discountedPrice}/-
                   </span>
                   <span style={{ fontSize: '0.65rem', color: BROWN_MID, marginLeft: 4 }}>only</span>
                 </div>
 
                 <div style={{
-                  background: color, color: '#fff', fontWeight: 800, fontSize: 'clamp(0.78rem, 2vw, 0.85rem)',
+                  background: color, color: '#fff', fontWeight: 800, fontSize: 'clamp(0.9rem, 2vw, 1rem)',
                   padding: '0.65rem 1rem', borderRadius: 50, letterSpacing: '0.04em',
                   display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
                   boxShadow: `0 4px 14px ${color}44`,
@@ -1156,7 +1156,7 @@ export default function ReportDetailPage() {
         <div className="about-grid">
           <div className="about-photo" style={{ position: 'relative', width: '100%', maxWidth: 340 }}>
             <img
-              src="/Aditya.png" alt="Astro Aaditya Narayan"
+              src="/Aaditya.png" alt="Astro Aaditya Narayan"
               style={{ width: '100%', height: 'auto', maxHeight: 440, objectFit: 'cover', objectPosition: 'top center', display: 'block', borderRadius: 18 }}
             />
           </div>

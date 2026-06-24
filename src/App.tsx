@@ -32,7 +32,7 @@ function ScrollToTop() {
 
 function HomePage() {
   return (
-    <div>
+    <div style={{ paddingTop: 75 }}>
       <Navbar />
       <Hero />
       <Services />
@@ -52,7 +52,7 @@ function HomePage() {
 }
 
 function PageLayout({ children }: { children: React.ReactNode }) {
-  return <div>{children}</div>
+  return <div style={{ paddingTop: 75 }}>{children}</div>
 }
 
 function App() {

@@ -1098,7 +1098,7 @@ export default function ConsultationDetailPage() {
         <div className="about-grid">
           <div className="about-photo" style={{ position: 'relative', width: '100%', maxWidth: 340 }}>
             <img
-              src="/Aditya.png" alt="Astro Aaditya Narayan"
+              src="/Aaditya.png" alt="Astro Aaditya Narayan"
               style={{ width: '100%', height: 'clamp(240px, 46vw, 440px)', objectFit: 'cover', objectPosition: 'top center', display: 'block', borderRadius: 18 }}
             />
           </div>

@@ -13,9 +13,9 @@ const slides = [
     image: '/slide1.png',
   },
   {
-    tag: '✦ Meet Astro Aditya Narayan',
+    tag: '✦ Meet Astro Aaditya Narayan',
     title: 'Thousands Have Transformed Their Lives. Your Turn Starts Here.',
-    desc: 'With years of Vedic expertise and a heart for genuine guidance, Astro Aditya Narayan has helped people across the world find clarity, purpose, and peace.',
+    desc: 'With years of Vedic expertise and a heart for genuine guidance, Astro Aaditya Narayan has helped people across the world find clarity, purpose, and peace.',
     btn1: 'Book a Session', btn1Route: '/consultation',
     btn2: 'Learn More',     btn2Route: '/about',
     image: '/slide2.png',

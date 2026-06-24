@@ -104,7 +104,7 @@ export const coursesConfig: CourseConfig[] = [
     instructor: {
       name: 'Astro Aaditya Narayan',
       bio: 'Founder of Divine Arra, Astro Aaditya Narayan has analyzed over 2 lakh charts across 7+ years of practice. He teaches Vedic astrology in a clear, structured style — making complex concepts approachable for students at every level.',
-      image: '/Aditya.png',
+      image: '/Aaditya.png',
     },
     forWhom: [
       { title: 'Complete Beginners', description: 'No prior knowledge needed. The course starts from the absolute basics and builds up systematically.' },
@@ -219,7 +219,7 @@ export const coursesConfig: CourseConfig[] = [
     instructor: {
       name: 'Astro Aaditya Narayan',
       bio: 'With a specialization in predictive Jyotish and divisional chart analysis, Astro Aaditya Narayan brings real consultation experience into the classroom — teaching techniques actively used in his 100K+ consultations.',
-      image: '/Aditya.png',
+      image: '/Aaditya.png',
     },
     forWhom: [
       { title: 'Students with Basic Knowledge', description: 'You understand planets, houses, and basic chart structure but want to go much deeper into interpretation and prediction.' },
@@ -334,7 +334,7 @@ export const coursesConfig: CourseConfig[] = [
     instructor: {
       name: 'Astro Aaditya Narayan',
       bio: 'Alongside Vedic astrology, Astro Aaditya Narayan has practiced tarot reading for over 7 years, blending symbolic interpretation with intuitive insight. He teaches tarot as a practical, learnable skill — not a mystery — making it accessible to complete beginners.',
-      image: '/Aditya.png',
+      image: '/Aaditya.png',
     },
     forWhom: [
       { title: 'Complete Beginners', description: 'Never held a tarot deck before? This course starts from the absolute basics and builds your skills card by card.' },
@@ -449,7 +449,7 @@ export const coursesConfig: CourseConfig[] = [
     instructor: {
       name: 'Astro Aaditya Narayan',
       bio: 'Astro Aaditya Narayan has guided thousands of students through meditation and energy-awareness practices alongside his astrology work. He brings a grounded, practical approach to intuition development — focused on simple daily habits rather than abstract theory.',
-      image: '/Aditya.png',
+      image: '/Aaditya.png',
     },
     forWhom: [
       { title: 'Complete Beginners', description: 'No experience with meditation or energy work needed. The course starts from the basics and builds gradually.' },

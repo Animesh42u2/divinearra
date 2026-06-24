@@ -104,7 +104,7 @@ export default function Footer() {
 
         /* Scroll to top */
         .scroll-top-btn {
-          position: fixed; bottom: 90px; right: 24px; z-index: 50;
+          position: fixed; bottom: 90px; right: 24px; z-index: 1001;
           width: 44px; height: 44px; border-radius: 50%;
           cursor: pointer;
           background: rgba(26,10,0,0.85);
@@ -130,7 +130,7 @@ export default function Footer() {
           80%, 100% { transform: scale(1.9); opacity: 0; }
         }
         .wa-wrapper {
-          position: fixed; bottom: 24px; right: 24px; z-index: 50;
+          position: fixed; bottom: 24px; right: 24px; z-index: 1001;
           width: 52px; height: 52px;
           display: flex; align-items: center; justify-content: center;
         }

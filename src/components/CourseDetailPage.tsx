@@ -338,7 +338,7 @@ export default function CourseDetailPage() {
         <div className="cp-hero-anim cp-hero-left">
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem', flexWrap: 'wrap' }}>
             <span style={{ border: '1px solid rgba(255,255,255,0.4)', borderRadius: 20, padding: '4px 14px', fontSize: 11, letterSpacing: '0.12em', fontWeight: 600 }}>
-              ✦ Live Course with Astro Aditya Narayan
+              ✦ Live Course with Astro Aaditya Narayan
             </span>
             <span style={{ background: levelColor, color: '#fff', borderRadius: 20, padding: '4px 12px', fontSize: 11, fontWeight: 700, letterSpacing: '0.08em' }}>
               {course.level}

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState} from 'react'
 import { useNavigate } from 'react-router-dom'
 import { navLinks } from '../data/navData'
 
@@ -32,8 +32,9 @@ export default function Navbar() {
       `}</style>
 
       <nav style={{
-        position: 'sticky', top: 0, zIndex: 100,
-        background: 'linear-gradient(90deg, #1a0a00 0%, #2d1200 40%, #3a1800 70%, #1a0a00 100%)',
+        position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000,
+       
+background: 'linear-gradient(90deg, #1a0a00 0%, #2d1200 40%, #3a1800 70%, #1a0a00 100%)',
         borderBottom: '1px solid #c47a1e',
         boxShadow: '0 2px 20px rgba(196,122,30,0.25)',
       }}>
