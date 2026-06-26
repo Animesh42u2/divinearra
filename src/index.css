@@ -5,7 +5,9 @@
   padding: 0;
   box-sizing: border-box;
 }
-
+h1, h2, h3 {
+  font-family: 'Playfair Display', Georgia, serif;
+}
 button, input, select, textarea {
   font-family: inherit;
 }
@@ -15,6 +17,7 @@ body {
   font-family: 'Georgia', serif;
   color: #2d1a0e;
   overflow-x: hidden;
+  font-size: 17px;
 }
 html {
   overflow-x: hidden; 

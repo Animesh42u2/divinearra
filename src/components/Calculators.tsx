@@ -148,7 +148,10 @@ async function getToken(): Promise<string> {
           client_secret: import.meta.env.VITE_PROKERALA_CLIENT_SECRET ?? '',
         }),
   })
-  if (!res.ok) throw new Error('Failed to authenticate with Prokerala API')
+  if (!res.ok) {
+  const errText = await res.text()
+  throw new Error(`Auth failed (${res.status}): ${errText}`)
+}
   const json = await res.json()
   _cachedToken = json.access_token
   _tokenExp    = Date.now() + (json.expires_in ?? 3600) * 1000 - 60_000
@@ -156,52 +159,87 @@ async function getToken(): Promise<string> {
 }
 
 // ─── API Call ─────────────────────────────────────────────────────────────────
-
 async function callAPI(
   calc:  CalcDef,
   form:  Record<string, string>,
   token: string,
 ): Promise<Record<string, unknown>> {
   const makeParams = async (suffix = '') => {
-    const dob    = form[`dob${suffix}`]    || form.dob    || ''
-    const time   = form[`time${suffix}`]   || form.time   || '12:00'
-    const place  = form[`place${suffix}`]  || form.place  || ''
-    const gender = form[`gender${suffix}`] || form.gender || 'male'
-    const { lat, lon } = await geocode(place)
-    return new URLSearchParams({
-      ayanamsa:    '1',
-      coordinates: `${lat},${lon}`,
-      datetime:    `${dob}T${time}:00+05:30`,
-      la:          'en',
-      gender:      gender === 'female' ? 'female' : 'male',
-    })
+    const dob    = form[`dob${suffix}`] || ''
+    const time   = form[`time${suffix}`] || '12:00'
+    const place  = form[`place${suffix}`] || ''
+    const gender = form[`gender${suffix}`] || 'male'
+
+    if (!dob) throw new Error(`Date of birth is required${suffix ? ' for partner' : ''}.`)
+
+    const [p1, p2, p3] = dob.split(/[-/]/).map(s => s.padStart(2, '0'))
+    const isoDate = p1.length === 4 ? `${p1}-${p2}-${p3}` : `${p3}-${p2}-${p1}`
+    const isoTime = time.length === 5 ? time : '12:00'
+
+    const { lat, lon } = await geocode(place || 'India')
+
+    const localDate   = new Date(`${isoDate}T${isoTime}:00+05:30`)
+    const utcDatetime = localDate.toISOString().replace('.000Z', 'Z')
+
+    const queryString = [
+      `ayanamsa=1`,
+      `coordinates=${lat},${lon}`,
+      `datetime=${utcDatetime}`,
+      `la=en`,
+      `gender=${gender === 'female' ? 'female' : 'male'}`,
+    ].join('&')
+
+    console.log('QUERY:', queryString)
+    return queryString
   }
 
   const headers = { Authorization: `Bearer ${token}` }
 
-  if (calc.key === 'kundli-matching') {
-    const [p1, p2] = await Promise.all([makeParams(), makeParams('2')])
-    // Kundli matching takes both people in one request via query params
-    if (calc.key === 'kundli-matching') {
-  const [p1, p2] = await Promise.all([makeParams(), makeParams('2')])
-  const [r1, r2] = await Promise.all([
-    fetch(`${PROXY}/v2/astrology/kundli-matching?${p1}`, { headers }),
-    fetch(`${PROXY}/v2/astrology/birth-details?${p2}`, { headers }),
-  ])
-  const [j1, j2] = await Promise.all([r1.json(), r2.json()])
-  if (!r1.ok) throw new Error(j1?.errors?.[0]?.detail ?? 'Kundli matching API error')
-  return { primary: j1, partner: j2 }
-}
-    // simpler: send two separate panchang requests and synthesise
-    const [r1, r2] = await Promise.all([
-      fetch(`${PROXY}/v2/astrology/kundli-matching?${p1}`, { headers }),
-      // if API returns combined result, r2 may not be needed
-      fetch(`${PROXY}/v2/astrology/birth-details?${p2}`, { headers }),
-    ])
-    const [j1, j2] = await Promise.all([r1.json(), r2.json()])
-    if (!r1.ok) throw new Error(j1?.errors?.[0]?.detail ?? 'Kundli matching API error')
-    return { primary: j1, partner: j2 }
+ if (calc.key === 'kundli-matching') {
+  const dob1    = form['dob']    || ''
+  const time1   = form['time']   || '12:00'
+  const place1  = form['place']  || ''
+  const gender1 = form['gender'] || 'male'
+
+  const dob2    = form['dob2']    || ''
+  const time2   = form['time2']   || '12:00'
+  const place2  = form['place2']  || ''
+  // gender2 is unused; gender1 determines which person is considered boy/girl
+
+  const toUtc = (dob: string, time: string) => {
+    const [p1, p2, p3] = dob.split(/[-/]/).map(s => s.padStart(2, '0'))
+    const isoDate = p1.length === 4 ? `${p1}-${p2}-${p3}` : `${p3}-${p2}-${p1}`
+    const isoTime = time.length === 5 ? time : '12:00'
+    return new Date(`${isoDate}T${isoTime}:00+05:30`).toISOString().replace('.000Z', 'Z')
   }
+
+  const [geo1, geo2] = await Promise.all([
+    geocode(place1 || 'India'),
+    geocode(place2 || 'India'),
+  ])
+
+  // Determine boy/girl based on gender
+  const boyDob   = gender1 === 'female' ? dob2    : dob1
+  const boyTime  = gender1 === 'female' ? time2   : time1
+  const boyGeo   = gender1 === 'female' ? geo2    : geo1
+  const girlDob  = gender1 === 'female' ? dob1    : dob2
+  const girlTime = gender1 === 'female' ? time1   : time2
+  const girlGeo  = gender1 === 'female' ? geo1    : geo2
+
+  const params = new URLSearchParams()
+  params.set('ayanamsa', '1')
+  params.set('boy_dob', toUtc(boyDob, boyTime))
+  params.set('boy_coordinates', `${boyGeo.lat},${boyGeo.lon}`)
+  params.set('girl_dob', toUtc(girlDob, girlTime))
+  params.set('girl_coordinates', `${girlGeo.lat},${girlGeo.lon}`)
+  params.set('la', 'en')
+
+  const res  = await fetch(`${PROXY}/v2/astrology/kundli-matching?${params}`, { headers })
+  const json = await res.json()
+  console.log('KUNDLI RESPONSE:', JSON.stringify(json))
+  if (!res.ok) throw new Error(json?.errors?.[0]?.detail ?? 'Kundli matching API error')
+  return { primary: json, partner: {} }
+}
 
   const params = await makeParams()
   const res    = await fetch(`${PROXY}${calc.endpoint}?${params}`, { headers })
@@ -209,6 +247,7 @@ async function callAPI(
   if (!res.ok) throw new Error(json?.errors?.[0]?.detail ?? 'Prokerala API error')
   return { primary: json }
 }
+
 
 // ─── Result Renderers ─────────────────────────────────────────────────────────
 
@@ -279,11 +318,21 @@ function MangalResult({ data }: { data: Record<string, unknown> }) {
 }
 
 function KundliResult({ data }: { data: Record<string, unknown> }) {
-  const d      = (data.primary as { data?: Record<string, unknown> })?.data ?? {}
-  const score  = d.total_points   as number | undefined
-  const maxPts = d.maximum_points as number | undefined
-  const gunas  = d.guna_milan     as { name?: string; received_points?: number; total_points?: number }[] | undefined
-  const pct    = score != null && maxPts ? Math.round((score / maxPts) * 100) : null
+  const d       = (data.primary as { data?: Record<string, unknown> })?.data ?? {}
+  const gunaMilan = d.guna_milan as Record<string, unknown> | undefined
+
+  // total_points and maximum_points live directly on guna_milan
+  const score  = gunaMilan?.total_points   as number | undefined
+  const maxPts = gunaMilan?.maximum_points as number | undefined
+
+  // The per-guna breakdown — check both possible shapes
+  const gunas = (
+    Array.isArray(gunaMilan?.guna) ? gunaMilan?.guna :
+    Array.isArray(d.guna_milan_details) ? d.guna_milan_details :
+    null
+  ) as { name?: string; received_points?: number; total_points?: number }[] | null
+
+  const pct = score != null && maxPts ? Math.round((score / maxPts) * 100) : null
 
   return (
     <div>
@@ -625,7 +674,14 @@ export function CalculatorPage() {
 
   const handleSubmit = async () => {
     const missing = calc.fields.filter(f => (f === 'name' || f === 'dob') && !form[f]?.trim())
-    if (missing.length) {
+if (calc.fields2) {
+  const missing2 = calc.fields2.filter(f => (f === 'name2' || f === 'dob2') && !form[f]?.trim())
+  if (missing2.length) {
+    setError("Please fill in at least your Partner's Name and Date of Birth.")
+    return
+  }
+}
+if (missing.length) {
       setError('Please fill in at least your Name and Date of Birth.')
       return
     }

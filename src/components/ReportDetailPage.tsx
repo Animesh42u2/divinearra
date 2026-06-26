@@ -724,7 +724,7 @@ export default function ReportDetailPage() {
             </a>
           </div>
           <div className="hero-stats">
-            {[['2 Lakh+', 'Kundlis Analyzed'], ['4.8/5 ★', 'Avg Rating'], ['100%', 'Personalized']].map(([v, l]) => (
+            {[['2 Lakh+', 'Kundlis Analyzed'], ['4.9/5 ★', 'Avg Rating'], ['100%', 'Personalized']].map(([v, l]) => (
               <div key={l} className="hero-stat-box">
                 <div style={{ fontFamily: 'Georgia, serif', fontSize: 'clamp(0.9rem, 2vw, 1.15rem)', fontWeight: 800 }}>{v}</div>
                 <div style={{ fontSize: '0.65rem', opacity: 0.75, marginTop: 1 }}>{l}</div>

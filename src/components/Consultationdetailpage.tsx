@@ -583,7 +583,7 @@ export default function ConsultationDetailPage() {
             </a>
           </div>
           <div className="hero-stats" style={{ display: 'flex', gap: '0.75rem', marginTop: '2rem', flexWrap: 'wrap' }}>
-            {[['2 Lakh+', 'Kundlis Analyzed'], ['4.8/5 ★', 'Avg Rating'], ['100%', 'Personalized']].map(([v, l]) => (
+            {[['2 Lakh+', 'Kundlis Analyzed'], ['4.9/5 ★', 'Avg Rating'], ['100%', 'Personalized']].map(([v, l]) => (
               <div key={l} className="hero-stats-item" style={{ background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.28)', borderRadius: 10, padding: '0.5rem 0.9rem', textAlign: 'center' }}>
                 <div style={{ fontFamily: 'Georgia, serif', fontSize: 'clamp(0.85rem, 2vw, 1.15rem)', fontWeight: 800 }}>{v}</div>
                 <div style={{ fontSize: '0.65rem', opacity: 0.75, marginTop: 1 }}>{l}</div>

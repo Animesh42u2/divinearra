@@ -52,7 +52,13 @@ function HomePage() {
 }
 
 function PageLayout({ children }: { children: React.ReactNode }) {
-  return <div style={{ paddingTop: 75 }}>{children}</div>
+  return (
+    <div style={{ paddingTop: 75 }}>
+      <Navbar />
+      {children}
+      <Footer />
+    </div>
+  )
 }
 
 function App() {

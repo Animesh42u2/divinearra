@@ -166,7 +166,7 @@ export default function Services() {
       <p style={{ textAlign: 'center', fontSize: 13, color: '#9a7050', fontFamily: 'sans-serif', marginBottom: 8 }}>
         What We Offer
       </p>
-      <h2 style={{ textAlign: 'center', fontSize: 36, fontWeight: 700, margin: '0 0 10px', fontFamily: 'Georgia, serif' }}>
+      <h2 style={{ textAlign: 'center', fontSize: 36, fontWeight: 700, margin: '0 0 10px' }}>
         Our <span style={{ color: '#c47a1e' }}>Services</span>
       </h2>
       <p style={{ textAlign: 'center', color: '#9a7050', fontFamily: 'sans-serif', marginBottom: 32, fontSize: 15 }}>
@@ -216,14 +216,7 @@ export default function Services() {
               />
             </div>
 
-            <h3 style={{
-              fontSize: 15,
-              fontWeight: 700,
-              margin: '0 0 10px',
-              color: '#4a2006',
-              fontFamily: 'Georgia, serif',
-              lineHeight: 1.3,
-            }}>
+            <h3 style={{ fontSize: 15, fontWeight: 700, margin: '0 0 10px', color: '#4a2006', lineHeight: 1.3 }}>
               {s.title}
             </h3>
 

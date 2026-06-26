@@ -475,7 +475,7 @@ export default function ConsultationsPage() {
           >
             {[
               ['100K+', 'Consultations Done'],
-              ['4.8/5 ★', 'Avg Rating'],
+              ['4.9/5 ★', 'Avg Rating'],
               ['7+', 'Years Experience'],
               ['4', 'Session Types'],
             ].map(([v, l]) => (

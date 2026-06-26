@@ -6,10 +6,15 @@ export default defineConfig({
   server: {
     proxy: {
       '/prokerala': {
-        target: 'https://api.prokerala.com',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/prokerala/, ''),
-      },
+  target: 'https://api.prokerala.com',
+  changeOrigin: true,
+  rewrite: (path) => path.replace(/^\/prokerala/, ''),
+  configure: (proxy) => {
+    proxy.on('proxyReq', (proxyReq) => {
+      proxyReq.path = proxyReq.path.replace(/%2B/gi, '+')
+    })
+  },
+},
     },
   },
 })
