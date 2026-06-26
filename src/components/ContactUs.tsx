@@ -5,7 +5,6 @@ import {
   ChevronDown, Clock, Sparkles,
 } from 'lucide-react'
 import Navbar from './Navbar'
-import Footer from './Footer'
 
 // ── Spiritual Confetti — fast, no lag, built-in shapes only ──────────────────
 const SPIRITUAL_COLORS = [
@@ -69,12 +68,20 @@ const contactInfo = [
 
 const subjects = [
   'Select Service',
-  'Personalized Consultation',
-  'Couple Kundali Matching',
-  'Premium Career Report',
-  'Name Analysis & Correction',
-  'Vedic Astrology Course',
-  'Spiritual Remedies',
+  'Premium Personalized Kundali',
+  'Career Report',
+  'Finance Report',
+  'Varshaphal Report',
+  'Lal Kitab Report',
+  'Education Report',
+  'Health Report',
+  'Shani Sadesati Report',
+  'Fortune Report',
+  'Couple Matching Report',
+  'Personal Consultation',
+  'Couple Consultation',
+  'Gemstone & Rudraksha Consultation',
+  'Tarot Card Reading',
 ]
 
 export default function ContactUs() {
@@ -427,7 +434,6 @@ export default function ContactUs() {
         </div>
       </section>
 
-      <Footer />
     </div>
   )
 }

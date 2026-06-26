@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import Navbar from './Navbar'
-import Footer from './Footer'
 
 // ─────────────────────────────────────────
 // InteractiveGridBackground (self-contained)
@@ -565,7 +564,6 @@ export default function ConsultationsPage() {
         </div>
       </div>
 
-      <Footer />
     </>
   )
 }

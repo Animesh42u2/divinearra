@@ -520,7 +520,6 @@ export default function AboutUs() {
         </FadeUp>
       </section>
 
-      <Footer />
     </div>
   )
 }

@@ -399,7 +399,6 @@ export default function CoursesPage() {
         </div>
       </section>
 
-      <Footer />
     </div>
   )
 }

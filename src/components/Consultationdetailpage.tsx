@@ -1200,7 +1200,6 @@ export default function ConsultationDetailPage() {
         </div>
       </section>
 
-      <Footer />
     </div>
   )
 }

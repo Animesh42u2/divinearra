@@ -51,7 +51,6 @@ const TICKER = [
   'Personalized Astrology Consultation',
   'Couple Kundali Matching',
   'Career Report',
-  'Name Analysis & Correction',
   'Vedic Astrology Course',
 ]
 

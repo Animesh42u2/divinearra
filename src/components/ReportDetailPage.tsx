@@ -1,13 +1,13 @@
 import * as LucideIcons from 'lucide-react'
-import { useState, useEffect } from 'react'
 import { Link, useParams, useNavigate } from 'react-router-dom'
 import { getReportBySlug } from '../data/reportsConfig'
 import Testimonials from './Testimonials'
 import Navbar from './Navbar'
 import Footer from './Footer'
 import { BorderBeam } from './BorderBeam'
-import { motion, useScroll, useSpring, useTransform } from 'framer-motion'
-import { useRef } from 'react'
+import { motion} from 'framer-motion'
+import { useRef, useState, useEffect } from 'react'
+
 
 // ─── THEME ───────────────────────────────────────────────────
 const AMBER       = '#c8791a'
@@ -75,15 +75,23 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
   )
 }
 
+// TO (replace everything until the closing }):
 function HowItWorks({ steps }: { steps: { title: string; description: string }[] }) {
+  const icons = ['🪔', '📜', '🔮', '✨', '🌙', '⭐']
   const sectionRef = useRef<HTMLDivElement>(null)
-  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start center', 'end center'] })
-  const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 30 })
-  const lineHeight = useTransform(smoothProgress, [0, 1], ['0%', '100%'])
-  const cometTop = useTransform(smoothProgress, [0, 1], ['0%', '100%'])
+  const [spread, setSpread] = useState(false)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => setSpread(entry.isIntersecting),
+      { threshold: 0.3 }
+    )
+    if (sectionRef.current) observer.observe(sectionRef.current)
+    return () => observer.disconnect()
+  }, [])
 
   return (
-    <section ref={sectionRef} style={{ maxWidth: 900, margin: '0 auto', padding: 'clamp(3rem,6vw,5rem) clamp(1rem,4vw,1.5rem)' }}>
+    <section style={{ maxWidth: 900, margin: '0 auto', padding: 'clamp(3rem,6vw,5rem) clamp(1rem,4vw,1.5rem)' }}>
       <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
         <p style={{ color: AMBER, fontWeight: 700, fontSize: '0.75rem', letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '0.6rem' }}>The Process</p>
         <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.4rem, 3vw, 2.1rem)', color: BROWN_TEXT }}>
@@ -91,165 +99,128 @@ function HowItWorks({ steps }: { steps: { title: string; description: string }[]
         </h2>
       </div>
 
-      <style>{`
-        /* ── HOW IT WORKS MOBILE ── */
-        @media (max-width: 600px) {
-          .hiw-row  { justify-content: flex-start !important; }
-          .hiw-card {
-            width: calc(100% - 44px) !important;
-            text-align: left !important;
-            margin-left: 44px !important;
-          }
-          .hiw-dot  { left: 4px !important; transform: translateY(-50%) !important; }
-          .hiw-line-track,
-          .hiw-line-fill,
-          .hiw-comet {
-            left: 15px !important;
-            transform: translateX(-50%) !important;
-          }
-          .hiw-card h3 { font-size: 0.95rem !important; }
-          .hiw-card p  { font-size: 0.82rem !important; }
-        }
-      `}</style>
+      {/* DESKTOP — spread cards */}
+      <div style={{ display: 'none' }} className="hiw-desktop" ref={sectionRef}>
+  <div style={{ position: 'relative', height: 280, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          {steps.map((step, i) => {
+            const total = steps.length
+            const mid = (total - 1) / 2
+            const offset = (i - mid) * 320
+            const rotate = (i - mid) * 6
+            const yOffset = Math.abs(i - mid) * 30
 
-      <div style={{ position: 'relative' }}>
-        {/* static background line */}
-        <div className="hiw-line-track" style={{
-          position: 'absolute', left: '50%', top: 0, bottom: 0,
-          width: 2, background: `${AMBER}33`, transform: 'translateX(-50%)',
-        }} />
-
-        {/* animated progress line */}
-        <motion.div className="hiw-line-fill" style={{
-          position: 'absolute', left: '50%', top: 0,
-          width: 2, height: lineHeight,
-          background: `linear-gradient(to bottom, ${AMBER_DARK}, ${AMBER})`,
-          transform: 'translateX(-50%)',
-          boxShadow: `0 0 10px ${AMBER}88, 0 0 20px ${AMBER}44`,
-          borderRadius: 9999,
-          zIndex: 1,
-        }} />
-
-        {/* traveling comet */}
-        <motion.div className="hiw-comet" style={{
-          position: 'absolute', left: '50%', top: cometTop,
-          translateX: '-50%', translateY: '-50%', zIndex: 3,
-        }}>
-          <motion.div
-            animate={{ scale: [1, 1.4, 1] }}
-            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-            style={{
-              width: 16, height: 16, borderRadius: '50%',
-              background: `radial-gradient(circle, ${AMBER} 0%, ${AMBER_LIGHT} 40%, transparent 70%)`,
-              boxShadow: `0 0 12px 4px ${AMBER}99, 0 0 24px 8px ${AMBER}55`,
-            }}
-          />
-        </motion.div>
-
-        {steps.map((step, i) => {
-          const isLeft = i % 2 === 0
-          return (
-            <div key={i} className="hiw-row" style={{
-              display: 'flex',
-              justifyContent: isLeft ? 'flex-start' : 'flex-end',
-              marginBottom: '3.5rem',
-              position: 'relative',
-              alignItems: 'center',
-              width: '100%',
-            }}>
-              {/* dot */}
+            return (
               <motion.div
-                className="hiw-dot"
-                initial={{ scale: 0, opacity: 0 }}
-                whileInView={{ scale: 1, opacity: 1 }}
-                viewport={{ once: true, margin: '-60px' }}
-                transition={{ duration: 0.4, delay: i * 0.1, type: 'spring', stiffness: 200 }}
-                style={{
-                  position: 'absolute',
-                  left: 'calc(50% - 11px)',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  width: 22, height: 22,
-                  borderRadius: '50%',
-                  background: CREAM,
-                  border: `2px solid ${AMBER}`,
-                  boxShadow: `0 0 8px 3px ${AMBER}55, 0 0 18px 6px ${AMBER}22`,
-                  zIndex: 4,
-                }}
-              />
-
-              {/* card */}
-              <motion.div
-                className="hiw-card"
-                initial={{ opacity: 0, x: isLeft ? -60 : 60 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: '-60px' }}
-                transition={{ duration: 0.6, delay: i * 0.1 + 0.1, ease: [0.25, 0.1, 0.25, 1] }}
-                whileHover={{ y: -4 }}
-                style={{
-                  width: 'calc(50% - 48px)',
+                key={i}
+                animate={{
+  opacity: spread ? 1 : 0,
+  x: spread ? offset : 0,
+  y: spread ? yOffset : 0,
+  rotate: spread ? rotate : 0,
+  scale: spread ? 1 : 0.8,
+}}
+transition={{ duration: 0.7, delay: i * 0.12, ease: [0.25, 0.1, 0.25, 1] }}
+whileHover={{ y: yOffset - 12, rotate: 0, scale: 1.04, zIndex: 10 }}
+style={{
+  position: 'absolute',
+  left: `calc(50% - 150px)`,
+  width: 300,
                   background: '#fff',
                   borderRadius: 18,
-                  border: `1.5px solid #1a0a00`,
+                  border: `1.5px solid ${AMBER}44`,
                   boxShadow: `0 2px 0 ${AMBER}55, 0 8px 32px ${AMBER}18`,
-                  textAlign: isLeft ? 'right' : 'left',
-                  cursor: 'default',
-                  position: 'relative',
                   overflow: 'hidden',
+                  cursor: 'default',
+                  zIndex: i === Math.floor(mid) ? 5 : 1,
                 }}
               >
-                {/* step badge */}
-                <div style={{ padding: '1.25rem 1.75rem 0' }}>
+                {/* top wave */}
+                <div style={{ height: 8, background: `linear-gradient(90deg, ${AMBER_DARK}, ${AMBER_LIGHT})` }} />
+
+                <div style={{ padding: '1.25rem 1.5rem 0' }}>
+                  <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>{icons[i] ?? '✦'}</div>
                   <div style={{
                     display: 'inline-block',
                     fontFamily: "'Playfair Display', serif",
                     fontSize: '0.65rem', fontWeight: 700,
                     color: AMBER_DARK, letterSpacing: '0.15em', textTransform: 'uppercase',
-                    background: `${AMBER}15`,
-                    border: `1px solid ${AMBER}44`,
-                    borderRadius: 20, padding: '3px 12px',
+                    background: `${AMBER}15`, border: `1px solid ${AMBER}44`,
+                    borderRadius: 20, padding: '3px 12px', marginBottom: '0.75rem',
                   }}>
                     Step {i + 1}
                   </div>
-                </div>
-
-                {/* title + divider + desc */}
-                <div style={{ padding: '0.75rem 1.75rem 1rem' }}>
                   <h3 style={{
                     color: BROWN_TEXT, fontFamily: "'Playfair Display', serif",
-                    fontSize: 'clamp(0.95rem, 2vw, 1.1rem)', fontWeight: 700,
+                    fontSize: '1rem', fontWeight: 700,
                     marginBottom: '0.5rem', lineHeight: 1.35,
                   }}>
                     {step.title}
                   </h3>
-                  <div style={{
-                    width: 32, height: 2, borderRadius: 1,
-                    background: `linear-gradient(90deg, ${isLeft ? 'transparent' : AMBER}, ${isLeft ? AMBER : 'transparent'})`,
-                    marginBottom: '0.6rem',
-                    marginLeft: isLeft ? 'auto' : 0,
-                    marginRight: isLeft ? 0 : 'auto',
-                  }} />
-                  <p style={{ color: BROWN_MID, fontSize: 'clamp(0.8rem, 1.5vw, 0.88rem)', lineHeight: 1.7, margin: 0 }}>
+                  <div style={{ width: 32, height: 2, borderRadius: 1, background: `linear-gradient(90deg, ${AMBER}, transparent)`, marginBottom: '0.6rem' }} />
+                  <p style={{ color: BROWN_MID, fontSize: '0.85rem', lineHeight: 1.7, margin: 0 }}>
                     {step.description}
                   </p>
                 </div>
 
-                <div style={{ position: 'relative', height: 80, background: '#fff', overflow: 'hidden' }}>
-                  <svg
-                    viewBox="0 0 400 80"
-                    preserveAspectRatio="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '100%' }}
-                  >
-                    <path d="M0,50 C80,30 160,70 240,45 C300,28 360,60 400,40 L400,80 L0,80 Z" fill="#e8a84b" opacity="0.5"/>
-                    <path d="M0,65 C60,45 140,75 200,58 C270,40 340,68 400,55 L400,80 L0,80 Z" fill="#c47a1e" opacity="0.9"/>
+                {/* bottom wave */}
+                <div style={{ position: 'relative', height: 60, marginTop: '1.25rem', overflow: 'hidden' }}>
+                  <svg viewBox="0 0 400 60" preserveAspectRatio="none" style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '100%' }}>
+                    <path d="M0,35 C80,15 160,50 240,30 C300,15 360,40 400,25 L400,60 L0,60 Z" fill="#e8a84b" opacity="0.5"/>
+                    <path d="M0,45 C60,28 140,55 200,40 C270,22 340,50 400,38 L400,60 L0,60 Z" fill="#c47a1e" opacity="0.9"/>
                   </svg>
                 </div>
               </motion.div>
-            </div>
-          )
-        })}
+            )
+          })}
+        </div>
       </div>
+
+      {/* MOBILE — vertical stack */}
+      <div className="hiw-mobile" style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+        {steps.map((step, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, x: -40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: '-40px' }}
+            transition={{ duration: 0.5, delay: i * 0.1 }}
+            style={{
+              background: '#fff', borderRadius: 16,
+              border: `1.5px solid ${AMBER}44`,
+              boxShadow: `0 4px 16px ${AMBER}18`,
+              overflow: 'hidden',
+            }}
+          >
+            <div style={{ height: 6, background: `linear-gradient(90deg, ${AMBER_DARK}, ${AMBER_LIGHT})` }} />
+            <div style={{ padding: '1rem 1.25rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem' }}>
+                <span style={{ fontSize: '1.5rem' }}>{icons[i] ?? '✦'}</span>
+                <div style={{
+                  fontFamily: "'Playfair Display', serif", fontSize: '0.6rem', fontWeight: 700,
+                  color: AMBER_DARK, letterSpacing: '0.15em', textTransform: 'uppercase',
+                  background: `${AMBER}15`, border: `1px solid ${AMBER}44`,
+                  borderRadius: 20, padding: '2px 10px',
+                }}>
+                  Step {i + 1}
+                </div>
+              </div>
+              <h3 style={{ color: BROWN_TEXT, fontFamily: "'Playfair Display', serif", fontSize: '0.95rem', fontWeight: 700, marginBottom: '0.35rem' }}>
+                {step.title}
+              </h3>
+              <p style={{ color: BROWN_MID, fontSize: '0.82rem', lineHeight: 1.7, margin: 0 }}>
+                {step.description}
+              </p>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+
+      <style>{`
+        @media (min-width: 601px) {
+          .hiw-desktop { display: block !important; }
+          .hiw-mobile  { display: none !important; }
+        }
+      `}</style>
     </section>
   )
 }
@@ -724,13 +695,13 @@ export default function ReportDetailPage() {
             </a>
           </div>
           <div className="hero-stats">
-            {[['2 Lakh+', 'Kundlis Analyzed'], ['4.9/5 ★', 'Avg Rating'], ['100%', 'Personalized']].map(([v, l]) => (
-              <div key={l} className="hero-stat-box">
-                <div style={{ fontFamily: 'Georgia, serif', fontSize: 'clamp(0.9rem, 2vw, 1.15rem)', fontWeight: 800 }}>{v}</div>
-                <div style={{ fontSize: '0.65rem', opacity: 0.75, marginTop: 1 }}>{l}</div>
-              </div>
-            ))}
-          </div>
+  {[['2 Lakh+', 'Kundlis Analyzed'], ['4.9/5 ★', 'Avg Rating'], ['100%', 'Personalized']].map(([v, l]) => (
+    <div key={l} className="hero-stat-box">
+      <div style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 'clamp(1.15rem, 2.5vw, 1.5rem)', fontWeight: 800 }}>{v}</div>
+      <div style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 'clamp(0.75rem, 1.2vw, 0.85rem)', opacity: 0.85, marginTop: 3, fontWeight: 700 }}>{l}</div>
+    </div>
+  ))}
+</div>
         </div>
 
         <div className="rp-hero-right">
@@ -742,45 +713,45 @@ export default function ReportDetailPage() {
       </section>
 
       {/* ── WHAT IS ── */}
-      <section style={{ maxWidth: 1100, margin: '0 auto', padding: 'clamp(3rem,6vw,5rem) clamp(1rem,3vw,1.5rem)' }}>
-        <div className="what-is-grid">
-          <div>
-            <SectionLabel>What is the {report.title}?</SectionLabel>
-            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.4rem, 3vw, 2.1rem)', color: BROWN_TEXT, marginBottom: '1.25rem', lineHeight: 1.35 }}>
-              {report.whatIs.heading}
-            </h2>
-            <p style={{ color: BROWN_MID, lineHeight: 1.85, marginBottom: '2rem', fontSize: 'clamp(0.875rem, 1.5vw, 0.95rem)' }}>
-              {report.whatIs.description}
-            </p>
-            <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 2rem', display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
-              {report.whatIs.bullets.map((b, i) => (
-                <li key={i} style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-start', color: BROWN_TEXT, fontSize: 'clamp(0.85rem, 1.5vw, 0.92rem)', lineHeight: 1.65 }}>
-                  <span style={{ color: AMBER, marginTop: 3, flexShrink: 0, fontSize: '0.7rem' }}>◆</span>
-                  {b}
-                </li>
-              ))}
-            </ul>
-            <button
-              onClick={() => document.getElementById('pricing-cards')?.scrollIntoView({ behavior: 'smooth' })}
-              style={{ ...ctaBtn, width: '100%', maxWidth: 320 }}
-            >
-              Order Now
-            </button>
-          </div>
+<section style={{ maxWidth: 1100, margin: '0 auto', padding: 'clamp(3rem,6vw,5rem) clamp(1rem,3vw,1.5rem)' }}>
+  <div className="what-is-grid">
+    <div>
+      <SectionLabel>What is the {report.title}?</SectionLabel>
+      <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.6rem, 3.5vw, 2.5rem)', color: BROWN_TEXT, marginBottom: '1.25rem', lineHeight: 1.35 }}>
+        {report.whatIs.heading}
+      </h2>
+      <p style={{ color: BROWN_MID, lineHeight: 1.85, marginBottom: '2rem', fontSize: 'clamp(1rem, 1.8vw, 1.1rem)' }}>
+        {report.whatIs.description}
+      </p>
+      <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 2rem', display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+        {report.whatIs.bullets.map((b, i) => (
+          <li key={i} style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-start', color: BROWN_TEXT, fontSize: 'clamp(0.95rem, 1.8vw, 1.05rem)', lineHeight: 1.65 }}>
+            <span style={{ color: AMBER, marginTop: 3, flexShrink: 0, fontSize: '0.8rem' }}>◆</span>
+            {b}
+          </li>
+        ))}
+      </ul>
+      <button
+        onClick={() => document.getElementById('pricing-cards')?.scrollIntoView({ behavior: 'smooth' })}
+        style={{ ...ctaBtn, width: '100%', maxWidth: 320, fontSize: '1.1rem' }}
+      >
+        Order Now
+      </button>
+    </div>
 
-          <div style={{
-            borderRadius: 20, overflow: 'hidden',
-            boxShadow: `0 8px 32px ${AMBER}22`,
-            border: `1px solid ${AMBER}33`,
-            background: '#000',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            position: 'relative',
-          }}>
-            <img src={report.image} alt={report.title} style={{ width: '100%', height: 'auto', display: 'block', borderRadius: 20 }} />
-            <BorderBeam size={120} duration={6} colorFrom="#c8791a" colorTo="#e8a84b" glowIntensity={2} />
-          </div>
-        </div>
-      </section>
+    <div style={{
+      borderRadius: 20, overflow: 'hidden',
+      boxShadow: `0 8px 32px ${AMBER}22`,
+      border: `1px solid ${AMBER}33`,
+      background: '#000',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      position: 'relative',
+    }}>
+      <img src={report.image} alt={report.title} style={{ width: '100%', height: 'auto', display: 'block', borderRadius: 20 }} />
+      <BorderBeam size={120} duration={6} colorFrom="#c8791a" colorTo="#e8a84b" glowIntensity={2} />
+    </div>
+  </div>
+</section>
 
       {/* ── WHAT'S INSIDE ── */}
       <section id="whats-inside" style={{
@@ -865,7 +836,7 @@ export default function ReportDetailPage() {
       {/* ── FOR WHOM ── */}
       <section style={{ background: CREAM, padding: 'clamp(3rem,6vw,6rem) clamp(1rem,3vw,1.5rem)', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', top: -80, right: -80, width: 360, height: 360, borderRadius: '50%', background: `${AMBER}0d`, pointerEvents: 'none' }} />
-        <div style={{ position: 'absolute', bottom: -60, left: -60, width: 260, height: 260, borderRadius: '50%', background: `${AMBER_DARK}08`, pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', bottom: -60, left: -60, width: 300, height: 260, borderRadius: '50%', background: `${AMBER_DARK}08`, pointerEvents: 'none' }} />
 
         <div style={{ maxWidth: 1100, margin: '0 auto', position: 'relative', zIndex: 1 }}>
           <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
@@ -1022,7 +993,14 @@ export default function ReportDetailPage() {
                 key={i}
                 onClick={() => navigate(`/checkout/report/${slug}`, { state: { planIndex: i } })}
                 style={{
-                  background: '#fff',
+                  background: `
+  radial-gradient(ellipse at 15% 15%, rgba(255,255,255,0.95) 0%, transparent 50%),
+  radial-gradient(ellipse at 85% 85%, ${AMBER}33 0%, transparent 55%),
+  radial-gradient(ellipse at 85% 15%, ${AMBER_LIGHT}22 0%, transparent 40%),
+  radial-gradient(ellipse at 15% 85%, ${AMBER_DARK}15 0%, transparent 40%),
+  linear-gradient(135deg, #fffdf8 0%, #fdf3e0 40%, #f5e0b8 100%)
+`,
+
                   border: i === 1 ? `2px solid ${color}` : `1.5px solid ${color}44`,
                   borderRadius: 18,
                   padding: 'clamp(1.25rem, 3vw, 1.75rem) clamp(1rem, 2vw, 1.25rem) clamp(1rem, 2vw, 1.25rem)',
@@ -1042,6 +1020,16 @@ export default function ReportDetailPage() {
                   ;(e.currentTarget as HTMLDivElement).style.boxShadow = i === 1 ? `0 8px 32px ${color}33` : `0 4px 16px ${color}15`
                 }}
               >
+                <div style={{
+  position: 'absolute', top: 12, left: 12,
+  width: 70, height: 70, borderRadius: '50%',
+  background: 'transparent',
+  border: 'none',
+  display: 'flex', alignItems: 'center', justifyContent: 'center',
+  overflow: 'hidden',
+}}>
+  <img src="/logo.jpeg" alt="Brand" style={{ width: '72%', height: '72%', objectFit: 'contain' }} />
+</div>
                 {i === 1 && (
                   <div style={{
                     position: 'absolute', top: 12, right: 12,
@@ -1247,20 +1235,34 @@ export default function ReportDetailPage() {
             {report.tagline}
           </p>
           <div style={{ animation: 'ctaFadeUp 0.6s ease both 0.5s' }}>
-            <div className="cta-btn-wrap">
-              <div className="cta-pulse-ring" />
-              <button onClick={() => navigate(`/checkout/report/${slug}`, { state: { planIndex: 0 } })} className="cta-btn">
-                Order Your Report →
-              </button>
-            </div>
-          </div>
+  <div className="cta-btn-wrap">
+    <div className="cta-pulse-ring" />
+    <a
+      href="#pricing"
+      className="cta-btn"
+      style={{
+        background: '#fff',
+        color: AMBER_DARK,
+        border: '2px solid #fff',
+        padding: '18px 26px',
+        borderRadius: 30,
+        fontWeight: 700,
+        fontSize: 17,
+        cursor: 'pointer',
+        textDecoration: 'none',
+        display: 'inline-block',
+      }}
+    >
+      Order Your Report →
+    </a>
+  </div>
+</div>
           <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 'clamp(0.62rem,1.5vw,0.75rem)', marginTop: '1.2rem', letterSpacing: '0.04em', animation: 'ctaFadeUp 0.6s ease both 0.65s' }}>
             ✦ Delivered within 24 hours &nbsp;·&nbsp; 100% personalised &nbsp;·&nbsp; Secure checkout
           </p>
         </div>
       </section>
 
-      <Footer />
     </div>
   )
 }

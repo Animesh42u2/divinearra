@@ -1,7 +1,6 @@
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
 import Navbar from './Navbar'
-import Footer from './Footer'
 
 export default function PaymentSuccess() {
   const location = useLocation()
@@ -337,7 +336,6 @@ export default function PaymentSuccess() {
         </div>
       </div>
 
-      <Footer />
     </>
   )
 }

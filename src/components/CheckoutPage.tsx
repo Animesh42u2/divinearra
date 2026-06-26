@@ -4,7 +4,6 @@ import { getReportBySlug } from '../data/reportsConfig'
 import { getConsultationBySlug } from '../data/Consultationsconfig'
 import { getCourseBySlug } from '../data/CoursesConfig'
 import Navbar from './Navbar'
-import Footer from './Footer'
 
 type CheckoutType = 'report' | 'consultation' | 'course'
 
@@ -116,6 +115,8 @@ export default function CheckoutPage({ type }: { type: CheckoutType }) {
     gender: '', pincode: '', language: '',
   })
   const [paying, setPaying] = useState(false)
+  const [placeSuggestions, setPlaceSuggestions] = useState<string[]>([])
+const [showSuggestions, setShowSuggestions] = useState(false)
 
   if (!item || !plan) {
     return <div style={{ padding: 80, textAlign: 'center' }}>Item not found.</div>
@@ -142,6 +143,17 @@ export default function CheckoutPage({ type }: { type: CheckoutType }) {
     }
     return null
   }
+  async function handlePlaceInput(e: React.ChangeEvent<HTMLInputElement>) {
+  const value = e.target.value
+  setForm(p => ({ ...p, place: value }))
+  if (value.length < 3) { setPlaceSuggestions([]); setShowSuggestions(false); return }
+  const res = await fetch(
+    `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(value)}&format=json&limit=5&addressdetails=1`
+  )
+  const data = await res.json()
+  setPlaceSuggestions(data.map((item: { display_name: string }) => item.display_name))
+  setShowSuggestions(true)
+}
 
   // ── Payment handler ──────────────────────────────────────
   async function handlePayment() {
@@ -227,20 +239,15 @@ export default function CheckoutPage({ type }: { type: CheckoutType }) {
         }
 
         .co-hero {
-          background: linear-gradient(135deg, #fff8ee 0%, #fdedc8 100%);
-          border-bottom: 2px solid rgba(196,122,30,0.25);
+  background: #ffffff;
           padding: clamp(32px, 5vw, 56px) clamp(20px, 6%, 80px);
           text-align: center;
           position: relative;
           overflow: hidden;
         }
         .co-hero::before {
-          content: '';
-          position: absolute;
-          inset: 0;
-          background: radial-gradient(ellipse 50% 60% at 50% 0%, rgba(196,122,30,0.08) 0%, transparent 70%);
-          pointer-events: none;
-        }
+  display: none;
+}
         .co-hero-eyebrow {
           display: inline-flex;
           align-items: center;
@@ -544,10 +551,46 @@ export default function CheckoutPage({ type }: { type: CheckoutType }) {
                     <label className="co-label">Time of Birth <span>*</span></label>
                     <input className="co-input" type="time" value={form.time} onChange={set('time')} />
                   </div>
-                  <div className="co-field">
-                    <label className="co-label">Birth Place <span>*</span></label>
-                    <input className="co-input" type="text" placeholder="City, State" value={form.place} onChange={set('place')} />
-                  </div>
+                 <div className="co-field" style={{ position: 'relative' }}>
+  <label className="co-label">Birth Place <span>*</span></label>
+  <input
+    className="co-input"
+    type="text"
+    placeholder="City, State"
+    value={form.place}
+    onChange={handlePlaceInput}
+    onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+    autoComplete="off"
+  />
+  {showSuggestions && placeSuggestions.length > 0 && (
+    <div style={{
+      position: 'absolute', top: '100%', left: 0, right: 0,
+      background: '#fff', border: '1.5px solid #e4cfa8',
+      borderRadius: 10, zIndex: 100, marginTop: 4,
+      boxShadow: '0 8px 24px rgba(196,122,30,0.15)',
+      overflow: 'hidden',
+    }}>
+      {placeSuggestions.map((s, i) => (
+        <div
+          key={i}
+          onMouseDown={() => {
+            setForm(p => ({ ...p, place: s }))
+            setShowSuggestions(false)
+          }}
+          style={{
+            padding: '10px 14px', fontSize: 13, color: '#4a2a0a',
+            cursor: 'pointer',
+            borderBottom: i < placeSuggestions.length - 1 ? '1px solid #f0e0c8' : 'none',
+          }}
+          onMouseEnter={e => (e.currentTarget.style.background = '#fff8ee')}
+          onMouseLeave={e => (e.currentTarget.style.background = '#fff')}
+        >
+          {s}
+        </div>
+      ))}
+    </div>
+  )}
+</div>
                   <div className="co-field">
                     <label className="co-label">Pin Code <span>*</span></label>
                     <input className="co-input" type="text" placeholder="Your pin code" value={form.pincode} onChange={set('pincode')} />
@@ -598,7 +641,6 @@ export default function CheckoutPage({ type }: { type: CheckoutType }) {
         </div>
       </div>
 
-      <Footer />
     </>
   )
 }

@@ -29,16 +29,16 @@ export const navLinks = [
       { label: "Tarot Card Reading", path: "/consultation/tarot-card-reading" },
     ],
   },
-  {
-    label: "Courses",
-    path: "/courses",
-    dropdown: [
-      { label: "Vedic Astrology (Basic to Advanced)", path: "/courses/vedic-astrology-basic" },
-      { label: "Vedic Astrology (Advanced)", path: "/courses/vedic-astrology-advanced" },
-      { label: "Tarot Card Reading (Basic to Advanced)", path: "/courses/tarot-card-reading" },
-      { label: "Intuition Activation Course", path: "/courses/intuition-activation" },
-    ],
-  },
+  // {
+  //   label: "Courses",
+  //   path: "/courses",
+  //   dropdown: [
+  //     { label: "Vedic Astrology (Basic to Advanced)", path: "/courses/vedic-astrology-basic" },
+  //     { label: "Vedic Astrology (Advanced)", path: "/courses/vedic-astrology-advanced" },
+  //     { label: "Tarot Card Reading (Basic to Advanced)", path: "/courses/tarot-card-reading" },
+  //     { label: "Intuition Activation Course", path: "/courses/intuition-activation" },
+  //   ],
+  // },
   {
     label: "About Us",
     path: "/about",

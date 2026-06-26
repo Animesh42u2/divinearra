@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import {
   Moon, Sun, Heart, Sunrise,
@@ -108,7 +108,7 @@ const FIELDS: Record<FieldKey, { label: string; type: string; placeholder: strin
   name2:   { label: "Partner's Name",     type: 'text',   placeholder: 'Partner full name', icon: User     },
   dob2:    { label: "Partner's DOB",      type: 'date',   placeholder: '',                  icon: Calendar },
   time2:   { label: "Partner's Time",     type: 'time',   placeholder: '',                  icon: Clock    },
-  place2:  { label: "Partner's Place",    type: 'text',   placeholder: 'Partner city',       icon: MapPin   },
+  place2:  { label: "Partner's Place",    type: 'text',   placeholder: 'Partner city',      icon: MapPin   },
   gender2: { label: "Partner's Gender",   type: 'select', placeholder: 'Select gender',     icon: Users    },
 }
 
@@ -122,7 +122,7 @@ async function geocode(place: string): Promise<{ lat: string; lon: string }> {
     )
     const d = await r.json()
     if (d?.[0]) return { lat: d[0].lat, lon: d[0].lon }
-} catch { /* fall through */ }
+  } catch { /* fall through */ }
   return { lat: '20.5937', lon: '78.9629' } // India centre fallback
 }
 
@@ -149,9 +149,9 @@ async function getToken(): Promise<string> {
         }),
   })
   if (!res.ok) {
-  const errText = await res.text()
-  throw new Error(`Auth failed (${res.status}): ${errText}`)
-}
+    const errText = await res.text()
+    throw new Error(`Auth failed (${res.status}): ${errText}`)
+  }
   const json = await res.json()
   _cachedToken = json.access_token
   _tokenExp    = Date.now() + (json.expires_in ?? 3600) * 1000 - 60_000
@@ -195,51 +195,49 @@ async function callAPI(
 
   const headers = { Authorization: `Bearer ${token}` }
 
- if (calc.key === 'kundli-matching') {
-  const dob1    = form['dob']    || ''
-  const time1   = form['time']   || '12:00'
-  const place1  = form['place']  || ''
-  const gender1 = form['gender'] || 'male'
+  if (calc.key === 'kundli-matching') {
+    const dob1    = form['dob']    || ''
+    const time1   = form['time']   || '12:00'
+    const place1  = form['place']  || ''
+    const gender1 = form['gender'] || 'male'
 
-  const dob2    = form['dob2']    || ''
-  const time2   = form['time2']   || '12:00'
-  const place2  = form['place2']  || ''
-  // gender2 is unused; gender1 determines which person is considered boy/girl
+    const dob2    = form['dob2']   || ''
+    const time2   = form['time2']  || '12:00'
+    const place2  = form['place2'] || ''
 
-  const toUtc = (dob: string, time: string) => {
-    const [p1, p2, p3] = dob.split(/[-/]/).map(s => s.padStart(2, '0'))
-    const isoDate = p1.length === 4 ? `${p1}-${p2}-${p3}` : `${p3}-${p2}-${p1}`
-    const isoTime = time.length === 5 ? time : '12:00'
-    return new Date(`${isoDate}T${isoTime}:00+05:30`).toISOString().replace('.000Z', 'Z')
+    const toUtc = (dob: string, time: string) => {
+      const [p1, p2, p3] = dob.split(/[-/]/).map(s => s.padStart(2, '0'))
+      const isoDate = p1.length === 4 ? `${p1}-${p2}-${p3}` : `${p3}-${p2}-${p1}`
+      const isoTime = time.length === 5 ? time : '12:00'
+      return new Date(`${isoDate}T${isoTime}:00+05:30`).toISOString().replace('.000Z', 'Z')
+    }
+
+    const [geo1, geo2] = await Promise.all([
+      geocode(place1 || 'India'),
+      geocode(place2 || 'India'),
+    ])
+
+    const boyDob   = gender1 === 'female' ? dob2   : dob1
+    const boyTime  = gender1 === 'female' ? time2  : time1
+    const boyGeo   = gender1 === 'female' ? geo2   : geo1
+    const girlDob  = gender1 === 'female' ? dob1   : dob2
+    const girlTime = gender1 === 'female' ? time1  : time2
+    const girlGeo  = gender1 === 'female' ? geo1   : geo2
+
+    const params = new URLSearchParams()
+    params.set('ayanamsa', '1')
+    params.set('boy_dob', toUtc(boyDob, boyTime))
+    params.set('boy_coordinates', `${boyGeo.lat},${boyGeo.lon}`)
+    params.set('girl_dob', toUtc(girlDob, girlTime))
+    params.set('girl_coordinates', `${girlGeo.lat},${girlGeo.lon}`)
+    params.set('la', 'en')
+
+    const res  = await fetch(`${PROXY}/v2/astrology/kundli-matching?${params}`, { headers })
+    const json = await res.json()
+    console.log('KUNDLI RESPONSE:', JSON.stringify(json))
+    if (!res.ok) throw new Error(json?.errors?.[0]?.detail ?? 'Kundli matching API error')
+    return { primary: json, partner: {} }
   }
-
-  const [geo1, geo2] = await Promise.all([
-    geocode(place1 || 'India'),
-    geocode(place2 || 'India'),
-  ])
-
-  // Determine boy/girl based on gender
-  const boyDob   = gender1 === 'female' ? dob2    : dob1
-  const boyTime  = gender1 === 'female' ? time2   : time1
-  const boyGeo   = gender1 === 'female' ? geo2    : geo1
-  const girlDob  = gender1 === 'female' ? dob1    : dob2
-  const girlTime = gender1 === 'female' ? time1   : time2
-  const girlGeo  = gender1 === 'female' ? geo1    : geo2
-
-  const params = new URLSearchParams()
-  params.set('ayanamsa', '1')
-  params.set('boy_dob', toUtc(boyDob, boyTime))
-  params.set('boy_coordinates', `${boyGeo.lat},${boyGeo.lon}`)
-  params.set('girl_dob', toUtc(girlDob, girlTime))
-  params.set('girl_coordinates', `${girlGeo.lat},${girlGeo.lon}`)
-  params.set('la', 'en')
-
-  const res  = await fetch(`${PROXY}/v2/astrology/kundli-matching?${params}`, { headers })
-  const json = await res.json()
-  console.log('KUNDLI RESPONSE:', JSON.stringify(json))
-  if (!res.ok) throw new Error(json?.errors?.[0]?.detail ?? 'Kundli matching API error')
-  return { primary: json, partner: {} }
-}
 
   const params = await makeParams()
   const res    = await fetch(`${PROXY}${calc.endpoint}?${params}`, { headers })
@@ -247,7 +245,6 @@ async function callAPI(
   if (!res.ok) throw new Error(json?.errors?.[0]?.detail ?? 'Prokerala API error')
   return { primary: json }
 }
-
 
 // ─── Result Renderers ─────────────────────────────────────────────────────────
 
@@ -265,13 +262,14 @@ function InfoCard({ label, value }: { label: string; value?: string | number | n
 }
 
 function MoonPhaseResult({ data }: { data: Record<string, unknown> }) {
-  const d        = (data.primary as { data?: Record<string, unknown> })?.data ?? {}
-  const tithi    = (d.tithi    as { name?: string }[] | undefined)?.[0]?.name
-  const nakshatra= (d.nakshatra as { name?: string }[] | undefined)?.[0]?.name
-  const yoga     = (d.yoga     as { name?: string }[] | undefined)?.[0]?.name
-  const vaara    = d.vaara as string
-  const sunrise  = d.sunrise as string
-  const sunset   = d.sunset  as string
+  const d         = (data.primary as { data?: Record<string, unknown> })?.data ?? {}
+  const tithi     = (d.tithi     as { name?: string }[] | undefined)?.[0]?.name
+  const nakshatra = (d.nakshatra as { name?: string }[] | undefined)?.[0]?.name
+  const yoga      = (d.yoga      as { name?: string }[] | undefined)?.[0]?.name
+  const vaara     = d.vaara   as string
+  const sunrise   = formatTime(d.sunrise as string)  // ← wrap
+  const sunset    = formatTime(d.sunset  as string)  // ← wrap
+
   return (
     <div className="result-grid">
       <InfoCard label="Tithi"       value={tithi} />
@@ -286,17 +284,17 @@ function MoonPhaseResult({ data }: { data: Record<string, unknown> }) {
 
 function MangalResult({ data }: { data: Record<string, unknown> }) {
   const d         = (data.primary as { data?: Record<string, unknown> })?.data ?? {}
-  const hasDosha  = d.has_dosha as boolean | undefined
-  const mangalPos = d.mangal_position as string | undefined
-  const dosha     = d.dosha_type      as string | undefined
-  const desc      = d.description     as string | undefined
+  const hasDosha  = d.has_dosha          as boolean | undefined
+  const mangalPos = d.mangal_position    as string  | undefined
+  const dosha     = d.dosha_type         as string  | undefined
+  const desc      = d.description        as string  | undefined
   const cancels   = d.is_dosha_cancelled as boolean | undefined
 
   return (
     <div>
       <div style={{
         textAlign: 'center', padding: 'clamp(18px,4vw,24px) clamp(14px,4vw,20px)', borderRadius: 14, marginBottom: 18,
-        background:  hasDosha && !cancels ? '#fff5f5' : T.successBg,
+        background: hasDosha && !cancels ? '#fff5f5' : T.successBg,
         border: `2px solid ${hasDosha && !cancels ? T.errorBdr : T.successBdr}`,
       }}>
         <div style={{ fontSize: 'clamp(32px,7vw,40px)' }}>{hasDosha && !cancels ? '⚠️' : '✅'}</div>
@@ -318,14 +316,12 @@ function MangalResult({ data }: { data: Record<string, unknown> }) {
 }
 
 function KundliResult({ data }: { data: Record<string, unknown> }) {
-  const d       = (data.primary as { data?: Record<string, unknown> })?.data ?? {}
+  const d         = (data.primary as { data?: Record<string, unknown> })?.data ?? {}
   const gunaMilan = d.guna_milan as Record<string, unknown> | undefined
 
-  // total_points and maximum_points live directly on guna_milan
   const score  = gunaMilan?.total_points   as number | undefined
   const maxPts = gunaMilan?.maximum_points as number | undefined
 
-  // The per-guna breakdown — check both possible shapes
   const gunas = (
     Array.isArray(gunaMilan?.guna) ? gunaMilan?.guna :
     Array.isArray(d.guna_milan_details) ? d.guna_milan_details :
@@ -386,16 +382,30 @@ function LagnaResult({ data }: { data: Record<string, unknown> }) {
   const sunrise   = d.sunrise as string
   return (
     <div className="result-grid">
-      <InfoCard label="Lagna (Ascendant)"  value={ascendant} />
-      <InfoCard label="Moon Sign (Rashi)"  value={rashi} />
-      <InfoCard label="Sun Sign"           value={sunSign} />
-      <InfoCard label="Nakshatra"          value={nakshatra} />
-      <InfoCard label="Nakshatra Pada"     value={pada != null ? `Pada ${pada}` : undefined} />
-      <InfoCard label="Sunrise"            value={sunrise} />
+      <InfoCard label="Lagna (Ascendant)" value={ascendant} />
+      <InfoCard label="Moon Sign (Rashi)" value={rashi} />
+      <InfoCard label="Sun Sign"          value={sunSign} />
+      <InfoCard label="Nakshatra"         value={nakshatra} />
+      <InfoCard label="Nakshatra Pada"    value={pada != null ? `Pada ${pada}` : undefined} />
+      <InfoCard label="Sunrise"           value={sunrise} />
     </div>
   )
 }
 
+// Add this helper near the top of the file (or just inside the component)
+function formatTime(iso: string | undefined): string | undefined {
+  if (!iso) return undefined
+  try {
+    return new Date(iso).toLocaleTimeString('en-IN', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true,
+      timeZone: 'Asia/Kolkata',
+    })
+  } catch {
+    return iso
+  }
+}
 function RenderResult({ calcKey, data }: { calcKey: CalcKey; data: Record<string, unknown> }) {
   switch (calcKey) {
     case 'moon-phase':      return <MoonPhaseResult data={data} />
@@ -405,7 +415,7 @@ function RenderResult({ calcKey, data }: { calcKey: CalcKey; data: Record<string
   }
 }
 
-// ─── Shared Styles String ─────────────────────────────────────────────────────
+// ─── Shared Styles ────────────────────────────────────────────────────────────
 
 const SHARED_CSS = `
   *, *::before, *::after { box-sizing: border-box; }
@@ -419,6 +429,20 @@ const SHARED_CSS = `
   }
   .cp-input::placeholder { color: ${T.brownLight}; }
   .cp-input:focus { border-bottom-color: ${T.amber}; }
+
+  /* time picker row */
+  .cp-time-row {
+    display: flex; gap: 6px; align-items: center;
+    padding-top: 4px;
+  }
+  .cp-time-row .cp-input {
+    flex: 1; padding: 11px 4px 9px; min-width: 0;
+    text-align: center;
+  }
+  .cp-time-sep {
+    font-size: 16px; font-weight: 700; color: ${T.brown};
+    flex-shrink: 0; line-height: 1; padding-bottom: 2px;
+  }
 
   .cp-field { position: relative; grid-column: span 1; }
   .cp-field.span-2 { grid-column: span 2; }
@@ -462,29 +486,32 @@ const SHARED_CSS = `
     gap: 10px;
   }
 
+  /* ── Listing grid – bigger cards ─── */
   .calc-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
+    gap: 20px;
   }
 
   .calc-card {
     background: ${T.white};
-    border-radius: 14px;
-    padding: 20px 22px;
+    border-radius: 18px;
+    padding: 28px 32px;
     border: 1.5px solid ${T.border};
     display: flex; align-items: center;
-    gap: 16px; justify-content: space-between;
+    gap: 20px; justify-content: space-between;
     cursor: pointer;
     transition: box-shadow 0.2s, border-color 0.2s, transform 0.15s;
+    min-height: 120px;
   }
   .calc-card:hover {
-    box-shadow: 0 6px 24px rgba(196,122,30,0.13);
+    box-shadow: 0 8px 32px rgba(196,122,30,0.16);
     border-color: ${T.amber};
-    transform: translateY(-2px);
+    transform: translateY(-3px);
   }
+
   .calc-icon-wrap {
-    width: 48px; height: 48px; border-radius: 50%;
+    width: 64px; height: 64px; border-radius: 50%;
     border: 1.5px solid ${T.border};
     display: flex; align-items: center; justify-content: center;
     flex-shrink: 0; background: ${T.amberPale};
@@ -494,8 +521,8 @@ const SHARED_CSS = `
 
   .calc-cta-btn {
     background: transparent; border: 1.5px solid ${T.amber};
-    color: ${T.amber}; padding: 8px 16px; border-radius: 20px;
-    font-size: 12px; font-weight: 700; cursor: pointer;
+    color: ${T.amber}; padding: 10px 22px; border-radius: 22px;
+    font-size: 13px; font-weight: 700; cursor: pointer;
     white-space: nowrap; font-family: inherit; flex-shrink: 0;
     transition: background 0.2s, color 0.2s;
   }
@@ -522,36 +549,105 @@ const SHARED_CSS = `
 
   .cp-hero-title-row { display: flex; align-items: center; gap: 16px; margin-bottom: 10px; }
 
-  /* ── Responsive breakpoints ───────────────────────────────── */
+  /* ── Responsive ─────────────────────────────────────────── */
 
-  @media (max-width: 720px) {
+  @media (max-width: 780px) {
     .calc-grid { grid-template-columns: 1fr !important; }
-
-    .calc-card {
-      flex-wrap: wrap;
-      padding: 16px 18px;
-    }
-    .calc-cta-btn {
-      width: 100%;
-      margin-top: 4px;
-    }
+    .calc-card { min-height: unset; padding: 20px 22px; }
+    .calc-cta-btn { width: 100%; margin-top: 6px; }
+    .calc-card { flex-wrap: wrap; }
   }
 
   @media (max-width: 540px) {
     .form-grid { grid-template-columns: 1fr !important; }
     .cp-field.span-2 { grid-column: span 1 !important; }
-
     .cp-hero-title-row { gap: 12px; }
-
     .guna-grid { grid-template-columns: repeat(auto-fit, minmax(90px,1fr)); }
+    .calc-icon-wrap { width: 52px; height: 52px; }
   }
 
   @media (max-width: 420px) {
-    .calc-icon-wrap { width: 40px; height: 40px; }
-
+    .calc-icon-wrap { width: 44px; height: 44px; }
     .cp-back-btn { font-size: 11px; padding: 5px 12px; }
   }
 `
+
+// ─── Custom 12h Time Picker ───────────────────────────────────────────────────
+
+// After (complete implementation)
+function TimePicker({
+  fieldKey,
+  form,
+  setForm,
+}: {
+  fieldKey: string
+  form: Record<string, string>
+  setForm: React.Dispatch<React.SetStateAction<Record<string, string>>>
+}): React.JSX.Element {
+  const hKey    = `${fieldKey}_h`
+  const mKey    = `${fieldKey}_m`
+  const ampmKey = `${fieldKey}_ampm`
+
+  const hours   = Array.from({ length: 12 }, (_, i) => String(i + 1).padStart(2, '0'))
+  const minutes = Array.from({ length: 60 }, (_, i) => String(i).padStart(2, '0'))
+
+  const commit = (h: string, m: string, ampm: string) => {
+    if (!h || !m || !ampm) return
+    const h24 = ampm === 'PM'
+      ? (h === '12' ? 12 : +h + 12)
+      : (h === '12' ? 0  : +h)
+    setForm(p => ({ ...p, [fieldKey]: `${String(h24).padStart(2, '0')}:${m}` }))
+  }
+
+  return (
+    <div className="cp-time-row">
+      <select
+        className="cp-input"
+        value={form[hKey] ?? ''}
+        style={{ color: form[hKey] ? T.amberDark : T.brownLight }}
+        onChange={e => {
+          const h = e.target.value
+          setForm(p => ({ ...p, [hKey]: h }))
+          commit(h, form[mKey] ?? '', form[ampmKey] ?? '')
+        }}
+      >
+        <option value="" disabled>HH</option>
+        {hours.map(h => <option key={h} value={h}>{h}</option>)}
+      </select>
+
+      <span className="cp-time-sep">:</span>
+
+      <select
+        className="cp-input"
+        value={form[mKey] ?? ''}
+        style={{ color: form[mKey] ? T.amberDark : T.brownLight }}
+        onChange={e => {
+          const m = e.target.value
+          setForm(p => ({ ...p, [mKey]: m }))
+          commit(form[hKey] ?? '', m, form[ampmKey] ?? '')
+        }}
+      >
+        <option value="" disabled>MM</option>
+        {minutes.map(m => <option key={m} value={m}>{m}</option>)}
+      </select>
+
+      <select
+        className="cp-input"
+        value={form[ampmKey] ?? ''}
+        style={{ color: form[ampmKey] ? T.amberDark : T.brownLight, flex: '0 0 auto', width: 'auto', minWidth: 62 }}
+        onChange={e => {
+          const ampm = e.target.value
+          setForm(p => ({ ...p, [ampmKey]: ampm }))
+          commit(form[hKey] ?? '', form[mKey] ?? '', ampm)
+        }}
+      >
+        <option value="" disabled>AM/PM</option>
+        <option value="AM">AM</option>
+        <option value="PM">PM</option>
+      </select>
+    </div>
+  )
+}
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // CALCULATOR LISTING PAGE
@@ -565,7 +661,7 @@ export default function Calculators() {
       <style>{SHARED_CSS}</style>
 
       {/* Header */}
-      <div style={{ textAlign: 'center', marginBottom: 'clamp(32px,6vw,48px)' }}>
+      <div style={{ textAlign: 'center', marginBottom: 'clamp(36px,6vw,56px)' }}>
         <div style={{
           display: 'inline-flex', alignItems: 'center', gap: 6,
           background: T.amberPale, border: `1px solid ${T.border}`,
@@ -575,14 +671,14 @@ export default function Calculators() {
           <Sparkles size={12} /> Free Vedic Tools
         </div>
         <h2 style={{
-          margin: '0 0 12px', fontSize: 'clamp(24px,4vw,36px)',
+          margin: '0 0 14px', fontSize: 'clamp(28px,4vw,42px)',
           fontWeight: 800, fontFamily: 'Georgia,serif', color: T.amberDark,
         }}>
           Free <span style={{ color: T.amber }}>Calculators</span>
         </h2>
         <p style={{
           color: T.brown, fontFamily: 'sans-serif',
-          fontSize: 'clamp(13px,2vw,15px)', maxWidth: 460, margin: '0 auto',
+          fontSize: 'clamp(14px,2vw,16px)', maxWidth: 480, margin: '0 auto',
           lineHeight: 1.7,
         }}>
           Understand your life better with our free Vedic astrology tools
@@ -590,7 +686,7 @@ export default function Calculators() {
       </div>
 
       {/* Grid */}
-      <div className="calc-grid" style={{ maxWidth: 980, margin: '0 auto' }}>
+      <div className="calc-grid" style={{ maxWidth: 1140, margin: '0 auto' }}>
         {CALC_LIST.map(calc => {
           const Icon = calc.icon
           return (
@@ -602,15 +698,15 @@ export default function Calculators() {
               tabIndex={0}
               onKeyDown={e => e.key === 'Enter' && navigate(`/calculators/${calc.key}`)}
             >
-              <div style={{ display: 'flex', gap: 14, alignItems: 'center', flex: 1, minWidth: 0 }}>
+              <div style={{ display: 'flex', gap: 18, alignItems: 'center', flex: 1, minWidth: 0 }}>
                 <div className="calc-icon-wrap">
-                  <Icon size={22} color={calc.accentColor} strokeWidth={1.6} />
+                  <Icon size={28} color={calc.accentColor} strokeWidth={1.5} />
                 </div>
                 <div style={{ minWidth: 0 }}>
-                  <div style={{ fontWeight: 700, fontSize: 14, color: T.amberDark, marginBottom: 4, fontFamily: 'Georgia,serif' }}>
+                  <div style={{ fontWeight: 700, fontSize: 16, color: T.amberDark, marginBottom: 6, fontFamily: 'Georgia,serif' }}>
                     {calc.title}
                   </div>
-                  <div style={{ fontSize: 12, color: T.brown, lineHeight: 1.65, fontFamily: 'sans-serif' }}>
+                  <div style={{ fontSize: 13, color: T.brown, lineHeight: 1.7, fontFamily: 'sans-serif' }}>
                     {calc.subtitle}
                   </div>
                 </div>
@@ -641,7 +737,6 @@ export function CalculatorPage() {
   const [result,  setResult]  = useState<Record<string, unknown> | null>(null)
   const resultRef             = useRef<HTMLDivElement>(null)
 
-  // Scroll to result when it arrives
   useEffect(() => {
     if (result) resultRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }, [result])
@@ -666,22 +761,22 @@ export function CalculatorPage() {
     )
   }
 
-  const Icon    = calc.icon
-  const accent  = calc.accentColor
-  const set     = (k: string) =>
+  const Icon   = calc.icon
+  const accent = calc.accentColor
+  const set    = (k: string) =>
     (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
       setForm(p => ({ ...p, [k]: e.target.value }))
 
   const handleSubmit = async () => {
     const missing = calc.fields.filter(f => (f === 'name' || f === 'dob') && !form[f]?.trim())
-if (calc.fields2) {
-  const missing2 = calc.fields2.filter(f => (f === 'name2' || f === 'dob2') && !form[f]?.trim())
-  if (missing2.length) {
-    setError("Please fill in at least your Partner's Name and Date of Birth.")
-    return
-  }
-}
-if (missing.length) {
+    if (calc.fields2) {
+      const missing2 = calc.fields2.filter(f => (f === 'name2' || f === 'dob2') && !form[f]?.trim())
+      if (missing2.length) {
+        setError("Please fill in at least your Partner's Name and Date of Birth.")
+        return
+      }
+    }
+    if (missing.length) {
       setError('Please fill in at least your Name and Date of Birth.')
       return
     }
@@ -702,6 +797,8 @@ if (missing.length) {
       const meta  = FIELDS[fk]
       const MIcon = meta.icon
       const wide  = fk === 'place' || fk === 'place2'
+      const isTime = meta.type === 'time'
+
       return (
         <div key={fk} className={`cp-field${wide ? ' span-2' : ''}`}>
           <label style={{
@@ -711,7 +808,15 @@ if (missing.length) {
           }}>
             <MIcon size={11} color={accentCol} /> {meta.label}
           </label>
-          {meta.type === 'select' ? (
+
+          {/* ── Custom 12h time picker ── */}
+          {isTime ? (
+            <TimePicker
+  fieldKey={fk}
+  form={form}
+  setForm={setForm}
+/>
+          ) : meta.type === 'select' ? (
             <select
               className="cp-input"
               value={form[fk] ?? ''}
@@ -746,26 +851,21 @@ if (missing.length) {
         padding: 'clamp(24px,5vw,52px) clamp(16px,8%,80px)',
         color: '#fff', position: 'relative', overflow: 'hidden',
       }}>
-        {/* Decorative rings */}
         <div style={{
           position: 'absolute', right: 'clamp(-40px,-10vw,-60px)', top: -60,
           width: 'clamp(160px,40vw,280px)', height: 'clamp(160px,40vw,280px)', borderRadius: '50%',
-          border: '1px solid rgba(255,255,255,0.1)',
-          pointerEvents: 'none',
+          border: '1px solid rgba(255,255,255,0.1)', pointerEvents: 'none',
         }} />
         <div style={{
           position: 'absolute', right: -20, top: -20,
           width: 'clamp(100px,25vw,180px)', height: 'clamp(100px,25vw,180px)', borderRadius: '50%',
-          border: '1px solid rgba(255,255,255,0.08)',
-          pointerEvents: 'none',
+          border: '1px solid rgba(255,255,255,0.08)', pointerEvents: 'none',
         }} />
 
-        {/* Back button */}
         <button className="cp-back-btn" onClick={() => navigate(-1)}>
           <ArrowLeft size={13} /> Back to Calculators
         </button>
 
-        {/* Title row */}
         <div className="cp-hero-title-row">
           <div style={{
             width: 'clamp(42px,10vw,54px)', height: 'clamp(42px,10vw,54px)', borderRadius: '50%',
@@ -779,8 +879,7 @@ if (missing.length) {
           <h1 style={{
             margin: 0, fontSize: 'clamp(19px,4vw,32px)',
             fontWeight: 800, fontFamily: 'Georgia,serif',
-            textShadow: '0 2px 12px rgba(0,0,0,0.18)',
-            lineHeight: 1.25,
+            textShadow: '0 2px 12px rgba(0,0,0,0.18)', lineHeight: 1.25,
           }}>
             {calc.title}
           </h1>
@@ -788,8 +887,7 @@ if (missing.length) {
         <p style={{
           margin: 0, opacity: 0.85,
           fontSize: 'clamp(13px,1.8vw,15px)',
-          maxWidth: 500, lineHeight: 1.75,
-          fontFamily: 'sans-serif',
+          maxWidth: 500, lineHeight: 1.75, fontFamily: 'sans-serif',
         }}>
           {calc.subtitle}
         </p>
@@ -817,7 +915,6 @@ if (missing.length) {
             </div>
           )}
 
-          {/* Person 1 */}
           {calc.fields2 && (
             <div style={{
               fontSize: 11, fontWeight: 700, color: T.amber,
@@ -832,7 +929,6 @@ if (missing.length) {
             {renderFieldGroup(calc.fields, accent)}
           </div>
 
-          {/* Person 2 – Kundli matching only */}
           {calc.fields2 && (
             <>
               <div style={{ height: 1, background: T.border, margin: '4px 0 28px' }} />
@@ -849,7 +945,6 @@ if (missing.length) {
             </>
           )}
 
-          {/* Error */}
           {error && (
             <div style={{
               marginTop: 18, padding: '10px 14px',
@@ -860,7 +955,6 @@ if (missing.length) {
             </div>
           )}
 
-          {/* Submit */}
           <button className="cp-btn" style={{ marginTop: 28 }} onClick={handleSubmit} disabled={loading}>
             {loading
               ? <><Loader2 size={17} className="spin" /> Calculating…</>
