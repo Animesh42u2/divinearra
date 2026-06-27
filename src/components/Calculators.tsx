@@ -735,6 +735,8 @@ export function CalculatorPage() {
   const [loading, setLoading] = useState(false)
   const [error,   setError]   = useState('')
   const [result,  setResult]  = useState<Record<string, unknown> | null>(null)
+  const [placeSuggestions, setPlaceSuggestions] = useState<Record<string, string[]>>({})
+const [showSuggestions,  setShowSuggestions]  = useState<Record<string, boolean>>({})
   const resultRef             = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -766,6 +768,20 @@ export function CalculatorPage() {
   const set    = (k: string) =>
     (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
       setForm(p => ({ ...p, [k]: e.target.value }))
+async function handlePlaceInput(fk: string, value: string) {
+  setForm(p => ({ ...p, [fk]: value }))
+  if (value.length < 3) {
+    setPlaceSuggestions(p => ({ ...p, [fk]: [] }))
+    setShowSuggestions(p => ({ ...p, [fk]: false }))
+    return
+  }
+  const res  = await fetch(
+    `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(value)}&format=json&limit=5&addressdetails=1`
+  )
+  const data = await res.json()
+  setPlaceSuggestions(p => ({ ...p, [fk]: data.map((item: { display_name: string }) => item.display_name) }))
+  setShowSuggestions(p => ({ ...p, [fk]: true }))
+}
 
   const handleSubmit = async () => {
     const missing = calc.fields.filter(f => (f === 'name' || f === 'dob') && !form[f]?.trim())
@@ -828,15 +844,56 @@ export function CalculatorPage() {
               <option value="female">Female</option>
               <option value="other">Other</option>
             </select>
-          ) : (
-            <input
-              className="cp-input"
-              type={meta.type}
-              placeholder={meta.placeholder}
-              value={form[fk] ?? ''}
-              onChange={set(fk)}
-            />
-          )}
+          ) : (fk === 'place' || fk === 'place2') ? (
+  <div style={{ position: 'relative' }}>
+    <input
+      className="cp-input"
+      type="text"
+      placeholder={meta.placeholder}
+      value={form[fk] ?? ''}
+      onChange={e => handlePlaceInput(fk, e.target.value)}
+      onBlur={() => setTimeout(() => setShowSuggestions(p => ({ ...p, [fk]: false })), 200)}
+      autoComplete="off"
+    />
+    {showSuggestions[fk] && (placeSuggestions[fk]?.length ?? 0) > 0 && (
+      <div style={{
+        position: 'absolute', top: '100%', left: 0, right: 0,
+        background: '#fffdf7', border: `1.5px solid ${T.border}`,
+        borderRadius: 10, zIndex: 100, marginTop: 4,
+        boxShadow: '0 8px 24px rgba(196,122,30,0.2)',
+        overflow: 'hidden',
+      }}>
+        {placeSuggestions[fk].map((s, i) => (
+          <div
+            key={i}
+            onMouseDown={() => {
+              setForm(p => ({ ...p, [fk]: s }))
+              setShowSuggestions(p => ({ ...p, [fk]: false }))
+            }}
+            style={{
+              padding: '10px 14px', fontSize: 13, color: T.amberDark,
+              cursor: 'pointer',
+              borderBottom: i < placeSuggestions[fk].length - 1
+                ? `1px solid ${T.border}` : 'none',
+            }}
+            onMouseEnter={e => (e.currentTarget.style.background = T.amberPale)}
+            onMouseLeave={e => (e.currentTarget.style.background = '#fffdf7')}
+          >
+            {s}
+          </div>
+        ))}
+      </div>
+    )}
+  </div>
+) : (
+  <input
+    className="cp-input"
+    type={meta.type}
+    placeholder={meta.placeholder}
+    value={form[fk] ?? ''}
+    onChange={set(fk)}
+  />
+)}
         </div>
       )
     })

@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import Navbar from './Navbar'
-import Footer from './Footer'
 import { reportsConfig } from '../data/reportsConfig'
 
 // ─────────────────────────────────────────

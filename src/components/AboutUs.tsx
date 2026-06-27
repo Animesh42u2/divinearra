@@ -5,7 +5,6 @@ import {
   Leaf, Moon, Shield, Gem, Target,
 } from 'lucide-react'
 import Navbar from './Navbar'
-import Footer from './Footer'
 import { motion, useInView } from 'framer-motion'
 import { useRef, useState, useEffect } from 'react'
 

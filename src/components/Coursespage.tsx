@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom'
 import { coursesConfig } from '../data/CoursesConfig'
 import Navbar from './Navbar'
-import Footer from './Footer'
 
 // ─── SPLINE PUBLIC EMBED URL ────────────────────────────────
 // Uses the my.spline.design viewer URL directly (no CORS issues)

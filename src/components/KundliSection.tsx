@@ -66,6 +66,8 @@ export default function KundliSection() {
   })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [placeSuggestions, setPlaceSuggestions] = useState<string[]>([])
+const [showSuggestions, setShowSuggestions] = useState(false)
   const [visible, setVisible] = useState(false)
   const sectionRef = useRef<HTMLElement>(null)
 
@@ -80,6 +82,17 @@ export default function KundliSection() {
 
   const set = (k: keyof FormState) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
     setForm(p => ({ ...p, [k]: e.target.value }))
+  async function handlePlaceInput(e: React.ChangeEvent<HTMLInputElement>) {
+  const value = e.target.value
+  setForm(p => ({ ...p, place: value }))
+  if (value.length < 3) { setPlaceSuggestions([]); setShowSuggestions(false); return }
+  const res = await fetch(
+    `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(value)}&format=json&limit=5&addressdetails=1`
+  )
+  const data = await res.json()
+  setPlaceSuggestions(data.map((item: { display_name: string }) => item.display_name))
+  setShowSuggestions(true)
+}
 
   async function handleSubmit() {
     if (!form.name || !form.dob) { setError('Please fill in at least Name and Date of Birth.'); return }
@@ -429,22 +442,74 @@ export default function KundliSection() {
         <div className="kundli-card-divider" />
 
         <div className="kundli-form-grid">
-          {fields.map(([label, key, type, ph, icon]) => (
-            <div
-              key={key}
-              className="kundli-field"
-              style={{ gridColumn: key === 'place' || key === 'email' ? 'span 2' : 'span 1' }}
-            >
-              <label className="kundli-label">{icon}{label}</label>
-              <input
-                className="kundli-input"
-                type={type}
-                placeholder={ph}
-                value={form[key]}
-                onChange={set(key)}
-              />
-            </div>
-          ))}
+          {fields.map(([label, key, type, ph, icon]) => {
+  if (key === 'place') {
+    return (
+      <div
+        key={key}
+        className="kundli-field"
+        style={{ gridColumn: 'span 2', position: 'relative' }}
+      >
+        <label className="kundli-label">{icon}{label}</label>
+        <input
+          className="kundli-input"
+          type="text"
+          placeholder={ph}
+          value={form.place}
+          onChange={handlePlaceInput}
+          onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+          autoComplete="off"
+        />
+        {showSuggestions && placeSuggestions.length > 0 && (
+          <div style={{
+            position: 'absolute', top: '100%', left: 0, right: 0,
+            background: '#fffdf7', border: '1.5px solid #d4a060',
+            borderRadius: 10, zIndex: 100, marginTop: 4,
+            boxShadow: '0 8px 24px rgba(196,122,30,0.2)',
+            overflow: 'hidden',
+          }}>
+            {placeSuggestions.map((s, i) => (
+              <div
+                key={i}
+                onMouseDown={() => {
+                  setForm(p => ({ ...p, place: s }))
+                  setShowSuggestions(false)
+                }}
+                style={{
+                  padding: '10px 14px', fontSize: 13, color: '#3a1800',
+                  cursor: 'pointer',
+                  borderBottom: i < placeSuggestions.length - 1
+                    ? '1px solid #f0dfc0' : 'none',
+                }}
+                onMouseEnter={e => (e.currentTarget.style.background = '#fff8ee')}
+                onMouseLeave={e => (e.currentTarget.style.background = '#fffdf7')}
+              >
+                {s}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    )
+  }
+
+  return (
+    <div
+      key={key}
+      className="kundli-field"
+      style={{ gridColumn: key === 'email' ? 'span 2' : 'span 1' }}
+    >
+      <label className="kundli-label">{icon}{label}</label>
+      <input
+        className="kundli-input"
+        type={type}
+        placeholder={ph}
+        value={form[key]}
+        onChange={set(key)}
+      />
+    </div>
+  )
+})}
 
           <div className="kundli-field" style={{ gridColumn: 'span 2' }}>
             <label className="kundli-label">
