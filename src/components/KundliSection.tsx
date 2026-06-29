@@ -67,7 +67,7 @@ export default function KundliSection() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [placeSuggestions, setPlaceSuggestions] = useState<string[]>([])
-const [showSuggestions, setShowSuggestions] = useState(false)
+  const [showSuggestions, setShowSuggestions] = useState(false)
   const [visible, setVisible] = useState(false)
   const sectionRef = useRef<HTMLElement>(null)
 
@@ -82,17 +82,18 @@ const [showSuggestions, setShowSuggestions] = useState(false)
 
   const set = (k: keyof FormState) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
     setForm(p => ({ ...p, [k]: e.target.value }))
+
   async function handlePlaceInput(e: React.ChangeEvent<HTMLInputElement>) {
-  const value = e.target.value
-  setForm(p => ({ ...p, place: value }))
-  if (value.length < 3) { setPlaceSuggestions([]); setShowSuggestions(false); return }
-  const res = await fetch(
-    `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(value)}&format=json&limit=5&addressdetails=1`
-  )
-  const data = await res.json()
-  setPlaceSuggestions(data.map((item: { display_name: string }) => item.display_name))
-  setShowSuggestions(true)
-}
+    const value = e.target.value
+    setForm(p => ({ ...p, place: value }))
+    if (value.length < 3) { setPlaceSuggestions([]); setShowSuggestions(false); return }
+    const res = await fetch(
+      `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(value)}&format=json&limit=5&addressdetails=1`
+    )
+    const data = await res.json()
+    setPlaceSuggestions(data.map((item: { display_name: string }) => item.display_name))
+    setShowSuggestions(true)
+  }
 
   async function handleSubmit() {
     if (!form.name || !form.dob) { setError('Please fill in at least Name and Date of Birth.'); return }
@@ -185,9 +186,10 @@ const [showSuggestions, setShowSuggestions] = useState(false)
         }
         .kundli-left.visible { opacity: 1; transform: translateX(0); }
 
+        /* h2 inherits Playfair Display from index.css global rule */
         .kundli-left h2 {
           font-size: clamp(28px, 4vw, 52px);
-          font-weight: 800; font-family: 'Georgia', serif;
+          font-weight: 800;
           margin: 0 0 18px; line-height: 1.2;
           letter-spacing: -0.5px;
           text-shadow: 0 2px 16px rgba(0,0,0,0.3);
@@ -197,9 +199,11 @@ const [showSuggestions, setShowSuggestions] = useState(false)
           text-decoration-color: rgba(255,220,100,0.7);
           text-underline-offset: 5px;
         }
+
+        /* p inherits Georgia from index.css body rule */
         .kundli-left p {
           font-size: 15px; opacity: 0.88;
-          line-height: 1.8; font-family: sans-serif;
+          line-height: 1.8;
           text-shadow: 0 1px 8px rgba(0,0,0,0.2);
         }
 
@@ -208,7 +212,7 @@ const [showSuggestions, setShowSuggestions] = useState(false)
         .kundli-feature-item {
           display: flex; align-items: center; gap: 12px;
           color: rgba(255,255,255,0.95);
-          font-family: sans-serif; font-size: 14px;
+          font-size: 14px;
           opacity: 0; transform: translateX(-16px);
           transition: opacity 0.5s ease, transform 0.5s ease;
         }
@@ -240,8 +244,9 @@ const [showSuggestions, setShowSuggestions] = useState(false)
         }
         .kundli-card.visible { opacity: 1; transform: translateY(0); }
 
+        /* h3 inherits Playfair Display from index.css global rule */
         .kundli-card h3 {
-          text-align: center; font-family: 'Georgia', serif;
+          text-align: center;
           font-size: 23px; margin: 0 0 8px;
           color: #4a2006; letter-spacing: 0.3px;
         }
@@ -259,8 +264,10 @@ const [showSuggestions, setShowSuggestions] = useState(false)
 
         .kundli-field { position: relative; }
 
+        /* Labels inherit Georgia from body; font-family: inherit used explicitly */
         .kundli-label {
-          font-size: 11px; color: #9a7040; font-family: sans-serif;
+          font-size: 11px; color: #9a7040;
+          font-family: inherit;
           display: flex; align-items: center; gap: 5px;
           margin-bottom: 5px;
           text-transform: uppercase; letter-spacing: 0.6px; font-weight: 600;
@@ -268,11 +275,13 @@ const [showSuggestions, setShowSuggestions] = useState(false)
         }
         .kundli-label svg { color: #c47a1e; flex-shrink: 0; }
 
+        /* Inputs inherit font from index.css button/input/select rule */
         .kundli-input {
           width: 100%; padding: 9px 0;
           border: none; border-bottom: 1.5px solid #d4a060;
           background: transparent; font-size: 14px;
-          font-family: sans-serif; outline: none;
+          font-family: inherit;
+          outline: none;
           color: #3a1800; box-sizing: border-box;
           transition: border-color 0.25s;
         }
@@ -287,6 +296,7 @@ const [showSuggestions, setShowSuggestions] = useState(false)
         }
         .kundli-field:focus-within::after { width: 100%; }
 
+        /* Button inherits font from index.css button rule */
         .kundli-btn {
           width: 100%;
           background: linear-gradient(90deg, #c47a1e 0%, #e8a135 50%, #c47a1e 100%);
@@ -294,8 +304,8 @@ const [showSuggestions, setShowSuggestions] = useState(false)
           color: #fff; border: none;
           padding: 15px; border-radius: 12px;
           font-weight: 700; font-size: 16px;
+          font-family: inherit;
           cursor: pointer; margin-top: 22px;
-          font-family: sans-serif;
           display: flex; align-items: center; justify-content: center; gap: 8px;
           letter-spacing: 0.4px;
           transition: background-position 0.4s ease, transform 0.2s ease, box-shadow 0.2s ease;
@@ -309,11 +319,13 @@ const [showSuggestions, setShowSuggestions] = useState(false)
         .kundli-btn:active:not(:disabled) { transform: translateY(0); }
         .kundli-btn:disabled { opacity: 0.7; cursor: not-allowed; }
 
+        /* Error inherits Georgia from body */
         .kundli-error {
           margin-top: 14px; padding: 10px 14px;
           background: #fff0f0; border: 1px solid #e07070;
           border-radius: 8px; font-size: 13px;
-          color: #c03030; font-family: sans-serif;
+          font-family: inherit;
+          color: #c03030;
         }
 
         @keyframes spin { from { transform: rotate(0deg) } to { transform: rotate(360deg) } }
@@ -357,7 +369,6 @@ const [showSuggestions, setShowSuggestions] = useState(false)
           }
           .kundli-feature-item.visible { transform: none !important; }
 
-          /* Card fills width, compact padding */
           .kundli-card {
             min-width: unset !important;
             max-width: 100% !important;
@@ -367,23 +378,19 @@ const [showSuggestions, setShowSuggestions] = useState(false)
             box-sizing: border-box;
           }
 
-          /* ALL fields single column on mobile */
           .kundli-form-grid {
             grid-template-columns: 1fr !important;
             gap: 18px !important;
           }
 
-          /* Override span-2 so nothing accidentally goes 2 col */
           .kundli-field[style*="span 2"],
           .kundli-field { grid-column: span 1 !important; }
 
-          /* Labels: allow wrap but keep icon inline */
           .kundli-label {
             white-space: normal !important;
             font-size: 10px !important;
           }
 
-          /* Slightly larger tap targets */
           .kundli-input {
             font-size: 15px !important;
             padding: 10px 0 !important;
@@ -443,73 +450,74 @@ const [showSuggestions, setShowSuggestions] = useState(false)
 
         <div className="kundli-form-grid">
           {fields.map(([label, key, type, ph, icon]) => {
-  if (key === 'place') {
-    return (
-      <div
-        key={key}
-        className="kundli-field"
-        style={{ gridColumn: 'span 2', position: 'relative' }}
-      >
-        <label className="kundli-label">{icon}{label}</label>
-        <input
-          className="kundli-input"
-          type="text"
-          placeholder={ph}
-          value={form.place}
-          onChange={handlePlaceInput}
-          onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
-          autoComplete="off"
-        />
-        {showSuggestions && placeSuggestions.length > 0 && (
-          <div style={{
-            position: 'absolute', top: '100%', left: 0, right: 0,
-            background: '#fffdf7', border: '1.5px solid #d4a060',
-            borderRadius: 10, zIndex: 100, marginTop: 4,
-            boxShadow: '0 8px 24px rgba(196,122,30,0.2)',
-            overflow: 'hidden',
-          }}>
-            {placeSuggestions.map((s, i) => (
-              <div
-                key={i}
-                onMouseDown={() => {
-                  setForm(p => ({ ...p, place: s }))
-                  setShowSuggestions(false)
-                }}
-                style={{
-                  padding: '10px 14px', fontSize: 13, color: '#3a1800',
-                  cursor: 'pointer',
-                  borderBottom: i < placeSuggestions.length - 1
-                    ? '1px solid #f0dfc0' : 'none',
-                }}
-                onMouseEnter={e => (e.currentTarget.style.background = '#fff8ee')}
-                onMouseLeave={e => (e.currentTarget.style.background = '#fffdf7')}
-              >
-                {s}
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    )
-  }
+            if (key === 'place') {
+              return (
+                <div
+                  key={key}
+                  className="kundli-field"
+                  style={{ gridColumn: 'span 2', position: 'relative' }}
+                >
+                  <label className="kundli-label">{icon}{label}</label>
+                  <input
+                    className="kundli-input"
+                    type="text"
+                    placeholder={ph}
+                    value={form.place}
+                    onChange={handlePlaceInput}
+                    onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+                    autoComplete="off"
+                  />
+                  {showSuggestions && placeSuggestions.length > 0 && (
+                    <div style={{
+                      position: 'absolute', top: '100%', left: 0, right: 0,
+                      background: '#fffdf7', border: '1.5px solid #d4a060',
+                      borderRadius: 10, zIndex: 100, marginTop: 4,
+                      boxShadow: '0 8px 24px rgba(196,122,30,0.2)',
+                      overflow: 'hidden',
+                    }}>
+                      {placeSuggestions.map((s, i) => (
+                        <div
+                          key={i}
+                          onMouseDown={() => {
+                            setForm(p => ({ ...p, place: s }))
+                            setShowSuggestions(false)
+                          }}
+                          style={{
+                            padding: '10px 14px', fontSize: 13, color: '#3a1800',
+                            cursor: 'pointer',
+                            fontFamily: 'inherit',
+                            borderBottom: i < placeSuggestions.length - 1
+                              ? '1px solid #f0dfc0' : 'none',
+                          }}
+                          onMouseEnter={e => (e.currentTarget.style.background = '#fff8ee')}
+                          onMouseLeave={e => (e.currentTarget.style.background = '#fffdf7')}
+                        >
+                          {s}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )
+            }
 
-  return (
-    <div
-      key={key}
-      className="kundli-field"
-      style={{ gridColumn: key === 'email' ? 'span 2' : 'span 1' }}
-    >
-      <label className="kundli-label">{icon}{label}</label>
-      <input
-        className="kundli-input"
-        type={type}
-        placeholder={ph}
-        value={form[key]}
-        onChange={set(key)}
-      />
-    </div>
-  )
-})}
+            return (
+              <div
+                key={key}
+                className="kundli-field"
+                style={{ gridColumn: key === 'email' ? 'span 2' : 'span 1' }}
+              >
+                <label className="kundli-label">{icon}{label}</label>
+                <input
+                  className="kundli-input"
+                  type={type}
+                  placeholder={ph}
+                  value={form[key]}
+                  onChange={set(key)}
+                />
+              </div>
+            )
+          })}
 
           <div className="kundli-field" style={{ gridColumn: 'span 2' }}>
             <label className="kundli-label">

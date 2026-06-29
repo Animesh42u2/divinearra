@@ -233,7 +233,7 @@ export default function ReportsPage() {
         .active-label {
           display: inline-block; background: rgba(26,10,0,0.45); backdrop-filter: blur(6px);
           border: 1px solid rgba(232,201,122,0.4); color: #e8c97a;
-          font-family: 'Georgia', serif; font-size: 14px; font-weight: 700;
+          font-family: 'Playfair Display', Georgia, serif; font-size: 14px; font-weight: 700;
           padding: 6px 20px; border-radius: 20px; margin-top: 12px;
           letter-spacing: 0.03em; transition: opacity 0.3s;
         }
@@ -306,7 +306,7 @@ export default function ReportsPage() {
         @media (max-width: 560px) {
           .card-body { padding: 16px 18px 20px; }
         }
-        .card-title { font-family: 'Georgia', serif; font-size: 17px; font-weight: 700; color: #1a0a00; margin: 0; line-height: 1.3; }
+        .card-title { font-family: 'Playfair Display', Georgia, serif; font-size: 17px; font-weight: 700; color: #1a0a00; margin: 0; line-height: 1.3; }
         @media (max-width: 560px) {
           .card-title { font-size: 15px; }
         }
@@ -349,7 +349,8 @@ export default function ReportsPage() {
           <p style={{ fontSize: 11, letterSpacing: 4, textTransform: 'uppercase', color: '#e8c97a', fontFamily: 'sans-serif', margin: '0 0 16px', opacity: 0.9, position: 'relative' }}>
             ॐ &nbsp; Ancient Wisdom · Modern Clarity &nbsp; ॐ
           </p>
-          <h1 style={{ fontSize: 'clamp(22px,3.8vw,42px)', fontFamily: 'Georgia,serif', fontWeight: 800, margin: '0 0 14px', lineHeight: 1.2, color: '#fff', position: 'relative' }}>
+          <h1 style={{ fontSize: 'clamp(22px,3.8vw,42px)', fontFamily: "'Playfair Display', Georgia, serif",
+ fontWeight: 800, margin: '0 0 14px', lineHeight: 1.2, color: '#fff', position: 'relative' }}>
             The Stars Already Know. It's Time You Did Too.
           </h1>
           <p style={{ fontSize: 'clamp(13px,1.4vw,15px)', color: 'rgba(255,255,255,0.82)', fontFamily: 'sans-serif', maxWidth: 500, margin: '0 auto 36px', lineHeight: 1.7, position: 'relative' }}>
@@ -391,7 +392,8 @@ export default function ReportsPage() {
       <div id="reports" style={{ background: 'linear-gradient(180deg, #fff9f0 0%, #fff 100%)', padding: 'clamp(48px,6vw,88px) clamp(16px,7%,88px)' }}>
         <div style={{ textAlign: 'center', marginBottom: 40 }}>
           <p className="section-eyebrow">☽ &nbsp; Thousands Guided · Countless Lives Transformed &nbsp; ☾</p>
-          <h2 style={{ fontFamily: 'Georgia,serif', fontSize: 'clamp(22px,3.2vw,34px)', fontWeight: 700, color: '#1a0a00', margin: '0 0 12px' }}>
+          <h2 style={{ fontFamily: "'Playfair Display', Georgia, serif",
+ fontSize: 'clamp(22px,3.2vw,34px)', fontWeight: 700, color: '#1a0a00', margin: '0 0 12px' }}>
             Your Destiny, Decoded.
           </h2>
           <p style={{ fontFamily: 'sans-serif', fontSize: 14, color: '#7a5030', margin: '0 auto', lineHeight: 1.7, maxWidth: 460 }}>

@@ -565,8 +565,8 @@ export default function ReportDetailPage() {
           max-width: 1050px;
           margin: 0 auto;
           display: grid;
-          grid-template-columns: 340px 1fr;
-          gap: 3.5rem;
+          grid-template-columns: 420px 1fr;
+          gap: 4.5rem;
           align-items: center;
           position: relative;
           z-index: 1;
@@ -577,11 +577,11 @@ export default function ReportDetailPage() {
           gap: 0.55rem;
         }
         @media (max-width: 900px) {
-          .about-grid {
-            grid-template-columns: 280px 1fr;
-            gap: 2.5rem;
-          }
-        }
+  .about-grid {
+    grid-template-columns: 340px 1fr;
+    gap: 3rem;
+  }
+}
         @media (max-width: 700px) {
           .about-grid {
             grid-template-columns: 1fr !important;
@@ -834,65 +834,66 @@ export default function ReportDetailPage() {
       <HowItWorks steps={report.steps} />
 
       {/* ── FOR WHOM ── */}
-      <section style={{ background: CREAM, padding: 'clamp(3rem,6vw,6rem) clamp(1rem,3vw,1.5rem)', position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', top: -80, right: -80, width: 360, height: 360, borderRadius: '50%', background: `${AMBER}0d`, pointerEvents: 'none' }} />
-        <div style={{ position: 'absolute', bottom: -60, left: -60, width: 300, height: 260, borderRadius: '50%', background: `${AMBER_DARK}08`, pointerEvents: 'none' }} />
+      <section style={{ background: `linear-gradient(135deg, ${AMBER_DARK} 0%, ${AMBER} 100%)`, padding: 'clamp(3rem,6vw,6rem) clamp(1rem,3vw,1.5rem)', position: 'relative', overflow: 'hidden' }}>
+  <div style={{ position: 'absolute', top: -80, right: -80, width: 360, height: 360, borderRadius: '50%', background: 'rgba(255,255,255,0.05)', pointerEvents: 'none' }} />
+  <div style={{ position: 'absolute', bottom: -60, left: -60, width: 300, height: 260, borderRadius: '50%', background: 'rgba(255,255,255,0.04)', pointerEvents: 'none' }} />
 
-        <div style={{ maxWidth: 1100, margin: '0 auto', position: 'relative', zIndex: 1 }}>
-          <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
-            <span style={{
-              display: 'inline-block', background: `${AMBER}18`, border: `1px solid ${AMBER}44`,
-              borderRadius: 20, padding: '0.3rem 1rem', fontSize: '0.7rem', fontWeight: 700,
-              color: AMBER_DARK, letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '1rem',
-            }}>
-              Who Is This For?
-            </span>
-            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.4rem, 3vw, 2.3rem)', color: BROWN_TEXT, marginBottom: '0.75rem', lineHeight: 1.25 }}>
-              This Report Is Made for You If…
-            </h2>
-            <div style={{ width: 56, height: 3, borderRadius: 2, background: `linear-gradient(90deg, ${AMBER}, ${AMBER_LIGHT})`, margin: '0 auto' }} />
-          </div>
+  <div style={{ maxWidth: 1100, margin: '0 auto', position: 'relative', zIndex: 1 }}>
+    <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
+      <span style={{
+        display: 'inline-block', background: 'rgba(255,255,255,0.18)', border: '1px solid rgba(255,255,255,0.3)',
+        borderRadius: 20, padding: '0.3rem 1rem', fontSize: '0.7rem', fontWeight: 700,
+        color: '#fff', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '1rem',
+      }}>
+        Who Is This For?
+      </span>
+      <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.4rem, 3vw, 2.3rem)', color: '#fff', marginBottom: '0.75rem', lineHeight: 1.25 }}>
+        This Report Is Made for You If…
+      </h2>
+      <div style={{ width: 56, height: 3, borderRadius: 2, background: 'rgba(255,255,255,0.4)', margin: '0 auto' }} />
+    </div>
 
-          <div className="for-whom-grid">
-            {report.forWhom.map((item, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-40px' }}
-                transition={{ duration: 0.5, delay: i * 0.08, ease: [0.25, 0.1, 0.25, 1] }}
-                whileHover={{ y: -4, boxShadow: `0 12px 36px ${AMBER}22` }}
-                style={{
-                  background: '#fff', borderRadius: 18,
-                  padding: 'clamp(1.25rem,3vw,1.75rem)',
-                  border: `1px solid ${AMBER}22`,
-                  boxShadow: `0 2px 12px ${AMBER}0f`,
-                  cursor: 'default', position: 'relative', overflow: 'hidden',
-                }}
-              >
-                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${AMBER_DARK}, ${AMBER_LIGHT})`, borderRadius: '18px 18px 0 0' }} />
-                <div style={{
-                  width: 40, height: 40, borderRadius: '50%',
-                  background: `linear-gradient(135deg, ${AMBER_DARK}, ${AMBER})`,
-                  color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontWeight: 800, fontSize: '0.95rem',
-                  fontFamily: "'Playfair Display', serif",
-                  boxShadow: `0 4px 14px ${AMBER}44`, marginBottom: '1.1rem',
-                }}>
-                  {i + 1}
-                </div>
-                <div style={{ color: BROWN_TEXT, fontWeight: 700, fontSize: 'clamp(0.9rem,1.8vw,1rem)', marginBottom: '0.4rem', fontFamily: "'Playfair Display', serif" }}>
-                  {item.title}
-                </div>
-                <div style={{ color: BROWN_MID, fontSize: 'clamp(0.8rem,1.4vw,0.86rem)', lineHeight: 1.7 }}>
-                  {item.description}
-                </div>
-                <div style={{ position: 'absolute', bottom: -20, right: -20, width: 80, height: 80, borderRadius: '50%', background: `${AMBER}0a`, pointerEvents: 'none' }} />
-              </motion.div>
-            ))}
+    <div className="for-whom-grid">
+      {report.forWhom.map((item, i) => (
+        <motion.div
+          key={i}
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-40px' }}
+          transition={{ duration: 0.5, delay: i * 0.08, ease: [0.25, 0.1, 0.25, 1] }}
+          whileHover={{ y: -4, boxShadow: `0 12px 36px rgba(0,0,0,0.2)` }}
+          style={{
+            background: CREAM, borderRadius: 18,
+            padding: 'clamp(1.25rem,3vw,1.75rem)',
+            border: `1px solid ${AMBER}22`,
+            boxShadow: `0 2px 12px ${AMBER}0f`,
+            cursor: 'default', position: 'relative', overflow: 'hidden',
+          }}
+        >
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${AMBER_DARK}, ${AMBER_LIGHT})`, borderRadius: '18px 18px 0 0' }} />
+          <div style={{
+            width: 40, height: 40, borderRadius: '50%',
+            background: `linear-gradient(135deg, ${AMBER_DARK}, ${AMBER})`,
+            border: 'none',
+            color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontWeight: 800, fontSize: '0.95rem',
+            fontFamily: "'Playfair Display', serif",
+            boxShadow: `0 4px 14px ${AMBER}44`, marginBottom: '1.1rem',
+          }}>
+            {i + 1}
           </div>
-        </div>
-      </section>
+          <div style={{ color: BROWN_TEXT, fontWeight: 700, fontSize: 'clamp(0.9rem,1.8vw,1rem)', marginBottom: '0.4rem', fontFamily: "'Playfair Display', serif" }}>
+            {item.title}
+          </div>
+          <div style={{ color: BROWN_MID, fontSize: 'clamp(0.8rem,1.4vw,0.86rem)', lineHeight: 1.7 }}>
+            {item.description}
+          </div>
+          <div style={{ position: 'absolute', bottom: -20, right: -20, width: 80, height: 80, borderRadius: '50%', background: `${AMBER}0a`, pointerEvents: 'none' }} />
+        </motion.div>
+      ))}
+    </div>
+  </div>
+</section>
 
       {/* ── PRICING ── */}
       <section id="pricing" style={{ maxWidth: 1100, margin: '0 auto', padding: 'clamp(3rem,6vw,5rem) clamp(1rem,3vw,1.5rem)' }}>
@@ -1137,15 +1138,15 @@ export default function ReportDetailPage() {
       </section>
 
       {/* ── ABOUT ── */}
-      <section style={{ background: `linear-gradient(135deg, ${AMBER_DARK} 0%, ${AMBER} 100%)`, padding: 'clamp(3rem,6vw,5rem) clamp(1rem,3vw,1.5rem)', overflow: 'hidden', position: 'relative' }}>
+      <section style={{ background: `linear-gradient(135deg, ${AMBER_DARK} 0%, ${AMBER} 100%)`, padding: 'clamp(4rem,8vw,7rem) clamp(1.5rem,5vw,3rem)', overflow: 'hidden', position: 'relative' }}>
         <div style={{ position: 'absolute', top: -80, right: -80, width: 320, height: 320, borderRadius: '50%', background: 'rgba(255,255,255,0.05)', pointerEvents: 'none' }} />
         <div style={{ position: 'absolute', bottom: -60, left: -60, width: 220, height: 220, borderRadius: '50%', background: 'rgba(255,255,255,0.04)', pointerEvents: 'none' }} />
 
         <div className="about-grid">
-          <div className="about-photo" style={{ position: 'relative', width: '100%', maxWidth: 340 }}>
+          <div className="about-photo" style={{ position: 'relative', width: '100%', maxWidth: 420}}>
             <img
               src="/Aaditya.png" alt="Astro Aaditya Narayan"
-              style={{ width: '100%', height: 'auto', maxHeight: 440, objectFit: 'cover', objectPosition: 'top center', display: 'block', borderRadius: 18 }}
+              style={{ width: '100%', height: 'auto', maxHeight: 560, objectFit: 'cover', objectPosition: 'top center', display: 'block', borderRadius: 18 }}
             />
           </div>
 
@@ -1155,10 +1156,10 @@ export default function ReportDetailPage() {
                 📜 Know Your Astrologer
               </span>
             </div>
-            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.3rem, 2.5vw, 1.9rem)', color: '#fff', marginBottom: '0.9rem', lineHeight: 1.2 }}>
+            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.6rem, 3vw, 2.4rem)', color: '#fff', marginBottom: '0.9rem', lineHeight: 1.2 }}>
               Meet Astro Aaditya Narayan
             </h2>
-            <p style={{ color: 'rgba(255,255,255,0.85)', lineHeight: 1.75, fontSize: 'clamp(0.82rem,1.5vw,0.88rem)', marginBottom: '1.1rem' }}>
+            <p style={{ color: 'rgba(255,255,255,0.85)', lineHeight: 1.75, fontSize: 'clamp(0.95rem,1.8vw,1.05rem)', marginBottom: '1.1rem' }}>
               Astro Aaditya Narayan is the guiding force behind Divine Arra — helping people understand their kundali, planetary influences, karmic patterns, and remedies through years of Vedic astrology practice. His consultations are clear, compassionate, and practical, bringing awareness and direction rather than fear.
             </p>
             <blockquote style={{
@@ -1166,15 +1167,15 @@ export default function ReportDetailPage() {
               borderLeft: '3px solid rgba(255,255,255,0.5)', borderRadius: 8,
               padding: '0.75rem 1rem', marginBottom: '1.4rem', marginLeft: 0, marginRight: 0,
               fontStyle: 'italic', color: 'rgba(255,255,255,0.88)',
-              fontSize: 'clamp(0.8rem,1.4vw,0.85rem)', lineHeight: 1.65,
+              fontSize: 'clamp(0.9rem,1.6vw,1rem)', lineHeight: 1.65,
             }}>
               "Astrology is not about fear — it is about awareness, alignment, and awakening your inner power."
             </blockquote>
             <div className="about-stats-grid">
               {[['100K+','Consultations Delivered'],['7+','Years of Experience'],['59+','Years of Legacy'],['8+','Professional Awards'],['30K+','Hours of Expert Guidance']].map(([v, l]) => (
                 <div key={l} style={{ background: 'rgba(255,255,255,0.11)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 8, padding: '0.5rem 0.5rem', textAlign: 'center' }}>
-                  <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(0.82rem,1.5vw,1rem)', fontWeight: 800, color: '#fff' }}>{v}</div>
-                  <div style={{ fontSize: 'clamp(0.52rem,1vw,0.6rem)', color: 'rgba(255,255,255,0.65)', marginTop: 2, textTransform: 'uppercase', letterSpacing: '0.07em' }}>{l}</div>
+                  <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1rem,1.8vw,1.2rem)', fontWeight: 800, color: '#fff' }}>{v}</div>
+                  <div style={{ fontSize: 'clamp(0.6rem,1vw,0.68rem)', color: 'rgba(255,255,255,0.65)', marginTop: 2, textTransform: 'uppercase', letterSpacing: '0.07em' }}>{l}</div>
                 </div>
               ))}
             </div>

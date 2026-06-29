@@ -66,7 +66,7 @@ const heroLabel: Record<CheckoutType, string> = {
 
 const ctaLabel: Record<CheckoutType, string> = {
   report:       'Pay Securely',
-  consultation: 'Book & Pay',
+  consultation: 'Book Now',
   course:       'Enroll Now',
 }
 
@@ -233,9 +233,9 @@ const [showSuggestions, setShowSuggestions] = useState(false)
         *, *::before, *::after { box-sizing: border-box; }
 
         .co-page {
-          background: #fffbf5;
+          background: #ffffff;
           min-height: 100vh;
-          font-family: 'Georgia', serif;
+          font-family: 'Playfair Display', Georgia, serif;
         }
 
         .co-hero {
@@ -272,7 +272,7 @@ const [showSuggestions, setShowSuggestions] = useState(false)
           display: inline-block;
         }
         .co-hero h1 {
-          font-family: 'Georgia', serif;
+          font-family: 'Playfair Display', Georgia, serif;
           font-size: clamp(22px, 4vw, 38px);
           font-weight: 700;
           color: #1a0a00;
@@ -284,7 +284,6 @@ const [showSuggestions, setShowSuggestions] = useState(false)
 
         .co-trust-bar {
           background: #fff;
-          border-bottom: 1px solid rgba(196,122,30,0.15);
           padding: 10px clamp(16px,5%,80px);
           display: flex;
           justify-content: center;
@@ -296,7 +295,7 @@ const [showSuggestions, setShowSuggestions] = useState(false)
           align-items: center;
           gap: 7px;
           font-family: sans-serif;
-          font-size: 12px;
+          font-size: 17px;
           color: #7a5030;
           font-weight: 600;
         }
@@ -309,6 +308,7 @@ const [showSuggestions, setShowSuggestions] = useState(false)
           grid-template-columns: 360px 1fr;
           gap: 28px;
           align-items: start;
+          background: #ffffff;
         }
         @media (max-width: 800px) { .co-inner { grid-template-columns: 1fr; } }
 
@@ -331,7 +331,6 @@ const [showSuggestions, setShowSuggestions] = useState(false)
           justify-content: center;
           padding: 20px;
           position: relative;
-          border-bottom: 1px solid rgba(196,122,30,0.15);
         }
         .co-plan-img img {
           height: 100%; max-height: 170px; object-fit: contain;
@@ -346,7 +345,7 @@ const [showSuggestions, setShowSuggestions] = useState(false)
           padding: 4px 10px; border-radius: 100px; z-index: 2;
         }
         .co-plan-body { padding: 22px 22px 24px; }
-        .co-plan-name { font-family: 'Georgia', serif; font-size: 18px; font-weight: 700; color: #1a0a00; margin: 0 0 5px; }
+        .co-plan-name { font-family: 'Playfair Display', Georgia, serif; font-size: 18px; font-weight: 700; color: #1a0a00; margin: 0 0 5px; }
         .co-plan-tagline { font-family: sans-serif; font-size: 12.5px; color: #9a7050; margin: 0 0 16px; line-height: 1.55; }
         .co-price-box {
           background: linear-gradient(135deg, #fff8e8, #fdeabb);
@@ -355,7 +354,7 @@ const [showSuggestions, setShowSuggestions] = useState(false)
           display: flex; align-items: center; justify-content: space-between;
         }
         .co-price-orig { font-family: sans-serif; font-size: 12px; color: #b09070; text-decoration: line-through; }
-        .co-price-disc { font-family: 'Georgia', serif; font-size: 26px; font-weight: 700; color: #b86010; }
+        .co-price-disc { font-family: 'Playfair Display', Georgia, serif; font-size: 26px; font-weight: 700; color: #b86010; }
         .co-price-save {
           font-family: sans-serif; font-size: 10px; font-weight: 700;
           background: rgba(196,122,30,0.15); color: #a06010;
@@ -379,7 +378,7 @@ const [showSuggestions, setShowSuggestions] = useState(false)
           padding: clamp(24px, 4vw, 40px);
         }
         .co-form-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 28px; }
-        .co-form-title { font-family: 'Georgia', serif; font-size: 24px; font-weight: 700; color: #1a0a00; margin: 0 0 5px; }
+        .co-form-title { font-family: 'Playfair Display', Georgia, serif; font-size: 24px; font-weight: 700; color: #1a0a00; margin: 0 0 5px; }
         .co-form-sub { font-family: sans-serif; font-size: 13px; color: #9a7050; margin: 0; line-height: 1.55; }
         .co-step-badge {
           flex-shrink: 0; background: #fff8e8; color: #a06010;
@@ -416,16 +415,16 @@ const [showSuggestions, setShowSuggestions] = useState(false)
         .co-summary-row { display: flex; justify-content: space-between; align-items: center; font-family: sans-serif; font-size: 13px; color: #7a5030; padding: 5px 0; }
         .co-summary-row.total { border-top: 1px dashed rgba(196,122,30,0.25); margin-top: 8px; padding-top: 12px; }
         .co-summary-row.total span:first-child { font-weight: 700; font-size: 14px; color: #1a0a00; }
-        .co-summary-row.total span:last-child  { font-family: 'Georgia', serif; font-size: 22px; font-weight: 700; color: #b86010; }
+        .co-summary-row.total span:last-child  { font-family: 'Playfair Display', Georgia, serif; font-size: 22px; font-weight: 700; color: #b86010; }
 
         .co-terms { font-family: sans-serif; font-size: 12px; color: #9a7050; margin-bottom: 18px; line-height: 1.65; text-align: center; }
         .co-terms a { color: #c47a1e; text-decoration: underline; text-underline-offset: 2px; }
 
         .co-pay-btn {
-          width: 100%; padding: 17px 24px;
+          width: 55%; padding: 17px 24px;
           background: linear-gradient(135deg, #f0a830, #c47a1e);
-          color: #fff; border: none; border-radius: 14px;
-          font-family: 'Georgia', serif; font-size: 17px; font-weight: 700;
+          color: #1e0d00; border: none; border-radius: 14px;
+          font-family: 'Playfair Display', Georgia, serif; font-size: 21px; font-weight: 800;
           cursor: pointer; letter-spacing: 0.02em;
           transition: opacity 0.18s, transform 0.15s;
           display: flex; align-items: center; justify-content: center; gap: 10px;
@@ -461,7 +460,7 @@ const [showSuggestions, setShowSuggestions] = useState(false)
             { icon: '✅', label: 'Satisfaction Guaranteed' },
           ].map(t => (
             <div className="co-trust-item" key={t.label}>
-              <span style={{ fontSize: 14 }}>{t.icon}</span>
+              <span style={{ fontSize: 21 }}>{t.icon}</span>
               {t.label}
             </div>
           ))}
@@ -628,12 +627,12 @@ const [showSuggestions, setShowSuggestions] = useState(false)
               By proceeding, you agree to our{' '}
               <a href="#">Terms & Conditions</a> and <a href="#">Privacy Policy</a>.
             </p>
-
+            
             <button className="co-pay-btn" onClick={handlePayment} disabled={paying}>
               {paying ? (
                 <><span className="co-spinner" /> Processing Payment…</>
               ) : (
-                <>🔒 {ctaLabel[type]} — {plan.discountedPrice}/-</>
+                <>{ctaLabel[type]}</>
               )}
             </button>
           </div>

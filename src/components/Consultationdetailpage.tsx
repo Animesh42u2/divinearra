@@ -360,14 +360,14 @@ export default function ConsultationDetailPage() {
         .about-grid {
           max-width: 1050px; margin: 0 auto;
           display: grid;
-          grid-template-columns: minmax(0, 340px) 1fr;
-          gap: 3rem;
+          grid-template-columns: minmax(0, 420px) 1fr;
+gap: 4.5rem;
           align-items: center;
           position: relative; z-index: 1;
         }
-        @media (max-width: 820px) {
-          .about-grid {
-            grid-template-columns: 1fr !important;
+       @media (max-width: 700px) {
+  .about-grid {
+    grid-template-columns: 1fr !important;
             justify-items: center;
             text-align: center;
             gap: 2rem;
@@ -668,94 +668,59 @@ export default function ConsultationDetailPage() {
           </div>
 
           {/* Scroll */}
-          <div style={{ maxWidth: 780, margin: '0 auto', position: 'relative' }}>
-            {/* Top roller */}
-            <div className="roller-wrap">
-              <div className="roller-stick" />
-              <div className="roller-knob roller-knob-l" />
-              <div className="roller-knob roller-knob-r" />
-            </div>
+          <div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(min(180px, 100%), 1fr))',
+  gap: '1.25rem',
+  maxWidth: 1100,
+  margin: '0 auto',
+}}>
+  {consultation.whatsInside.map((item, i) => {
+    const Icon = (LucideIcons as unknown as Record<string, React.FC<{ size?: number; color?: string; strokeWidth?: number }>>)[item?.icon]
+    return (
+      <div key={i} style={{
+        background: 'rgba(255,255,255,0.12)',
+        border: '1px solid rgba(255,255,255,0.25)',
+        borderRadius: 16,
+        padding: '1.5rem 1.25rem',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '0.75rem',
+      }}>
+        {/* Icon */}
+        <div style={{
+          width: 44, height: 44, borderRadius: '50%',
+          background: 'linear-gradient(135deg, #ec9837, #e79634)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.3)', flexShrink: 0,
+        }}>
+          {Icon ? <Icon size={20} color="#fff" strokeWidth={1.8} /> : null}
+        </div>
 
-            <div className="parchment">
-              <div className="kg">
+        {/* Title */}
+        <div style={{
+          fontFamily: "'Playfair Display', serif",
+          fontSize: 'clamp(0.9rem, 1.5vw, 1.05rem)',
+          fontWeight: 700, color: '#fff', lineHeight: 1.3,
+        }}>
+          {item?.title}
+        </div>
 
-                {/* ── ROW 1 ── */}
-                <div className="kg-house kg-corner-tl" style={{ gridColumn: 1, gridRow: 1 }} />
+        {/* Divider */}
+        <div style={{ width: 28, height: 2, background: '#c8791a', borderRadius: 1 }} />
 
-                <div className="kg-house" style={{ gridColumn: 2, gridRow: 1 }}>
-                  <div className="kg-icon">
-                    {(() => { const Icon = (LucideIcons as unknown as Record<string, React.FC<{ size?: number; color?: string; strokeWidth?: number }>>)[consultation.whatsInside[0]?.icon]; return Icon ? <Icon size={16} color="#fff" strokeWidth={1.8} /> : null })()}
-                  </div>
-                  <div className="kg-title">{consultation.whatsInside[0]?.title}</div>
-                  <div className="kg-line" />
-                  <div className="kg-desc">{consultation.whatsInside[0]?.description}</div>
-                </div>
-
-                <div className="kg-house" style={{ gridColumn: 3, gridRow: 1 }}>
-                  <div className="kg-icon">
-                    {(() => { const Icon = (LucideIcons as unknown as Record<string, React.FC<{ size?: number; color?: string; strokeWidth?: number }>>)[consultation.whatsInside[1]?.icon]; return Icon ? <Icon size={16} color="#fff" strokeWidth={1.8} /> : null })()}
-                  </div>
-                  <div className="kg-title">{consultation.whatsInside[1]?.title}</div>
-                  <div className="kg-line" />
-                  <div className="kg-desc">{consultation.whatsInside[1]?.description}</div>
-                </div>
-
-                <div className="kg-house kg-corner-tr" style={{ gridColumn: 4, gridRow: 1 }} />
-
-                {/* ── ROW 2 ── */}
-                <div className="kg-house" style={{ gridColumn: 1, gridRow: 2 }}>
-                  <div className="kg-icon">
-                    {(() => { const Icon = (LucideIcons as unknown as Record<string, React.FC<{ size?: number; color?: string; strokeWidth?: number }>>)[consultation.whatsInside[2]?.icon]; return Icon ? <Icon size={16} color="#fff" strokeWidth={1.8} /> : null })()}
-                  </div>
-                  <div className="kg-title">{consultation.whatsInside[2]?.title}</div>
-                  <div className="kg-line" />
-                  <div className="kg-desc">{consultation.whatsInside[2]?.description}</div>
-                </div>
-
-                <div className="kg-center" style={{ gridColumn: '2/4', gridRow: 2 }}>
-                  <svg className="kg-center-diag" viewBox="0 0 100 100" preserveAspectRatio="none">
-                    <line x1="0" y1="0" x2="100" y2="100" stroke="#3a5070" strokeWidth="1.2" />
-                    <line x1="100" y1="0" x2="0" y2="100" stroke="#3a5070" strokeWidth="1.2" />
-                  </svg>
-                  <div className="kg-tri kg-tri-t"><span className="kg-brand">Divine</span></div>
-                  <div className="kg-tri kg-tri-b"><span className="kg-brand">Arra</span></div>
-                  <div className="kg-tri kg-tri-l"><span className="kg-brand">Vedic</span></div>
-                  <div className="kg-tri kg-tri-r"><span className="kg-brand">Jyotish</span></div>
-                </div>
-
-                <div className="kg-house" style={{ gridColumn: 4, gridRow: 2 }}>
-                  <div className="kg-icon">
-                    {(() => { const Icon = (LucideIcons as unknown as Record<string, React.FC<{ size?: number; color?: string; strokeWidth?: number }>>)[consultation.whatsInside[3]?.icon]; return Icon ? <Icon size={16} color="#fff" strokeWidth={1.8} /> : null })()}
-                  </div>
-                  <div className="kg-title">{consultation.whatsInside[3]?.title}</div>
-                  <div className="kg-line" />
-                  <div className="kg-desc">{consultation.whatsInside[3]?.description}</div>
-                </div>
-
-                {/* ── ROW 3 ── */}
-                <div className="kg-house kg-corner-bl" style={{ gridColumn: 1, gridRow: 3 }} />
-
-                <div className="kg-house kg-item5" style={{ gridColumn: '2/4', gridRow: 3 }}>
-                  <div className="kg-icon">
-                    {(() => { const Icon = (LucideIcons as unknown as Record<string, React.FC<{ size?: number; color?: string; strokeWidth?: number }>>)[consultation.whatsInside[4]?.icon]; return Icon ? <Icon size={16} color="#fff" strokeWidth={1.8} /> : null })()}
-                  </div>
-                  <div className="kg-title">{consultation.whatsInside[4]?.title}</div>
-                  <div className="kg-line" />
-                  <div className="kg-desc">{consultation.whatsInside[4]?.description}</div>
-                </div>
-
-                <div className="kg-house kg-corner-br" style={{ gridColumn: 4, gridRow: 3 }} />
-
-              </div>
-            </div>
-
-            {/* Bottom roller */}
-            <div className="roller-wrap">
-              <div className="roller-stick" />
-              <div className="roller-knob roller-knob-l" />
-              <div className="roller-knob roller-knob-r" />
-            </div>
-          </div>
+        {/* Description */}
+        <div style={{
+          fontSize: 'clamp(0.78rem, 1.2vw, 0.88rem)',
+          color: 'rgba(255,255,255,0.82)',
+          lineHeight: 1.65,
+        }}>
+          {item?.description}
+        </div>
+      </div>
+    )
+  })}
+</div>
         </div>
       </section>
 
@@ -811,7 +776,6 @@ export default function ConsultationDetailPage() {
                   <div style={{ position: 'relative', background: '#f5e8cc' }}>
                     <div className="fw-card-img-inner" style={{ background: t.bg }}>
                       <div className="fw-book-cover" style={{ background: t.cover }}>
-                        <span className="fw-book-brand" style={{ color: t.brand }}>Astro Aaditya Narayan</span>
                         <span className="fw-book-title">{labels[i % labels.length]}</span>
                         <div className="fw-book-line" />
                         <span className="fw-book-sub" style={{ color: t.sub }}>{subtags[i % subtags.length]}</span>
@@ -1091,15 +1055,15 @@ export default function ConsultationDetailPage() {
       </section>
 
       {/* ── ABOUT ── */}
-      <section style={{ background: `linear-gradient(135deg, ${AMBER_DARK} 0%, ${AMBER} 100%)`, padding: 'clamp(2.5rem,6vw,5rem) clamp(1rem,3vw,1.5rem)', overflow: 'hidden', position: 'relative' }}>
+      <section style={{ background: `linear-gradient(135deg, ${AMBER_DARK} 0%, ${AMBER} 100%)`, padding: 'clamp(4rem,8vw,7rem) clamp(1.5rem,5vw,3rem)', overflow: 'hidden', position: 'relative' }}>
         <div style={{ position: 'absolute', top: -80, right: -80, width: 320, height: 320, borderRadius: '50%', background: 'rgba(255,255,255,0.05)', pointerEvents: 'none' }} />
         <div style={{ position: 'absolute', bottom: -60, left: -60, width: 220, height: 220, borderRadius: '50%', background: 'rgba(255,255,255,0.04)', pointerEvents: 'none' }} />
 
         <div className="about-grid">
-          <div className="about-photo" style={{ position: 'relative', width: '100%', maxWidth: 340 }}>
+          <div className="about-photo" style={{ position: 'relative', width: '100%', maxWidth: 420 }}>
             <img
               src="/Aaditya.png" alt="Astro Aaditya Narayan"
-              style={{ width: '100%', height: 'clamp(240px, 46vw, 440px)', objectFit: 'cover', objectPosition: 'top center', display: 'block', borderRadius: 18 }}
+              style={{ width: '100%', height: 'clamp(280px, 50vw, 560px)', objectFit: 'cover', objectPosition: 'top center', display: 'block', borderRadius: 18 }}
             />
           </div>
 
@@ -1109,10 +1073,10 @@ export default function ConsultationDetailPage() {
                 📜 Know Your Astrologer
               </span>
             </div>
-            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.2rem, 2.5vw, 1.9rem)', color: '#fff', marginBottom: '0.9rem', lineHeight: 1.2 }}>
+            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.6rem, 3vw, 2.4rem)', color: '#fff', marginBottom: '0.9rem', lineHeight: 1.2 }}>
               Meet Astro Aaditya Narayan
             </h2>
-            <p style={{ color: 'rgba(255,255,255,0.85)', lineHeight: 1.75, fontSize: 'clamp(0.8rem,1.5vw,0.88rem)', marginBottom: '1.1rem' }}>
+            <p style={{ color: 'rgba(255,255,255,0.85)', lineHeight: 1.75, fontSize: 'clamp(0.95rem,1.8vw,1.05rem)', marginBottom: '1.1rem' }}>
               Astro Aaditya Narayan is the guiding force behind Divine Arra — helping people understand their kundali, planetary influences, karmic patterns, and remedies through years of Vedic astrology practice. His consultations are clear, compassionate, and practical, bringing awareness and direction rather than fear.
             </p>
             <blockquote style={{
@@ -1120,15 +1084,15 @@ export default function ConsultationDetailPage() {
               borderLeft: '3px solid rgba(255,255,255,0.5)', borderRadius: 8,
               padding: '0.75rem 1rem', marginBottom: '1.4rem',
               fontStyle: 'italic', color: 'rgba(255,255,255,0.88)',
-              fontSize: 'clamp(0.78rem,1.4vw,0.85rem)', lineHeight: 1.65,
+              fontSize: 'clamp(0.9rem,1.6vw,1rem)', lineHeight: 1.65,
             }}>
               "Astrology is not about fear — it is about awareness, alignment, and awakening your inner power."
             </blockquote>
             <div className="about-stats" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.55rem' }}>
               {[['100K+','Consultations Delivered'],['7+','Years of Experience'],['59+','Years of Legacy'],['8+','Professional Awards'],['30K+','Hours of Expert Guidance']].map(([v, l]) => (
                 <div key={l} style={{ background: 'rgba(255,255,255,0.11)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 8, padding: '0.5rem', textAlign: 'center' }}>
-                  <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(0.8rem,1.5vw,1rem)', fontWeight: 800, color: '#fff' }}>{v}</div>
-                  <div style={{ fontSize: 'clamp(0.5rem,1vw,0.6rem)', color: 'rgba(255,255,255,0.65)', marginTop: 2, textTransform: 'uppercase', letterSpacing: '0.07em' }}>{l}</div>
+                  <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1rem,1.8vw,1.2rem)', fontWeight: 800, color: '#fff' }}>{v}</div>
+                  <div style={{ fontSize: 'clamp(0.6rem,1vw,0.68rem)', color: 'rgba(255,255,255,0.65)', marginTop: 2, textTransform: 'uppercase', letterSpacing: '0.07em' }}>{l}</div>
                 </div>
               ))}
             </div>
@@ -1191,7 +1155,7 @@ export default function ConsultationDetailPage() {
           <div style={{ animation: 'ctaFadeUp 0.6s ease both 0.5s' }}>
             <div className="cta-btn-wrap">
               <div className="cta-pulse-ring" />
-              <Link to={`/checkout/consultation/${slug}`} state={{ planIndex: 0 }} className="cta-btn">Book Your Session →</Link>
+              <a href="#pricing" className="cta-btn">Book Your Session →</a>
             </div>
           </div>
           <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 'clamp(0.62rem,1.5vw,0.75rem)', marginTop: '1.2rem', letterSpacing: '0.04em', animation: 'ctaFadeUp 0.6s ease both 0.65s' }}>

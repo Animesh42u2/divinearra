@@ -293,7 +293,7 @@ const styles: Record<string, React.CSSProperties> = {
     padding: 'clamp(40px, 8vw, 80px) clamp(16px, 6%, 80px)' as unknown as string,
     background: '#fff',
     textAlign: 'center',
-    fontFamily: 'sans-serif',
+    fontFamily: "'Playfair Display', Georgia, serif",
     overflow: 'hidden',
   },
   eyebrow: {
@@ -307,7 +307,7 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: 'clamp(22px, 4vw, 34px)' as unknown as string,
     fontWeight: 700,
     margin: '0 0 8px',
-    fontFamily: 'Georgia, serif',
+    fontFamily: "'Playfair Display', Georgia, serif",
     color: '#1a0a00',
     lineHeight: 1.3,
   },
@@ -368,7 +368,7 @@ const styles: Record<string, React.CSSProperties> = {
     lineHeight: 1.8,
     color: '#4a2006',
     fontStyle: 'italic',
-    fontFamily: 'Georgia, serif',
+    fontFamily: "'Playfair Display', Georgia, serif",
     marginBottom: 'clamp(24px, 4vw, 36px)' as unknown as string,
   },
   author: {
@@ -403,6 +403,7 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: 15,
     color: '#4a2006',
     textAlign: 'left',
+    fontFamily: "'Playfair Display', Georgia, serif",
   },
   authorphoto: {
     fontSize: 12,

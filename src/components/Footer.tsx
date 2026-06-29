@@ -31,7 +31,8 @@ export default function Footer() {
     <footer style={{
       background: 'linear-gradient(180deg, #1a0a00 0%, #2d1200 40%, #1a0a00 100%)',
       color: '#e8c97a',
-      fontFamily: 'Georgia, serif',
+      fontFamily: "'Playfair Display', Georgia, serif",
+
       borderTop: '1px solid #c47a1e',
     }}>
       <style>{`
@@ -42,7 +43,8 @@ export default function Footer() {
           color: #c8a55a;
           text-decoration: none;
           font-size: 14px;
-          font-family: sans-serif;
+          font-family: 'Playfair Display', Georgia, serif;
+
           padding: 5px 0;
           transition: color 0.2s, padding-left 0.2s;
         }
@@ -55,7 +57,7 @@ export default function Footer() {
           flex-shrink: 0;
         }
         .footer-col-title {
-          font-family: 'Georgia', serif;
+          font-family: 'Playfair Display', Georgia, serif;
           font-size: 17px;
           font-weight: 700;
           color: #e8c97a;
@@ -68,6 +70,7 @@ export default function Footer() {
           gap: 10px;
           color: #c8a55a;
           font-family: sans-serif;
+
           font-size: 14px;
           line-height: 1.6;
           margin-bottom: 14px;
@@ -81,7 +84,8 @@ export default function Footer() {
         .footer-bottom {
           text-align: center;
           padding: 18px 5%;
-          font-family: sans-serif;
+          font-family: 'Playfair Display', Georgia, serif;
+
           font-size: 13px;
           color: #c8a55a;
           border-top: 1px solid rgba(196,122,30,0.3);
@@ -160,7 +164,8 @@ export default function Footer() {
             <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 18, cursor: 'pointer' }}
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
               <img src="/logo.jpeg" alt="Divine Arra" style={{ width: 36, height: 36, objectFit: 'contain' }} />
-              <span style={{ fontFamily: 'Georgia, serif', fontSize: 17, fontWeight: 700, color: '#e8c97a', letterSpacing: '0.08em' }}>Divine Arra</span>
+              <span style={{ fontFamily: "'Playfair Display', Georgia, serif",
+ fontSize: 17, fontWeight: 700, color: '#e8c97a', letterSpacing: '0.08em' }}>Divine Arra</span>
             </div>
             <p style={{ color: '#b89060', fontFamily: 'sans-serif', fontSize: 14, lineHeight: 1.75, margin: 0 }}>
               Divine Arra blends traditional wisdom with a modern, compassionate approach to guide

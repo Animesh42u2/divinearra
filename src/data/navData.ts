@@ -25,8 +25,8 @@ export const navLinks = [
     dropdown: [
       { label: "Personal Consultation", path: "/consultation/personal" },
       { label: "Couple Consultation", path: "/consultation/couple" },
-      { label: "Gemstone & Rudraksha Consultation", path: "/consultation/gemstone-rudraksha" },
-      { label: "Tarot Card Reading", path: "/consultation/tarot-card-reading" },
+      // { label: "Gemstone & Rudraksha Consultation", path: "/consultation/gemstone-rudraksha" },
+      // { label: "Tarot Card Reading", path: "/consultation/tarot-card-reading" },
     ],
   },
   // {

@@ -193,6 +193,8 @@ const allConsultations = [
     tag: 'popular',
     icon: '🔮',
     duration: '15–30 Min',
+    rating: '4.9',
+    reviews: 1847,
   },
   {
     slug: 'couple',
@@ -204,6 +206,8 @@ const allConsultations = [
     tag: 'popular',
     icon: '💑',
     duration: '30–60 Min',
+    rating: '5.0',
+    reviews: 2134,
   },
   {
     slug: 'tarot-card-reading',
@@ -215,6 +219,8 @@ const allConsultations = [
     tag: 'trending',
     icon: '🃏',
     duration: '15–45 Min',
+    rating: '4.8',
+    reviews: 1623,
   },
   {
     slug: 'gemstone-rudraksha',
@@ -226,6 +232,8 @@ const allConsultations = [
     tag: 'trending',
     icon: '💎',
     duration: '20–40 Min',
+    rating: '4.9',
+    reviews: 1756,
   },
 ]
 
@@ -318,7 +326,7 @@ export default function ConsultationsPage() {
           backdrop-filter: blur(8px); display: inline-block; align-self: flex-start;
         }
         .cons-card-title {
-          font-family: 'Georgia', serif; font-size: clamp(15px,2vw,18px);
+          font-family: 'Playfair Display', Georgia, serif; font-size: clamp(15px,2vw,18px);
           font-weight: 700; color: #1a0a00; margin: 0; line-height: 1.3;
         }
         .cons-card-stars { display: flex; align-items: center; gap: 3px; }
@@ -330,7 +338,7 @@ export default function ConsultationsPage() {
         }
         .cons-card-meta { display: flex; align-items: center; gap: 6px; font-family: sans-serif; font-size: 11px; color: #a08060; }
         .cons-card-price-row { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; }
-        .cons-card-price { font-family: Georgia, serif; font-size: clamp(18px,2.5vw,22px); font-weight: 700; color: #c47a1e; }
+        .cons-card-price { font-family: 'Playfair Display', Georgia, serif; font-size: clamp(18px,2.5vw,22px); font-weight: 700; color: #c47a1e; }
         .cons-card-original { font-family: sans-serif; font-size: 12px; color: #b09070; text-decoration: line-through; }
         .cons-card-btn {
           margin-top: 6px; padding: 10px 18px; border-radius: 12px; border: none;
@@ -356,7 +364,7 @@ export default function ConsultationsPage() {
           color: #e8c97a; font-family: sans-serif; margin: 0 0 18px; opacity: 0.9;
         }
         .ch-hero-h1 {
-          font-size: clamp(22px,5vw,52px); font-family: Georgia, serif;
+          font-size: clamp(22px,5vw,52px); font-family: 'Playfair Display', Georgia, serif;
           font-weight: 800; margin: 0 0 16px; line-height: 1.2; color: #fff;
         }
         .ch-hero-sub {
@@ -373,7 +381,7 @@ export default function ConsultationsPage() {
           text-align: center; backdrop-filter: blur(6px);
         }
         .ch-stat-val {
-          font-family: Georgia, serif; font-size: clamp(0.9rem,2vw,1.2rem);
+          font-family: 'Playfair Display', Georgia, serif; font-size: clamp(0.9rem,2vw,1.2rem);
           font-weight: 800; color: #fff;
         }
         .ch-stat-lbl {
@@ -497,7 +505,7 @@ export default function ConsultationsPage() {
       >
         <div style={{ textAlign: 'center', marginBottom: 40 }}>
           <p className="section-eyebrow">☽ &nbsp; Choose Your Session &nbsp; ☾</p>
-          <h2 style={{ fontFamily: 'Georgia,serif', fontSize: 'clamp(22px,3.2vw,34px)', fontWeight: 700, color: '#1a0a00', margin: '0 0 12px' }}>
+          <h2 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 'clamp(22px,3.2vw,34px)', fontWeight: 700, color: '#1a0a00', margin: '0 0 12px' }}>
             Your Guidance, Your Way.
           </h2>
           <p style={{ fontFamily: 'sans-serif', fontSize: 14, color: '#7a5030', margin: '0 auto', lineHeight: 1.7, maxWidth: 460 }}>
@@ -543,7 +551,7 @@ export default function ConsultationsPage() {
                     <h3 className="cons-card-title">{c.title}</h3>
                     <div className="cons-card-stars">
                       {[1,2,3,4,5].map(s => <StarIcon key={s} />)}
-                      <span>5.0 · 200+ reviews</span>
+                      <span>{c.rating} · {c.reviews}+ reviews</span>
                     </div>
                     <p className="cons-card-desc">{c.desc}</p>
                     <div className="cons-card-meta">

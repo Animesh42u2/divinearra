@@ -57,23 +57,24 @@ const globalStyles = `
     50%       { transform: translateY(-18px) scale(1.04); }
   }
   @keyframes accentPulse {
-    0%, 100% { opacity: 0.35; transform: scaleX(0.6); }
-    50%       { opacity: 1;    transform: scaleX(1); }
+    0%, 100% { opacity: 0.4; transform: scaleX(0.6); }
+    50%       { opacity: 1;   transform: scaleX(1); }
   }
   @keyframes glowBreath {
-    0%, 100% { opacity: 0.12; }
-    50%       { opacity: 0.28; }
+    0%, 100% { opacity: 0.18; }
+    50%       { opacity: 0.38; }
   }
   @keyframes cardReveal {
     from { opacity: 0; transform: translateY(22px); }
     to   { opacity: 1; transform: translateY(0); }
   }
 
+  /* Light ghee — pale golden-yellow, warm cream */
   .st-section {
-    background: linear-gradient(120deg, #7a3e00, #c47a1e, #e8a63a, #f0b94a, #c47a1e, #7a3e00);
-    background-size: 300% 300%;
-    animation: gradientShift 8s ease infinite;
-  }
+  background: linear-gradient(120deg, #f5ede0, #c8790a, #f5ede0, #d4920f, #f5ede0, #c8790a);
+  background-size: 300% 300%;
+  animation: gradientShift 8s ease infinite;
+}
 
   .st-eyebrow {
     opacity: 0;
@@ -96,7 +97,6 @@ const globalStyles = `
     animation: cardReveal 0.6s cubic-bezier(0.34,1.56,0.64,1) forwards;
   }
 
-  /* Always-on glow, staggered per card index via inline animationDelay */
   .st-card-glow {
     position: absolute;
     top: 0; left: 50%;
@@ -104,16 +104,15 @@ const globalStyles = `
     width: 80%;
     height: 60%;
     border-radius: 50%;
-    background: radial-gradient(ellipse, rgba(255,240,160,0.45) 0%, transparent 70%);
+    background: radial-gradient(ellipse, rgba(255,255,200,0.6) 0%, transparent 70%);
     pointer-events: none;
     filter: blur(18px);
     animation: glowBreath 4s ease-in-out infinite;
   }
 
-  /* Always-on accent bar pulse, staggered via inline animationDelay */
   .st-accent-bar {
     height: 2px;
-    background: rgba(26,8,0,0.5);
+    background: rgba(140, 85, 0, 0.4);
     border-radius: 2px;
     margin: 18px auto 0;
     width: 28px;
@@ -145,8 +144,6 @@ function StatCard({
   }, [triggered, delay])
 
   const lines = label.split('\n')
-
-  // Stagger the always-on animations per card
   const glowDelay = `${index * 0.6}s`
   const barDelay  = `${index * 0.4}s`
 
@@ -163,13 +160,8 @@ function StatCard({
         overflow: 'hidden',
       }}
     >
-      {/* Always-on breathing glow behind the number */}
-      <div
-        className="st-card-glow"
-        style={{ animationDelay: glowDelay }}
-      />
+      <div className="st-card-glow" style={{ animationDelay: glowDelay }} />
 
-      {/* Vertical divider */}
       {index > 0 && (
         <div
           className="st-divider"
@@ -177,19 +169,17 @@ function StatCard({
             position: 'absolute',
             left: 0, top: '15%', height: '70%',
             width: 1,
-            background: 'linear-gradient(to bottom, transparent, rgba(26,8,0,0.2), transparent)',
+            background: 'linear-gradient(to bottom, transparent, rgba(140,85,0,0.2), transparent)',
           }}
         />
       )}
 
-      {/* Number */}
       <span
-        className="st-num"
         style={{
           fontFamily: "'Playfair Display', Georgia, serif",
           fontSize: 'clamp(40px, 5.5vw, 58px)',
           fontWeight: 800,
-          color: hovered ? '#ffffff' : '#1a0800',
+          color: hovered ? '#3d1f00' : '#7a4a00',
           lineHeight: 1,
           letterSpacing: '-2px',
           display: 'block',
@@ -200,12 +190,11 @@ function StatCard({
         {value}{suffix}
       </span>
 
-      {/* Label */}
       <div style={{
         fontSize: 10.5,
         letterSpacing: '0.18em',
         textTransform: 'uppercase',
-        color: hovered ? 'rgba(255,255,255,0.75)' : 'rgba(26,8,0,0.55)',
+        color: hovered ? '#4a2800' : 'rgba(110, 65, 0, 0.7)',
         lineHeight: 1.65,
         marginTop: 10,
         transition: 'color 0.3s ease',
@@ -216,11 +205,7 @@ function StatCard({
         ))}
       </div>
 
-      {/* Always-on pulsing accent bar */}
-      <div
-        className="st-accent-bar"
-        style={{ animationDelay: barDelay }}
-      />
+      <div className="st-accent-bar" style={{ animationDelay: barDelay }} />
     </div>
   )
 }
@@ -253,11 +238,10 @@ export default function Stats() {
     >
       <style>{globalStyles}</style>
 
-      {/* Ambient orbs */}
       {[
-        { cls: 'st-orb-1', w: 320, h: 320, bg: 'rgba(255,240,180,0.18)', top: -80, left: -60 },
-        { cls: 'st-orb-2', w: 260, h: 260, bg: 'rgba(120,50,0,0.22)',    bottom: -60, right: -40 },
-        { cls: 'st-orb-3', w: 180, h: 180, bg: 'rgba(255,220,100,0.12)', top: '40%', left: '55%' },
+        { cls: 'st-orb-1', w: 320, h: 320, bg: 'rgba(255,245,150,0.35)', top: -80,   left: -60 },
+        { cls: 'st-orb-2', w: 260, h: 260, bg: 'rgba(210,150,20,0.20)',  bottom: -60, right: -40 },
+        { cls: 'st-orb-3', w: 180, h: 180, bg: 'rgba(255,255,180,0.25)', top: '40%', left: '55%' },
       ].map(({ cls, w, h, bg, ...pos }) => (
         <div
           key={cls}
@@ -274,13 +258,12 @@ export default function Stats() {
         />
       ))}
 
-      {/* Eyebrow */}
       <p
         className="st-eyebrow"
         style={{
           fontSize: 11,
           letterSpacing: '0.28em',
-          color: 'rgba(255,255,255,0.8)',
+          color: 'rgba(100, 58, 0, 0.75)',
           textTransform: 'uppercase',
           fontWeight: 600,
           marginBottom: 14,
@@ -291,36 +274,33 @@ export default function Stats() {
         Our Impact
       </p>
 
-      {/* Heading */}
       <h2
         className="st-heading"
         style={{
           fontFamily: "'Playfair Display', Georgia, serif",
           fontSize: 'clamp(24px, 3.5vw, 36px)',
           fontWeight: 800,
-          color: '#1a0800',
+          color: '#5a3200',
           margin: '0 0 10px',
           letterSpacing: '-0.5px',
           position: 'relative',
         }}
       >
         Trusted By{' '}
-        <em style={{ fontStyle: 'italic', color: '#fff8ee' }}>Thousands</em>
+        <em style={{ fontStyle: 'italic', color: '#3d1f00' }}>Thousands</em>
       </h2>
 
-      {/* Divider rule */}
       <div
         className="st-rule"
         style={{
           height: 2,
-          background: 'rgba(26,8,0,0.3)',
+          background: 'rgba(120, 70, 0, 0.3)',
           margin: '0 auto 56px',
           borderRadius: 2,
           position: 'relative',
         }}
       />
 
-      {/* Stats grid */}
       <div
         className="st-grid"
         style={{

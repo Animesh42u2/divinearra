@@ -75,7 +75,7 @@ export default function Newsletter() {
           font-size: 28px;
           font-weight: 700;
           margin: 0 0 10px;
-          font-family: 'Georgia', serif;
+          font-family: 'Playfair Display', Georgia, serif;;
           color: #e8c97a;
           text-shadow: 0 0 18px rgba(232,201,122,0.3);
           letter-spacing: 0.04em;
@@ -83,7 +83,7 @@ export default function Newsletter() {
         .newsletter-sub {
           color: #b89060;
           margin-bottom: 32px;
-          font-family: sans-serif;
+          font-family: 'Playfair Display', Georgia, serif;;
           font-size: 14px;
           line-height: 1.7;
           max-width: 480px;
@@ -103,7 +103,7 @@ export default function Newsletter() {
           border: 1px solid #c47a1e;
           border-right: none;
           font-size: 14px;
-          font-family: sans-serif;
+          font-family: 'Playfair Display', Georgia, serif;;
           outline: none;
           background: rgba(196,122,30,0.1);
           color: #e8c97a;
@@ -126,7 +126,7 @@ export default function Newsletter() {
           display: flex;
           align-items: center;
           gap: 6px;
-          font-family: sans-serif;
+          font-family: 'Playfair Display', Georgia, serif;;
           font-size: 14px;
           white-space: nowrap;
           box-shadow: 0 4px 16px rgba(196,122,30,0.35);
@@ -142,7 +142,7 @@ export default function Newsletter() {
         }
         .newsletter-message {
           margin-top: 16px;
-          font-family: sans-serif;
+          font-family: 'Playfair Display', Georgia, serif;;
           font-size: 13px;
           min-height: 18px;
         }
