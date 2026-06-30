@@ -6,7 +6,7 @@ import Testimonials from './Testimonials'
 import Navbar from './Navbar'
 import Footer from './Footer'
 import { BorderBeam } from './BorderBeam'
-import { motion, useScroll, useSpring, useTransform } from 'framer-motion'
+import { motion} from 'framer-motion'
 import { useRef } from 'react'
 
 // ─── THEME ───────────────────────────────────────────────────
@@ -29,14 +29,41 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 
 function HowItWorks({ steps }: { steps: { title: string; description: string }[] }) {
   const sectionRef = useRef<HTMLDivElement>(null)
-  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start center', 'end center'] })
-  const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 30 })
-  const lineHeight = useTransform(smoothProgress, [0, 1], ['0%', '100%'])
-  const cometTop = useTransform(smoothProgress, [0, 1], ['0%', '100%'])
+
+  const icons = [
+    <svg viewBox="0 0 48 48" fill="none">
+      <rect x="9" y="12" width="24" height="22" rx="3" fill={AMBER_DARK} />
+      <rect x="9" y="12" width="24" height="6" rx="3" fill={AMBER_DARK} />
+      <line x1="14" y1="9" x2="14" y2="15" stroke={AMBER_DARK} strokeWidth="2.5" strokeLinecap="round" />
+      <line x1="28" y1="9" x2="28" y2="15" stroke={AMBER_DARK} strokeWidth="2.5" strokeLinecap="round" />
+      <rect x="13" y="22" width="4" height="4" rx="1" fill="#fff" />
+      <rect x="19" y="22" width="4" height="4" rx="1" fill="#fff" />
+      <rect x="13" y="28" width="4" height="4" rx="1" fill="#fff" />
+      <circle cx="32" cy="33" r="9" fill={AMBER} stroke="#fff" strokeWidth="2" />
+      <path d="M32 28v5l3 3" stroke="#fff" strokeWidth="2" strokeLinecap="round" />
+    </svg>,
+    <svg viewBox="0 0 48 48" fill="none">
+      <path d="M14 8h14l8 8v22a2 2 0 0 1-2 2H14a2 2 0 0 1-2-2V10a2 2 0 0 1 2-2z" fill={AMBER_DARK} />
+      <path d="M28 8v8h8" fill={AMBER_DARK} opacity="0.6" />
+      <line x1="17" y1="23" x2="29" y2="23" stroke="#fff" strokeWidth="2" strokeLinecap="round" />
+      <line x1="17" y1="28" x2="25" y2="28" stroke="#fff" strokeWidth="2" strokeLinecap="round" />
+      <circle cx="32" cy="33" r="9" fill={AMBER} stroke="#fff" strokeWidth="2" />
+      <circle cx="32" cy="30" r="2.4" fill="#fff" />
+      <path d="M27 37c0-3 2.5-5 5-5s5 2 5 5" stroke="#fff" strokeWidth="2" strokeLinecap="round" fill="none" />
+    </svg>,
+    <svg viewBox="0 0 48 48" fill="none">
+      <rect x="7" y="11" width="26" height="19" rx="3" fill={AMBER_DARK} />
+      <rect x="11" y="15" width="18" height="11" rx="1.5" fill="#fff" opacity="0.18" />
+      <line x1="20" y1="30" x2="20" y2="34" stroke={AMBER_DARK} strokeWidth="2.5" strokeLinecap="round" />
+      <line x1="13" y1="36" x2="27" y2="36" stroke={AMBER_DARK} strokeWidth="2.5" strokeLinecap="round" />
+      <circle cx="32" cy="33" r="9" fill={AMBER} stroke="#fff" strokeWidth="2" />
+      <path d="M28 30h8a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2l-2 2v-2h-4a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2z" fill="#fff" />
+    </svg>,
+  ]
 
   return (
-    <section ref={sectionRef} style={{ maxWidth: 900, margin: '0 auto', padding: 'clamp(2.5rem,6vw,5rem) clamp(1rem,4vw,1.5rem)' }}>
-      <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+    <section ref={sectionRef} style={{ maxWidth: 'var(--content-max)', margin: '0 auto', padding: 'clamp(2.5rem,6vw,5rem) clamp(1rem,4vw,1.5rem)' }}>
+      <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
         <p style={{ color: AMBER, fontWeight: 700, fontSize: '0.75rem', letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '0.6rem' }}>The Process</p>
         <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.3rem, 3vw, 2.1rem)', color: BROWN_TEXT }}>
           How It Works
@@ -44,142 +71,296 @@ function HowItWorks({ steps }: { steps: { title: string; description: string }[]
       </div>
 
       <style>{`
-      html, body {max-width: 100vw; }
-        /* ── How It Works responsive overrides ── */
-        .hiw-container { position: relative; }
+        html, body { max-width: 100vw; }
 
-        /* MOBILE: left-aligned single column */
-        @media (max-width: 600px) {
-          .hiw-line-track,
-          .hiw-line-fill,
-          .hiw-comet { left: 11px !important; transform: translateX(-50%) !important; }
+        .hiw-track-wrap { position: relative; }
 
-          .hiw-row   { justify-content: flex-start !important; padding-left: 2.75rem; }
-          .hiw-dot   { left: 0 !important; transform: translateY(-50%) translateX(0) !important; }
-          .hiw-card  {
-            width: 100% !important;
-            text-align: left !important;
-            margin-left: 0 !important;
-          }
+        .hiw-row3 {
+          display: flex;
+          align-items: flex-start;
+          justify-content: center;
+          gap: clamp(1.5rem, 4vw, 3rem);
+          position: relative;
         }
 
-        /* TABLET: reduce card width so they don't clip */
-        @media (min-width: 601px) and (max-width: 768px) {
-          .hiw-card { width: calc(50% - 36px) !important; }
+        .hiw-step {
+          flex: 1;
+          max-width: 300px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+          position: relative;
+          padding-top: 38px;
+        }
+          
+        .hiw-card {
+          position: relative;
+          background: linear-gradient(165deg, #fffdf8 0%, #fdf6e9 100%);
+          border-radius: 18px;
+          padding: 2.3rem 1.5rem 1.6rem;
+          width: 100%;
+          border: 1.5px solid transparent;
+          background-image: linear-gradient(165deg, #fffdf8 0%, #fdf6e9 100%),
+                             linear-gradient(135deg, ${AMBER} 0%, ${AMBER_DARK} 50%, ${AMBER_LIGHT} 100%);
+          background-origin: border-box;
+          background-clip: padding-box, border-box;
+          box-shadow: 0 1px 2px rgba(43,18,0,0.04), 0 12px 28px rgba(43,18,0,0.07);
+          transition: transform 0.35s cubic-bezier(0.22,1,0.36,1), box-shadow 0.35s ease, border-color 0.35s ease;
+          z-index: 5;
+        }
+        .hiw-step:hover .hiw-card {
+          transform: translateY(-8px);
+          box-shadow: 0 4px 10px rgba(43,18,0,0.06), 0 24px 48px rgba(200,121,26,0.18);
+          border-color: rgba(200,121,26,0.4);
+        }
+        .pc-chakra-wrap {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      min-height: 100%;
+      border-radius: 20px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      align-self: stretch;
+    }
+    .pc-chakra-img {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      opacity: 0.5;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .pc-slide-img2 {
+      position: relative;
+      z-index: 1;
+      width: 78%;
+      height: 92%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .pc-slide-img2 img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+        /* Badge — solid gradient fill, plain number, nothing else */
+        .hiw-badge {
+          width: 46px;
+          height: 46px;
+          border-radius: 50%;
+          background: linear-gradient(150deg, ${AMBER_DARK}, ${AMBER});
+          color: #fff;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 800;
+          font-size: 1.05rem;
+          font-family: 'Playfair Display', serif;
+          box-shadow: 0 0 0 5px #fdf6e9, 0 0 0 6px rgba(200,121,26,0.25), 0 6px 16px rgba(139,78,10,0.4);
+          position: absolute;
+          top: 17px;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          z-index: 10;
+          transition: transform 0.35s cubic-bezier(0.22,1,0.36,1);
+        }
+        .hiw-step:hover .hiw-badge { transform: translate(-50%, -50%) scale(1.1) rotate(-4deg); }
+
+        /* icon circle with dashed ring + sparkles */
+        .hiw-icon-wrap {
+          position: relative;
+          width: 96px; height: 96px;
+          margin: 0.5rem auto 0.9rem;
+        }
+        .hiw-icon-dashring {
+          position: absolute; inset: 0;
+          border-radius: 50%;
+          border: 1.5px dashed ${AMBER}77;
+          animation: hiwSpin 22s linear infinite;
+        }
+        @keyframes hiwSpin { from { transform: rotate(0); } to { transform: rotate(360deg); } }
+        .hiw-icon-circle {
+          position: absolute; inset: 10px;
+          border-radius: 50%;
+          background: radial-gradient(circle at 35% 30%, #fff 0%, ${AMBER}22 100%);
+          display: flex; align-items: center; justify-content: center;
+        }
+        .hiw-icon-circle svg { width: 48px; height: 48px; }
+        .hiw-sparkle {
+          position: absolute;
+          color: ${AMBER};
+          font-size: 10px;
+          opacity: 0.7;
+        }
+
+        /* ornamental divider */
+        .hiw-divider {
+          display: flex; align-items: center; justify-content: center;
+          gap: 0.4rem;
+          margin: 0.2rem 0 0.8rem;
+        }
+        .hiw-divider-line { width: 30px; height: 1px; background: ${AMBER}88; }
+        .hiw-divider-icon { color: ${AMBER}; font-size: 0.6rem; }
+
+        .hiw-card h3 {
+          color: ${BROWN_TEXT}; font-family: 'Playfair Display', serif;
+          font-size: clamp(0.95rem, 2vw, 1.1rem); margin: 0 0 0.6rem;
+        }
+        .hiw-card p {
+          color: ${BROWN_MID}; font-size: clamp(0.8rem, 1.5vw, 0.88rem);
+          line-height: 1.7; margin: 0 0 1rem;
+        }
+
+        .hiw-bottom-flourish {
+          display: flex; align-items: center; justify-content: center;
+          gap: 0.5rem;
+        }
+        .hiw-bottom-line { width: 26px; height: 1px; background: ${AMBER}66; }
+        .hiw-bottom-icon { color: ${AMBER}; font-size: 0.85rem; }
+
+        /* connecting line, centered exactly on the badges */
+        .hiw-line {
+          position: absolute;
+          top: 17px;
+          left: 16.666%; right: 16.666%;
+          height: 1.5px;
+          background: linear-gradient(90deg, transparent, ${AMBER}88 10%, ${AMBER}88 90%, transparent);
+          z-index: 0;
+        }
+        .hiw-line-dot {
+          position: absolute; top: 17px;
+          width: 7px; height: 7px; border-radius: 50%;
+          background: ${AMBER}; transform: translate(-50%,-50%);
+          box-shadow: 0 0 0 3px #fdf6e9;
+          z-index: 1;
+        }
+
+        /* premium traveling arrow — gold gradient stroke + pulsing glow + comet trail */
+        .hiw-arrow-wrap {
+          position: absolute;
+          top: 17px;
+          left: 16.666%;
+          width: 32px; height: 32px;
+          display: flex; align-items: center; justify-content: center;
+          transform: translate(-50%, -50%);
+          z-index: 2;
+          animation: hiwArrowMove 3.4s cubic-bezier(0.45,0,0.55,1) infinite;
+        }
+        .hiw-arrow-glow {
+          position: absolute;
+          inset: 0;
+          border-radius: 50%;
+          background: radial-gradient(circle, ${AMBER}55 0%, ${AMBER}00 70%);
+          filter: blur(3px);
+          animation: hiwArrowPulse 1.5s ease-in-out infinite;
+        }
+        .hiw-arrow-trail {
+          position: absolute;
+          top: 50%;
+          right: 100%;
+          width: 22px;
+          height: 1.5px;
+          background: linear-gradient(90deg, transparent, ${AMBER}99);
+          transform: translateY(-50%);
+        }
+        .hiw-arrow-wrap svg {
+          position: relative;
+          filter: drop-shadow(0 2px 5px rgba(139,78,10,0.5));
+        }
+        @keyframes hiwArrowPulse {
+          0%, 100% { transform: scale(0.8); opacity: 0.5; }
+          50%      { transform: scale(1.15); opacity: 1; }
+        }
+        @keyframes hiwArrowMove {
+          0%   { left: 16.666%; opacity: 0; }
+          8%   { opacity: 1; }
+          92%  { opacity: 1; }
+          100% { left: 83.333%; opacity: 0; }
+        }
+
+        @media (max-width: 768px) {
+          .hiw-row3 { flex-direction: column; align-items: center; gap: 2.75rem; }
+          .hiw-line, .hiw-line-dot, .hiw-arrow-wrap { display: none; }
+          .hiw-step { max-width: 380px; width: 100%; }
+        }
+
+        /* ── Big screen / laptop support ── */
+        @media (min-width: 1440px) {
+          .hiw-step { max-width: 340px; }
+        }
+        @media (min-width: 1920px) {
+          .hiw-step { max-width: 380px; }
         }
       `}</style>
 
-      <div className="hiw-container">
-        {/* static background line */}
-        <div className="hiw-line-track" style={{
-          position: 'absolute', left: '50%', top: 0, bottom: 0,
-          width: 2, background: `${AMBER}33`, transform: 'translateX(-50%)',
-        }} />
+      <div className="hiw-track-wrap">
+        <div className="hiw-line" />
+        <div className="hiw-line-dot" style={{ left: '33.333%' }} />
+        <div className="hiw-line-dot" style={{ left: '66.666%' }} />
+        <div className="hiw-arrow-wrap">
+          <div className="hiw-arrow-glow" />
+          <span className="hiw-arrow-trail" />
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <defs>
+              <linearGradient id="hiwArrowGrad" x1="0" y1="0" x2="24" y2="0">
+                <stop offset="0%" stopColor={AMBER_DARK} />
+                <stop offset="100%" stopColor={AMBER} />
+              </linearGradient>
+            </defs>
+            <path d="M9 6l6 6-6 6" stroke="url(#hiwArrowGrad)" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </div>
 
-        {/* animated progress line */}
-        <motion.div className="hiw-line-fill" style={{
-          position: 'absolute', left: '50%', top: 0,
-          width: 2, height: lineHeight,
-          background: `linear-gradient(to bottom, ${AMBER_DARK}, ${AMBER})`,
-          transform: 'translateX(-50%)',
-          boxShadow: `0 0 10px ${AMBER}88, 0 0 20px ${AMBER}44`,
-          borderRadius: 9999,
-          zIndex: 1,
-        }} />
+        <div className="hiw-row3">
+          {steps.map((step, i) => (
+            <motion.div
+              key={i}
+              className="hiw-step"
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.5, delay: i * 0.12 }}
+            >
+              <div className="hiw-badge">{i + 1}</div>
 
-        {/* traveling comet */}
-        <motion.div className="hiw-comet" style={{
-          position: 'absolute', left: '50%', top: cometTop,
-          translateX: '-50%', translateY: '-50%', zIndex: 3,
-        }}>
-          <motion.div
-            animate={{ scale: [1, 1.4, 1] }}
-            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-            style={{
-              width: 16, height: 16, borderRadius: '50%',
-              background: `radial-gradient(circle, ${AMBER} 0%, ${AMBER_LIGHT} 40%, transparent 70%)`,
-              boxShadow: `0 0 12px 4px ${AMBER}99, 0 0 24px 8px ${AMBER}55`,
-            }}
-          />
-        </motion.div>
+              <div className="hiw-card">
+                <div className="hiw-icon-wrap">
+                  <div className="hiw-icon-dashring" />
+                  <span className="hiw-sparkle" style={{ top: 2, left: 6 }}>✦</span>
+                  <span className="hiw-sparkle" style={{ bottom: 4, right: 2, fontSize: 8 }}>✦</span>
+                  <span className="hiw-sparkle" style={{ top: 10, right: -2, fontSize: 7 }}>✦</span>
+                  <div className="hiw-icon-circle">{icons[i % icons.length]}</div>
+                </div>
 
-        {steps.map((step, i) => {
-          const isLeft = i % 2 === 0
-          return (
-            <div key={i} className="hiw-row" style={{
-              display: 'flex',
-              justifyContent: isLeft ? 'flex-start' : 'flex-end',
-              marginBottom: '3rem',
-              position: 'relative',
-              alignItems: 'center',
-              width: '100%',
-            }}>
-              {/* dot */}
-              <motion.div
-                className="hiw-dot"
-                initial={{ scale: 0, opacity: 0 }}
-                whileInView={{ scale: 1, opacity: 1 }}
-                viewport={{ once: true, margin: '-60px' }}
-                transition={{ duration: 0.4, delay: i * 0.1, type: 'spring', stiffness: 200 }}
-                style={{
-                  position: 'absolute',
-                  left: 'calc(50% - 11px)',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  width: 22, height: 22,
-                  borderRadius: '50%',
-                  background: CREAM,
-                  border: `2px solid ${AMBER}`,
-                  boxShadow: `0 0 8px 3px ${AMBER}55, 0 0 18px 6px ${AMBER}22`,
-                  zIndex: 4,
-                }}
-              />
+                <div className="hiw-divider">
+                  <span className="hiw-divider-line" />
+                  <span className="hiw-divider-icon">❖</span>
+                  <span className="hiw-divider-line" />
+                </div>
 
-              {/* card */}
-              <motion.div
-                className="hiw-card"
-                initial={{ opacity: 0, x: isLeft ? -60 : 60 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: '-60px' }}
-                transition={{ duration: 0.6, delay: i * 0.1 + 0.1, ease: [0.25, 0.1, 0.25, 1] }}
-                whileHover={{ y: -4, boxShadow: `0 8px 28px ${AMBER}33` }}
-                style={{
-                  width: 'calc(50% - 48px)',
-                  background: '#fff', borderRadius: 14, padding: '1.25rem 1.5rem',
-                  border: `1px solid ${AMBER}33`,
-                  boxShadow: `0 4px 20px ${AMBER}15`,
-                  textAlign: isLeft ? 'right' : 'left',
-                  cursor: 'default',
-                }}
-              >
-                <h3 style={{ color: BROWN_TEXT, fontFamily: "'Playfair Display', serif", fontSize: 'clamp(0.9rem, 2vw, 1.05rem)', marginBottom: '0.4rem' }}>
-                  {step.title}
-                </h3>
-                <p style={{ color: BROWN_MID, fontSize: 'clamp(0.78rem, 1.5vw, 0.88rem)', lineHeight: 1.65, margin: 0 }}>
-                  {step.description}
-                </p>
-              </motion.div>
-            </div>
-          )
-        })}
+                <h3>{step.title}</h3>
+                <p>{step.description}</p>
+
+                <div className="hiw-bottom-flourish">
+                  <span className="hiw-bottom-line" />
+                  <span className="hiw-bottom-icon">❧</span>
+                  <span className="hiw-bottom-line" />
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
       </div>
     </section>
-  )
-}
-
-function CheckIcon({ included }: { included: boolean }) {
-  return (
-    <span style={{
-      display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-      width: 22, height: 22, borderRadius: '50%',
-      background: included ? `${AMBER}22` : 'rgba(180,60,60,0.1)',
-      color: included ? AMBER : '#cc3333',
-      fontSize: '0.78rem', flexShrink: 0,
-      border: `1px solid ${included ? AMBER + '66' : 'rgba(180,60,60,0.35)'}`,
-      fontWeight: 700,
-    }}>
-      {included ? '✓' : '✗'}
-    </span>
   )
 }
 
@@ -244,6 +425,8 @@ export default function ConsultationDetailPage() {
   const { slug } = useParams<{ slug: string }>()
   const consultation = getConsultationBySlug(slug ?? '')
   const [angle, setAngle] = useState(0)
+  const [callDuration, setCallDuration] = useState<'15' | '30'>('15')
+  
 
   useEffect(() => {
     const t = setInterval(() => setAngle(a => (a + 0.3) % 360), 16)
@@ -263,6 +446,9 @@ export default function ConsultationDetailPage() {
       </div>
     )
   }
+  const selectedPlan = callDuration === '15'
+    ? consultation.pricingPlans[0]
+    : (consultation.pricingPlans[1] ?? consultation.pricingPlans[0])
 
   const allFeatureLabels: string[] = []
   consultation.pricingPlans.forEach(plan => {
@@ -276,6 +462,16 @@ export default function ConsultationDetailPage() {
           <Navbar />
 
       <style>{`
+        :root {
+          --content-max: 1100px;
+        }
+        @media (min-width: 1440px) {
+          :root { --content-max: 1280px; }
+        }
+        @media (min-width: 1920px) {
+          :root { --content-max: 1440px; }
+        }
+
         @keyframes fadeSlideUp {
           from { opacity: 0; transform: translateY(14px) }
           to   { opacity: 1; transform: translateY(0) }
@@ -284,25 +480,44 @@ export default function ConsultationDetailPage() {
 
         /* ── HERO ── */
         .cp-hero {
-          background: linear-gradient(135deg, #c47a1e 0%, #b8691a 100%);
-          color: #fff;
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          justify-content: space-between;
-          gap: 32px;
-          padding: clamp(36px,6vw,60px) clamp(20px, 8%, 100px) clamp(48px,7vw,70px);
-          min-height: clamp(340px,55vw,500px);
-          position: relative;
-          overflow: hidden;
-        }
-        .cp-hero-left  { flex: 1 1 0; min-width: 0; z-index: 2; }
-        .cp-hero-right {
-          flex-shrink: 0; position: relative;
-          width: clamp(150px, 30vw, 480px);
-          height: clamp(150px, 30vw, 480px);
-          display: flex; align-items: center; justify-content: center; z-index: 2;
-        }
+  background: linear-gradient(135deg, #c47a1e 0%, #b8691a 100%);
+  color: #fff;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;              /* was space-between */
+  gap: clamp(24px, 4vw, 56px);
+  padding: clamp(36px,6vw,90px) clamp(20px, 8%, 120px) clamp(48px,7vw,100px);
+  min-height: clamp(340px, 42vw, 640px); /* was capped at 500px */
+  position: relative;
+  overflow: hidden;
+}
+.cp-hero-left {
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 600px;                      /* was missing — text was growing unbounded */
+  z-index: 2;
+}
+.cp-hero-right {
+  flex-shrink: 0;
+  position: relative;
+  width: clamp(150px, 30vw, 560px);      /* was capped at 480px */
+  height: clamp(150px, 30vw, 560px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+  @media (min-width: 1440px) {
+  .cp-hero { padding-left: 100px; padding-right: 100px; }
+  .cp-hero-left { max-width: 680px; }
+  .cp-hero-right { width: clamp(280px, 26vw, 620px); height: clamp(280px, 26vw, 620px); }
+}
+  @media (min-width: 1920px) {
+  .cp-hero { padding-left: 160px; padding-right: 160px; }
+  .cp-hero-left { max-width: 760px; }
+  .cp-hero-right { width: clamp(320px, 24vw, 680px); height: clamp(320px, 24vw, 680px); }
+}
         .cp-chakra {
           position: absolute; top: 50%; left: 50%;
           width: 100%; height: 100%;
@@ -347,6 +562,9 @@ export default function ConsultationDetailPage() {
           grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
           gap: 1.25rem;
         }
+        @media (min-width: 1440px) {
+          .for-whom-grid { grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+        }
 
         /* ── PRICING ── */
         .pricing-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
@@ -377,6 +595,9 @@ gap: 4.5rem;
         }
         @media (max-width: 480px) {
           .about-stats { grid-template-columns: repeat(2, 1fr) !important; }
+        }
+        @media (min-width: 1440px) {
+          .about-grid { max-width: 1240px; gap: 5.5rem; }
         }
 
         /* ── KUNDLI / WHAT'S INSIDE ── */
@@ -546,13 +767,13 @@ gap: 4.5rem;
         }
 
         /* Hero stats */
-        .hero-stats-item {
-          background: rgba(255,255,255,0.15);
-          border: 1px solid rgba(255,255,255,0.28);
-          border-radius: 10;
-          padding: 0.5rem 0.9rem;
-          text-align: center;
-        }
+       .hero-stats-item {
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.28);
+  border-radius: 10px;   /* was 10 — invalid without unit */
+  padding: 0.5rem 0.9rem;
+  text-align: center;
+}
         @media (max-width: 380px) {
           .hero-stats-item { padding: 0.4rem 0.6rem; }
         }
@@ -560,6 +781,14 @@ gap: 4.5rem;
   .what-is-grid > *:first-child { order: 2; }
   .what-is-grid > *:last-child  { order: 1; }
 }
+
+        /* ── Big screen / laptop tuning for pricing layout ── */
+        @media (min-width: 1440px) {
+          .pc-wrap { gap: 3.5rem; }
+        }
+        @media (min-width: 1920px) {
+          .pc-wrap { gap: 4.5rem; }
+        }
       `}</style>
 
       {/* ── HERO ── */}
@@ -568,13 +797,13 @@ gap: 4.5rem;
           <span style={{ border: '1px solid rgba(255,255,255,0.4)', borderRadius: 20, padding: '4px 14px', fontSize: 11, marginBottom: 16, display: 'inline-block', letterSpacing: '0.12em', fontWeight: 600 }}>
             ✦ Live Consultation with Astro Aditya Narayan
           </span>
-          <h1 style={{ fontFamily: 'Georgia, serif', fontSize: 'clamp(18px, 3.2vw, 44px)', fontWeight: 800, lineHeight: 1.2, margin: '12px 0 14px' }}>
+          <h1 style={{ fontFamily: 'Georgia, serif', fontSize: 'clamp(18px, 3.2vw, 50px)', fontWeight: 800, lineHeight: 1.2, margin: '12px 0 14px' }}>
             {consultation.tagline}
           </h1>
-          <p style={{ fontSize: 'clamp(11px, 1.4vw, 15px)', opacity: 0.88, marginBottom: 12, fontStyle: 'italic' }}>
+          <p style={{ fontSize: 'clamp(11px, 1.4vw, 17px)', opacity: 0.88, marginBottom: 12, fontStyle: 'italic' }}>
             {consultation.subtitle}
           </p>
-          <p style={{ fontSize: 'clamp(11px, 1.4vw, 15px)', opacity: 0.82, marginBottom: 28, lineHeight: 1.7 }}>
+          <p style={{ fontSize: 'clamp(11px, 1.4vw, 17px)', opacity: 0.82, marginBottom: 28, lineHeight: 1.7 }}>
             {consultation.heroDescription}
           </p>
           <div className="cp-hero-btns" style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
@@ -601,19 +830,19 @@ gap: 4.5rem;
       </section>
 
       {/* ── WHAT IS ── */}
-      <section style={{ maxWidth: 1100, margin: '0 auto', padding: 'clamp(2.5rem,6vw,5rem) clamp(1rem,3vw,1.5rem)' }}>
+      <section style={{ maxWidth: 'var(--content-max)', margin: '0 auto', padding: 'clamp(2.5rem,6vw,5rem) clamp(1rem,3vw,1.5rem)' }}>
         <div className="what-is-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(280px,100%), 1fr))', gap: 'clamp(2rem,5vw,4rem)', alignItems: 'center' }}>
           <div>
             <SectionLabel>What is the {consultation.title}?</SectionLabel>
-            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.3rem, 3vw, 2.1rem)', color: BROWN_TEXT, marginBottom: '1.25rem', lineHeight: 1.35 }}>
+            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.3rem, 3vw, 2.3rem)', color: BROWN_TEXT, marginBottom: '1.25rem', lineHeight: 1.35 }}>
               {consultation.whatIs.heading}
             </h2>
-            <p style={{ color: BROWN_MID, lineHeight: 1.85, marginBottom: '2rem', fontSize: 'clamp(0.85rem, 1.5vw, 0.95rem)' }}>
+            <p style={{ color: BROWN_MID, lineHeight: 1.85, marginBottom: '2rem', fontSize: 'clamp(0.85rem, 1.5vw, 1rem)' }}>
               {consultation.whatIs.description}
             </p>
             <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 2rem', display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
               {consultation.whatIs.bullets.map((b, i) => (
-                <li key={i} style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-start', color: BROWN_TEXT, fontSize: 'clamp(0.82rem, 1.5vw, 0.92rem)', lineHeight: 1.65 }}>
+                <li key={i} style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-start', color: BROWN_TEXT, fontSize: 'clamp(0.82rem, 1.5vw, 0.96rem)', lineHeight: 1.65 }}>
                   <span style={{ color: AMBER, marginTop: 3, flexShrink: 0, fontSize: '0.7rem' }}>◆</span>
                   {b}
                 </li>
@@ -642,7 +871,53 @@ gap: 4.5rem;
       </section>
 
       {/* ── WHAT'S INSIDE ── */}
+      {/* ── WHAT'S INSIDE ── */}
       <section className="whats-inside-section">
+        <style>{`
+          @keyframes wiCardIn {
+            from { opacity: 0; transform: translateY(18px); }
+            to   { opacity: 1; transform: translateY(0); }
+          }
+          .wi-card {
+            background: #fdf6e9;
+            border: 1px solid rgba(139,78,10,0.18);
+            border-radius: 16px;
+            padding: 1.5rem 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.12);
+            opacity: 0;
+            animation: wiCardIn 0.55s ease forwards;
+            transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1),
+                        box-shadow 0.3s ease,
+                        border-color 0.3s ease;
+            cursor: default;
+          }
+          .wi-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 14px 36px rgba(0,0,0,0.22);
+            border-color: rgba(200,121,26,0.45);
+          }
+          .wi-icon {
+            width: 44px; height: 44px; border-radius: 50%;
+            background: linear-gradient(135deg, #ec9837, #e79634);
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3); flex-shrink: 0;
+            transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
+          }
+          .wi-card:hover .wi-icon {
+            transform: rotate(-8deg) scale(1.1);
+          }
+          .wi-divider {
+            width: 28px; height: 2px; background: #c8791a; border-radius: 1px;
+            transition: width 0.3s ease;
+          }
+          .wi-card:hover .wi-divider {
+            width: 44px;
+          }
+        `}</style>
+
         <div style={{
           position: 'absolute', inset: 0,
           backgroundImage: `radial-gradient(ellipse at 20% 50%, rgba(255,255,255,0.06) 0%, transparent 60%),
@@ -650,14 +925,14 @@ gap: 4.5rem;
           pointerEvents: 'none',
         }} />
 
-        <div style={{ maxWidth: 1100, margin: '0 auto', position: 'relative', zIndex: 1 }}>
+        <div style={{ maxWidth: 'var(--content-max)', margin: '0 auto', position: 'relative', zIndex: 1 }}>
 
           {/* Heading */}
           <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
             <p style={{ color: 'rgba(255,255,255,0.75)', fontWeight: 700, fontSize: '0.72rem', letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.5rem' }}>
               ✦ &nbsp; Inside Your Session &nbsp; ✦
             </p>
-            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.3rem, 3vw, 2.2rem)', color: '#fff', marginBottom: 0, textShadow: '0 2px 12px rgba(0,0,0,0.2)' }}>
+            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.3rem, 3vw, 2.4rem)', color: '#fff', marginBottom: 0, textShadow: '0 2px 12px rgba(0,0,0,0.2)' }}>
               What's Covered in Your {consultation.title}
             </h2>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', marginTop: '0.9rem' }}>
@@ -672,28 +947,15 @@ gap: 4.5rem;
   display: 'grid',
   gridTemplateColumns: 'repeat(auto-fit, minmax(min(180px, 100%), 1fr))',
   gap: '1.25rem',
-  maxWidth: 1100,
+  maxWidth: 'var(--content-max)',
   margin: '0 auto',
 }}>
   {consultation.whatsInside.map((item, i) => {
     const Icon = (LucideIcons as unknown as Record<string, React.FC<{ size?: number; color?: string; strokeWidth?: number }>>)[item?.icon]
     return (
-      <div key={i} style={{
-        background: 'rgba(255,255,255,0.12)',
-        border: '1px solid rgba(255,255,255,0.25)',
-        borderRadius: 16,
-        padding: '1.5rem 1.25rem',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '0.75rem',
-      }}>
+      <div key={i} className="wi-card" style={{ animationDelay: `${i * 0.1}s` }}>
         {/* Icon */}
-        <div style={{
-          width: 44, height: 44, borderRadius: '50%',
-          background: 'linear-gradient(135deg, #ec9837, #e79634)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          boxShadow: '0 2px 8px rgba(0,0,0,0.3)', flexShrink: 0,
-        }}>
+        <div className="wi-icon">
           {Icon ? <Icon size={20} color="#fff" strokeWidth={1.8} /> : null}
         </div>
 
@@ -701,18 +963,18 @@ gap: 4.5rem;
         <div style={{
           fontFamily: "'Playfair Display', serif",
           fontSize: 'clamp(0.9rem, 1.5vw, 1.05rem)',
-          fontWeight: 700, color: '#fff', lineHeight: 1.3,
+          fontWeight: 700, color: '#2a1200', lineHeight: 1.3,
         }}>
           {item?.title}
         </div>
 
         {/* Divider */}
-        <div style={{ width: 28, height: 2, background: '#c8791a', borderRadius: 1 }} />
+        <div className="wi-divider" />
 
         {/* Description */}
         <div style={{
           fontSize: 'clamp(0.78rem, 1.2vw, 0.88rem)',
-          color: 'rgba(255,255,255,0.82)',
+          color: '#6b3a10',
           lineHeight: 1.65,
         }}>
           {item?.description}
@@ -728,12 +990,12 @@ gap: 4.5rem;
       <HowItWorks steps={consultation.steps} />
 
       {/* ── FOR WHOM ── */}
-      <section style={{ background: CREAM, padding: 'clamp(2.5rem,6vw,6rem) clamp(1rem,3vw,1.5rem)', position: 'relative', overflow: 'hidden' }}>
+      <section style={{ background: `linear-gradient(${AMBER}28, ${AMBER}28), ${CREAM}`, padding: 'clamp(2.5rem,6vw,6rem) clamp(1rem,3vw,1.5rem)', position: 'relative', overflow: 'hidden' }}>
 
         <div style={{ position: 'absolute', top: -80, right: -80, width: 360, height: 360, borderRadius: '50%', background: `${AMBER}0d`, pointerEvents: 'none' }} />
         <div style={{ position: 'absolute', bottom: -60, left: -60, width: 260, height: 260, borderRadius: '50%', background: `${AMBER_DARK}08`, pointerEvents: 'none' }} />
 
-        <div style={{ maxWidth: 1100, margin: '0 auto', position: 'relative', zIndex: 1 }}>
+        <div style={{ maxWidth: 'var(--content-max)', margin: '0 auto', position: 'relative', zIndex: 1 }}>
           <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
             <span style={{
               display: 'inline-block', background: `${AMBER}18`, border: `1px solid ${AMBER}44`,
@@ -742,7 +1004,7 @@ gap: 4.5rem;
             }}>
               Who Is This For?
             </span>
-            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.3rem, 3vw, 2.3rem)', color: BROWN_TEXT, marginBottom: '0.75rem', lineHeight: 1.25 }}>
+            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.3rem, 3vw, 2.4rem)', color: BROWN_TEXT, marginBottom: '0.75rem', lineHeight: 1.25 }}>
               This Consultation Is Made for You If…
             </h2>
             <div style={{ width: 56, height: 3, borderRadius: 2, background: `linear-gradient(90deg, ${AMBER}, ${AMBER_LIGHT})`, margin: '0 auto' }} />
@@ -815,244 +1077,160 @@ gap: 4.5rem;
       </section>
 
       {/* ── PRICING ── */}
-      <section id="pricing" style={{ maxWidth: 1100, margin: '0 auto', padding: 'clamp(2.5rem,6vw,5rem) clamp(1rem,3vw,1.5rem)' }}>
-        <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-          <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.2rem, 3.4vw, 2.3rem)', color: BROWN_TEXT, margin: 0, lineHeight: 1.3 }}>
-            Choose Your <span style={{ color: AMBER }}>{consultation.title} Plan</span>
-          </h2>
+<section id="pricing" style={{ maxWidth: 'var(--content-max)', margin: '0 auto', padding: 'clamp(2.5rem,6vw,5rem) clamp(1rem,3vw,1.5rem)' }}>
+  <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+    <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.2rem, 3.4vw, 2.5rem)', color: BROWN_TEXT, margin: 0, lineHeight: 1.3 }}>
+      Choose Your <span style={{ color: AMBER }}>{consultation.title} Plan</span>
+    </h2>
+  </div>
+
+  <style>{`
+    .pc-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(1.5rem, 4vw, 3rem);
+      align-items: stretch;
+    }
+    @media (max-width: 800px) {
+      .pc-wrap { grid-template-columns: 1fr; }
+    }
+    .pc-mode-pill {
+      flex: 1;
+      text-align: center;
+      padding: 0.6rem 0.5rem;
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: ${BROWN_MID};
+      cursor: default;
+    }
+    .pc-mode-pill.active {
+      background: ${AMBER_DARK};
+      color: #fff;
+    }
+  `}</style>
+
+  <div className="pc-wrap">
+
+    {/* ── LEFT: hero-style amber panel ── */}
+   <div className="pc-chakra-wrap" style={{
+      background: `linear-gradient(135deg, #c47a1e 0%, #b8691a 100%)`,
+    }}>
+      <img
+        src="/chakra.png"
+        alt=""
+        className="pc-chakra-img"
+        style={{ transform: `translate(-50%, -50%) rotate(${angle}deg)` }}
+      />
+      <div className="pc-slide-img2">
+        <img src={consultation.pricingImage} alt={consultation.title} />
+      </div>
+    </div>
+
+    {/* ── RIGHT: single consultation card (image 2 style) ── */}
+    <div style={{
+      background: CREAM,
+      border: `1.5px solid ${AMBER}55`,
+      borderRadius: 18,
+      padding: 'clamp(1.5rem, 3vw, 2.2rem)',
+      boxShadow: `0 8px 28px ${AMBER}22`,
+    }}>
+      {/* Avatar + title */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.2rem' }}>
+        <img
+          src={consultation.astrologerPhoto}
+          alt="Astrologer"
+          style={{ width: 64, height: 64, borderRadius: '50%', objectFit: 'cover', border: `2px solid ${AMBER}` }}
+        />
+        <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.1rem, 2.5vw, 1.5rem)', color: BROWN_TEXT, margin: 0 }}>
+          {consultation.title}
+        </h3>
+      </div>
+
+      <div style={{ height: 1, background: `${AMBER}44`, marginBottom: '1.1rem' }} />
+
+      <p style={{ color: BROWN_MID, fontSize: '0.9rem', marginBottom: '1.4rem' }}>
+        Ideal for individuals seeking clarity and solutions.
+      </p>
+
+      {/* Mode / Duration / Type pills (static display, edit text as needed) */}
+      <div style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap', marginBottom: '1.4rem' }}>
+        <div>
+          <div style={{ fontWeight: 700, fontSize: '0.8rem', color: BROWN_TEXT, marginBottom: 6 }}>Mode:</div>
+          <div style={{ display: 'flex', borderRadius: 30, overflow: 'hidden', border: `1px solid ${AMBER}55` }}>
+            <span className="pc-mode-pill active">Normal</span>
+          </div>
         </div>
-
-        <div className="pricing-scroll" style={{ borderRadius: 16, boxShadow: `0 8px 32px ${AMBER}1a`, border: `1px solid ${AMBER}30` }}>
-          <table className="pricing-table" style={{ width: '100%', borderCollapse: 'separate', borderSpacing: 0, background: '#fff' }}>
-            <thead>
-              <tr>
-                <th style={{
-                  textAlign: 'left', padding: '1rem 1.25rem',
-                  background: `linear-gradient(135deg, ${AMBER_DARK}, ${AMBER})`,
-                  color: '#fff', fontFamily: "'Playfair Display', serif",
-                  fontSize: 'clamp(0.8rem,1.8vw,1rem)', fontWeight: 700,
-                  borderTopLeftRadius: 16, borderRight: '1px solid rgba(255,255,255,0.5)',
-                }}>
-                  Features
-                </th>
-                {consultation.pricingPlans.map((plan, i) => (
-                  <th key={i} style={{
-                    textAlign: 'center', padding: '1rem 1rem',
-                    background: `linear-gradient(135deg, ${AMBER_DARK}, ${AMBER})`,
-                    color: '#fff', fontFamily: "'Playfair Display', serif",
-                    fontSize: 'clamp(0.8rem,1.8vw,1rem)', fontWeight: 700, lineHeight: 1.35,
-                    borderTopRightRadius: i === consultation.pricingPlans.length - 1 ? 16 : 0,
-                    borderRight: i < consultation.pricingPlans.length - 1 ? '2px solid rgba(255,255,255,0.5)' : 'none',
-                    minWidth: 120,
-                  }}>
-                    {plan.name}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {allFeatureLabels.map((label, rowIdx) => (
-                <tr key={label} style={{ background: rowIdx % 2 === 0 ? CREAM : '#fff' }}>
-                  <td style={{ padding: '0.9rem 1.25rem', fontWeight: 600, color: BROWN_TEXT, fontSize: 'clamp(0.75rem,1.5vw,0.92rem)', borderRight: '2px solid rgba(200,121,26,0.35)' }}>
-                    {label}
-                  </td>
-                  {consultation.pricingPlans.map((plan, i) => {
-                    const feature = plan.features.find(f => f.label === label)
-                    return (
-                      <td key={i} style={{ textAlign: 'center', padding: '0.9rem 1rem', borderRight: i < consultation.pricingPlans.length - 1 ? '2px solid rgba(200,121,26,0.35)' : 'none' }}>
-                        <CheckIcon included={feature ? feature.included : false} />
-                      </td>
-                    )
-                  })}
-                </tr>
-              ))}
-              <tr style={{ background: CREAM_DARK }}>
-                <td style={{ padding: '1.1rem 1.25rem', fontWeight: 800, color: BROWN_TEXT, fontSize: 'clamp(0.82rem,1.5vw,0.95rem)', borderBottomLeftRadius: 16, borderRight: '2px solid rgba(200,121,26,0.35)' }}>
-                  Price
-                </td>
-                {consultation.pricingPlans.map((plan, i) => (
-                  <td key={i} style={{
-                    textAlign: 'center', padding: '1.1rem 1rem',
-                    borderBottomRightRadius: i === consultation.pricingPlans.length - 1 ? 16 : 0,
-                    borderRight: i < consultation.pricingPlans.length - 1 ? '2px solid rgba(200,121,26,0.35)' : 'none',
-                  }}>
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.2rem' }}>
-                      <span style={{ color: AMBER_DARK, fontSize: 'clamp(0.95rem,2.5vw,1.3rem)', fontWeight: 800, fontFamily: "'Playfair Display', serif" }}>
-                        {plan.discountedPrice}/-
-                      </span>
-                      <span style={{ color: '#bbb', textDecoration: 'line-through', fontSize: '0.78rem' }}>
-                        {plan.originalPrice}
-                      </span>
-                    </div>
-                  </td>
-                ))}
-              </tr>
-            </tbody>
-          </table>
+        <div>
+          <div style={{ fontWeight: 700, fontSize: '0.8rem', color: BROWN_TEXT, marginBottom: 6 }}>Duration:</div>
+          <div style={{ display: 'flex', borderRadius: 30, overflow: 'hidden', border: `1px solid ${AMBER}55` }}>
+            <span
+              className={`pc-mode-pill ${callDuration === '15' ? 'active' : ''}`}
+              style={{ cursor: 'pointer' }}
+              onClick={() => setCallDuration('15')}
+            >
+              15 Min
+            </span>
+            <span
+              className={`pc-mode-pill ${callDuration === '30' ? 'active' : ''}`}
+              style={{ cursor: 'pointer' }}
+              onClick={() => setCallDuration('30')}
+            >
+              30 Min
+            </span>
+          </div>
         </div>
-<div className="pricing-cards-grid" id="pricing-cards">
-  {consultation.pricingPlans.map((plan, i) => {
+        <div>
+          <div style={{ fontWeight: 700, fontSize: '0.8rem', color: BROWN_TEXT, marginBottom: 6 }}>Consultation Type:</div>
+          <div style={{ display: 'flex', borderRadius: 30, overflow: 'hidden', border: `1px solid ${AMBER}55` }}>
+            <span className="pc-mode-pill active">Audio</span>
+          </div>
+        </div>
+        <div>
+          <div style={{ fontWeight: 700, fontSize: '0.8rem', color: BROWN_TEXT, marginBottom: 6 }}>Plan:</div>
+          <div style={{ display: 'flex', borderRadius: 30, overflow: 'hidden', border: `1px solid ${AMBER}55` }}>
+            <span className="pc-mode-pill active">
+              {callDuration === '15'
+                ? consultation.pricingPlans[0]?.name ?? 'Quick Consultation'
+                : consultation.pricingPlans[1]?.name ?? 'Extended Consultation'}
+            </span>
+          </div>
+        </div>
+      </div>
 
-    const gradients = [
-      { from: '#5B9DF0', to: '#3B6FD6' },   // Card 1 — blue
-      { from: '#9B6BE0', to: '#6B3FC4' },   // Card 2 — purple
-      { from: '#F25CA8', to: '#E83E8C' },   // Card 3 — pink
-    ]
-    const { from, to } = gradients[i] ?? gradients[0]
-    const headerGradient = `linear-gradient(160deg, ${from}, ${to})`
+      {/* Bullets — pulled from your existing whatIs.bullets */}
+      <div style={{ fontWeight: 700, fontSize: '0.85rem', color: BROWN_TEXT, marginBottom: '0.6rem' }}>Includes:</div>
+      <ul style={{ listStyle: 'disc', paddingLeft: '1.2rem', margin: '0 0 1.6rem', color: BROWN_MID, fontSize: '0.88rem', lineHeight: 1.9 }}>
+        {consultation.whatIs.bullets.slice(0, 3).map((b, i) => (
+          <li key={i}>{b}</li>
+        ))}
+      </ul>
 
-    return (
-      <Link
-        key={i}
-        to={`/checkout/consultation/${slug}`}
-        state={{ planIndex: i }}
-        style={{ textDecoration: 'none' }}
-      >
-        <div
+      {/* Price + Book button */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
+        <div>
+          <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.1rem, 2.5vw, 1.4rem)', fontWeight: 800, color: BROWN_TEXT }}>
+            Price: {selectedPlan.discountedPrice}
+          </div>
+          <div style={{ fontSize: '0.8rem', color: BROWN_MID, textDecoration: 'line-through', opacity: 0.7 }}>
+            {selectedPlan.originalPrice}
+          </div>
+        </div>
+        <button
+          onClick={() => window.location.href = `/checkout/consultation/${slug}`}
           style={{
-            background: '#fff',
-            borderRadius: 18,
-            overflow: 'hidden',
-            cursor: 'pointer',
-            position: 'relative',
-            boxShadow: i === 1 ? `0 8px 32px ${to}44` : '0 8px 28px rgba(0,0,0,0.12)',
-            transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-            textAlign: 'center',
-            height: '100%',
-            display: 'flex',
-            flexDirection: 'column',
-          }}
-          onMouseEnter={e => {
-            (e.currentTarget as HTMLDivElement).style.transform = 'translateY(-6px)'
-            ;(e.currentTarget as HTMLDivElement).style.boxShadow = `0 18px 40px ${to}55`
-          }}
-          onMouseLeave={e => {
-            (e.currentTarget as HTMLDivElement).style.transform = 'translateY(0)'
-            ;(e.currentTarget as HTMLDivElement).style.boxShadow = i === 1 ? `0 8px 32px ${to}44` : '0 8px 28px rgba(0,0,0,0.12)'
+            background: `linear-gradient(135deg, ${AMBER}, ${AMBER_LIGHT})`,
+            color: '#fff', fontWeight: 700, fontSize: '0.95rem',
+            padding: '0.85rem 2rem', borderRadius: 8, border: 'none',
+            cursor: 'pointer', boxShadow: `0 4px 14px ${AMBER}55`,
           }}
         >
-          {/* ── Gradient header ── */}
-          <div style={{
-            background: headerGradient,
-            padding: '24px 18px 50px',
-            position: 'relative',
-            overflow: 'hidden',
-          }}>
-            {/* Scattered decorative icons */}
-            <span style={{ position:'absolute', top:18, left:22, color:'rgba(255,255,255,0.55)', fontSize:'1.1rem', fontWeight:300 }}>+</span>
-            <span style={{ position:'absolute', top:34, left:55, width:0, height:0, borderLeft:'5px solid transparent', borderRight:'5px solid transparent', borderBottom:'8px solid rgba(255,255,255,0.4)' }} />
-            <span style={{ position:'absolute', top:16, right:60, color:'rgba(255,255,255,0.5)', fontSize:'0.9rem', fontWeight:300 }}>✦</span>
-            <span style={{ position:'absolute', top:50, right:24, color:'rgba(255,255,255,0.55)', fontSize:'1.3rem', fontWeight:300 }}>+</span>
-            <span style={{ position:'absolute', bottom:62, left:30, width:0, height:0, borderLeft:'4px solid transparent', borderRight:'4px solid transparent', borderTop:'7px solid rgba(255,255,255,0.35)' }} />
+          Book Now
+        </button>
+      </div>
+    </div>
 
-            {/* Best Value badge */}
-            {i === 1 && (
-              <div style={{
-                position:'absolute', top:11, right:11, zIndex:2,
-                background:'rgba(255,255,255,0.22)',
-                border:'1px solid rgba(255,255,255,0.4)',
-                color:'#fff', fontSize:'0.6rem', fontWeight:800,
-                padding:'3px 9px', borderRadius:100,
-                letterSpacing:'0.08em', textTransform:'uppercase',
-              }}>⭐ Best Value</div>
-            )}
-
-            {/* Title */}
-            <h3 style={{
-              position:'relative', zIndex:1,
-              fontFamily:"'Playfair Display', serif",
-              fontSize:'clamp(1rem, 2vw, 1.2rem)',
-              fontWeight:700, color:'#fff', margin:'0 0 16px',
-            }}>
-              {plan.name}
-            </h3>
-
-            {/* Image row — increase height here too if making images bigger */}
-<div style={{
-  position:'relative', zIndex:1,
-  height: 110,        // ← was 90 — increase to give both images more vertical room
-  display:'flex', alignItems:'center', justifyContent:'center',
-  gap:'0.5rem', width:'100%',
-}}>
-  <img
-    src={consultation.image2}
-    alt={plan.name}
-    style={{
-      height:'100%',
-      flex: i === 1 ? '1.6 1 0%' : '0 1 auto',   // ← slightly reduced from 2 so check.png gets more room
-      maxWidth: i === 1 ? '52%' : '70%',
-      minWidth: 0,
-      objectFit:'cover',
-      borderRadius:10,
-      boxShadow:'0 6px 16px rgba(0,0,0,0.18)',
-    }}
-  />
-  {i === 1 && (
-    <>
-      <span style={{ color:'rgba(255,255,255,0.7)', fontSize:'1.1rem', fontWeight:300, flexShrink:0 }}>+</span>
-      <img
-        src="/check.png"
-        alt="Consultation"
-        style={{
-          height:'100%',
-          flex:'1.2 1 0%',     // ← was 1 — increase this number to claim more of the shared space
-          maxWidth:'45%',       // ← was 35% — raise this cap to let it grow wider
-          minWidth: 80,
-          objectFit:'contain',
-        }}
-      />
-    </>
-  )}
-</div>
-
-            {/* Wavy divider into white body */}
-            <svg
-              viewBox="0 0 300 50"
-              preserveAspectRatio="none"
-              style={{ position:'absolute', bottom:-1, left:0, width:'100%', height:50 }}
-            >
-              <path
-                d="M0,30 C40,10 80,45 120,28 C160,10 200,45 240,25 C265,12 285,28 300,18 L300,50 L0,50 Z"
-                fill="#fff"
-              />
-            </svg>
-          </div>
-
-          {/* ── White body ── */}
-          <div style={{ padding:'10px 20px 24px', flex:1, display:'flex', flexDirection:'column', alignItems:'center' }}>
-
-            <p style={{ fontSize:'0.78rem', color:'#7a7a8a', margin:'0 0 16px', lineHeight:1.6, maxWidth:200 }}>
-              {plan.tagline}
-            </p>
-
-            <span style={{ color:'#bbb', fontSize:'0.78rem', textDecoration:'line-through', display:'block', marginBottom:2 }}>
-              {plan.originalPrice}
-            </span>
-            <p style={{ fontFamily:"'Playfair Display', serif", fontSize:'clamp(1.1rem, 2.5vw, 1.5rem)', fontWeight:800, color:to, margin:'0 0 20px' }}>
-              {plan.discountedPrice}/- <span style={{ fontSize:'0.65rem', color:'#9a9aa8', fontWeight:500, fontFamily:'inherit' }}>only</span>
-            </p>
-
-            <div style={{
-              marginTop:'auto',
-              background:'#fff',
-              color: to,
-              fontWeight:800,
-              fontSize:'0.78rem',
-              padding:'0.65rem 1.8rem',
-              borderRadius:50,
-              border:`1.5px solid ${to}55`,
-              letterSpacing:'0.04em',
-              boxShadow:'0 4px 12px rgba(0,0,0,0.06)',
-            }}>
-              BOOK NOW →
-            </div>
-          </div>
-        </div>
-      </Link>
-    )
-  })}
-</div>
-      </section>
+  </div>
+</section>
 
       {/* ── ABOUT ── */}
       <section style={{ background: `linear-gradient(135deg, ${AMBER_DARK} 0%, ${AMBER} 100%)`, padding: 'clamp(4rem,8vw,7rem) clamp(1.5rem,5vw,3rem)', overflow: 'hidden', position: 'relative' }}>
@@ -1073,10 +1251,10 @@ gap: 4.5rem;
                 📜 Know Your Astrologer
               </span>
             </div>
-            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.6rem, 3vw, 2.4rem)', color: '#fff', marginBottom: '0.9rem', lineHeight: 1.2 }}>
+            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.6rem, 3vw, 2.6rem)', color: '#fff', marginBottom: '0.9rem', lineHeight: 1.2 }}>
               Meet Astro Aaditya Narayan
             </h2>
-            <p style={{ color: 'rgba(255,255,255,0.85)', lineHeight: 1.75, fontSize: 'clamp(0.95rem,1.8vw,1.05rem)', marginBottom: '1.1rem' }}>
+            <p style={{ color: 'rgba(255,255,255,0.85)', lineHeight: 1.75, fontSize: 'clamp(0.95rem,1.8vw,1.1rem)', marginBottom: '1.1rem' }}>
               Astro Aaditya Narayan is the guiding force behind Divine Arra — helping people understand their kundali, planetary influences, karmic patterns, and remedies through years of Vedic astrology practice. His consultations are clear, compassionate, and practical, bringing awareness and direction rather than fear.
             </p>
             <blockquote style={{
@@ -1084,7 +1262,7 @@ gap: 4.5rem;
               borderLeft: '3px solid rgba(255,255,255,0.5)', borderRadius: 8,
               padding: '0.75rem 1rem', marginBottom: '1.4rem',
               fontStyle: 'italic', color: 'rgba(255,255,255,0.88)',
-              fontSize: 'clamp(0.9rem,1.6vw,1rem)', lineHeight: 1.65,
+              fontSize: 'clamp(0.9rem,1.6vw,1.05rem)', lineHeight: 1.65,
             }}>
               "Astrology is not about fear — it is about awareness, alignment, and awakening your inner power."
             </blockquote>
@@ -1146,10 +1324,10 @@ gap: 4.5rem;
               <span style={{ fontSize: 'clamp(2rem,5vw,3.2rem)', position: 'relative', zIndex: 1 }}>{consultation.icon}</span>
             </div>
           </div>
-          <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.3rem, 3.5vw, 2.2rem)', color: '#fff', marginBottom: '0.8rem', lineHeight: 1.25, animation: 'ctaFadeUp 0.6s ease both 0.2s' }}>
+          <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.3rem, 3.5vw, 2.4rem)', color: '#fff', marginBottom: '0.8rem', lineHeight: 1.25, animation: 'ctaFadeUp 0.6s ease both 0.2s' }}>
             Ready to Book Your {consultation.title}?
           </h2>
-          <p style={{ color: 'rgba(255,255,255,0.82)', marginBottom: '2.4rem', lineHeight: 1.8, fontSize: 'clamp(0.85rem,2vw,1.02rem)', animation: 'ctaFadeUp 0.6s ease both 0.35s' }}>
+          <p style={{ color: 'rgba(255,255,255,0.82)', marginBottom: '2.4rem', lineHeight: 1.8, fontSize: 'clamp(0.85rem,2vw,1.05rem)', animation: 'ctaFadeUp 0.6s ease both 0.35s' }}>
             {consultation.tagline}
           </p>
           <div style={{ animation: 'ctaFadeUp 0.6s ease both 0.5s' }}>

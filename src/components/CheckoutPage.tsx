@@ -78,8 +78,8 @@ const formSubtitle: Record<CheckoutType, string> = {
 
 const needsBirthDetails: Record<CheckoutType, boolean> = {
   report:       true,
-  consultation: false,
-  course:       false,
+  consultation: true,
+  course:       true,
 }
 
 // ── Razorpay script loader ───────────────────────────────────
@@ -272,34 +272,33 @@ const [showSuggestions, setShowSuggestions] = useState(false)
           display: inline-block;
         }
         .co-hero h1 {
-          font-family: 'Playfair Display', Georgia, serif;
-          font-size: clamp(22px, 4vw, 38px);
-          font-weight: 700;
-          color: #1a0a00;
-          margin: 0;
-          line-height: 1.25;
-          position: relative;
-        }
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(28px, 5.5vw, 52px);
+  font-weight: 700;
+  color: #1a0a00;
+  margin: 0;
+  line-height: 1.25;
+  position: relative;
+}
         .co-hero h1 span { color: #b86010; }
 
         .co-trust-bar {
-          background: #fff;
-          padding: 10px clamp(16px,5%,80px);
-          display: flex;
-          justify-content: center;
-          gap: clamp(16px,4vw,48px);
-          flex-wrap: wrap;
-        }
-        .co-trust-item {
-          display: flex;
-          align-items: center;
-          gap: 7px;
-          font-family: sans-serif;
-          font-size: 17px;
-          color: #7a5030;
-          font-weight: 600;
-        }
-
+  background: #fff;
+  padding: 8px clamp(16px,5%,80px);
+  display: flex;
+  justify-content: center;
+  gap: clamp(12px,3vw,32px);
+  flex-wrap: wrap;
+}
+.co-trust-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: sans-serif;
+  font-size: 13px;
+  color: #7a5030;
+  font-weight: 600;
+}
         .co-inner {
           max-width: 1060px;
           margin: 0 auto;
@@ -421,14 +420,17 @@ const [showSuggestions, setShowSuggestions] = useState(false)
         .co-terms a { color: #c47a1e; text-decoration: underline; text-underline-offset: 2px; }
 
         .co-pay-btn {
-          width: 55%; padding: 17px 24px;
-          background: linear-gradient(135deg, #f0a830, #c47a1e);
-          color: #1e0d00; border: none; border-radius: 14px;
-          font-family: 'Playfair Display', Georgia, serif; font-size: 21px; font-weight: 800;
-          cursor: pointer; letter-spacing: 0.02em;
-          transition: opacity 0.18s, transform 0.15s;
-          display: flex; align-items: center; justify-content: center; gap: 10px;
-        }
+  width: 55%;
+  margin: 0 auto;
+  display: flex;
+  padding: 17px 24px;
+  background: linear-gradient(135deg, #f0a830, #c47a1e);
+  color: #1e0d00; border: none; border-radius: 14px;
+  font-family: 'Playfair Display', Georgia, serif; font-size: 21px; font-weight: 800;
+  cursor: pointer; letter-spacing: 0.02em;
+  transition: opacity 0.18s, transform 0.15s;
+  align-items: center; justify-content: center; gap: 10px;
+}
         .co-pay-btn:hover:not(:disabled)  { opacity: 0.92; transform: translateY(-2px); }
         .co-pay-btn:active:not(:disabled) { transform: translateY(0); }
         .co-pay-btn:disabled { opacity: 0.65; cursor: not-allowed; }
@@ -460,7 +462,7 @@ const [showSuggestions, setShowSuggestions] = useState(false)
             { icon: '✅', label: 'Satisfaction Guaranteed' },
           ].map(t => (
             <div className="co-trust-item" key={t.label}>
-              <span style={{ fontSize: 21 }}>{t.icon}</span>
+              <span style={{ fontSize: 18 }}>{t.icon}</span>
               {t.label}
             </div>
           ))}

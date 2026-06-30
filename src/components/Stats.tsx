@@ -8,6 +8,20 @@ const stats = [
   { target: 30,  suffix: 'K+', label: 'Hours of Expert\nGuidance',  duration: 1800 },
 ]
 
+// ── Floating astro symbols ──────────────────────────────────────────────────
+const astroSymbols = [
+  { sym: '☉', top: '8%',  left: '6%',  size: 38, dur: 9,  delay: 0,   rot: 8  },
+  { sym: '☽', top: '72%', left: '4%',  size: 30, dur: 11, delay: 1.2, rot: -6 },
+  { sym: '♃', top: '18%', left: '88%', size: 34, dur: 10, delay: 0.6, rot: 10 },
+  { sym: '⛢', top: '78%', left: '90%', size: 26, dur: 8,  delay: 2,   rot: -8 },
+  { sym: '♄', top: '50%', left: '94%', size: 28, dur: 12, delay: 0.4, rot: 6  },
+  { sym: '✦', top: '30%', left: '14%', size: 16, dur: 6,  delay: 0.8, rot: 0  },
+  { sym: '✦', top: '60%', left: '80%', size: 14, dur: 7,  delay: 1.6, rot: 0  },
+  { sym: '✧', top: '12%', left: '50%', size: 18, dur: 8,  delay: 0,   rot: 0  },
+  { sym: '☿', top: '85%', left: '50%', size: 24, dur: 10, delay: 1,   rot: -10 },
+  { sym: '♀', top: '40%', left: '2%',  size: 22, dur: 9,  delay: 1.8, rot: 5  },
+]
+
 function easeOutQuart(t: number): number {
   return 1 - Math.pow(1 - t, 4)
 }
@@ -39,11 +53,6 @@ function useCountUp(target: number, duration: number, triggered: boolean, delay:
 const globalStyles = `
   @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&display=swap');
 
-  @keyframes gradientShift {
-    0%   { background-position: 0% 50%; }
-    50%  { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-  }
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(28px); }
     to   { opacity: 1; transform: translateY(0); }
@@ -51,10 +60,6 @@ const globalStyles = `
   @keyframes lineGrow {
     from { width: 0; opacity: 0; }
     to   { width: 48px; opacity: 1; }
-  }
-  @keyframes orbFloat {
-    0%, 100% { transform: translateY(0px) scale(1); }
-    50%       { transform: translateY(-18px) scale(1.04); }
   }
   @keyframes accentPulse {
     0%, 100% { opacity: 0.4; transform: scaleX(0.6); }
@@ -68,13 +73,16 @@ const globalStyles = `
     from { opacity: 0; transform: translateY(22px); }
     to   { opacity: 1; transform: translateY(0); }
   }
+  @keyframes astroFloat {
+    0%   { transform: translateY(0) rotate(0deg);   opacity: 0.55; }
+    50%  { transform: translateY(-22px) rotate(var(--rot)); opacity: 0.9; }
+    100% { transform: translateY(0) rotate(0deg);   opacity: 0.55; }
+  }
 
-  /* Light ghee — pale golden-yellow, warm cream */
+  /* Premium static warm-gold gradient — no shifting animation */
   .st-section {
-  background: linear-gradient(120deg, #f5ede0, #c8790a, #f5ede0, #d4920f, #f5ede0, #c8790a);
-  background-size: 300% 300%;
-  animation: gradientShift 8s ease infinite;
-}
+    background: radial-gradient(ellipse at 20% 20%, #fdf3df 0%, #f0d9a8 38%, #d8a13e 72%, #c8790a 100%);
+  }
 
   .st-eyebrow {
     opacity: 0;
@@ -89,9 +97,16 @@ const globalStyles = `
     animation: lineGrow 0.6s ease forwards 0.8s;
   }
 
-  .st-orb-1 { animation: orbFloat 7s ease-in-out infinite; }
-  .st-orb-2 { animation: orbFloat 9s ease-in-out infinite reverse; }
-  .st-orb-3 { animation: orbFloat 6s ease-in-out infinite 2s; }
+  .st-astro {
+    position: absolute;
+    color: rgba(122, 58, 0, 0.45);
+    font-family: 'Playfair Display', Georgia, serif;
+    pointer-events: none;
+    user-select: none;
+    text-shadow: 0 0 14px rgba(255, 220, 140, 0.55);
+    animation: astroFloat ease-in-out infinite;
+    will-change: transform, opacity;
+  }
 
   .st-card-visible {
     animation: cardReveal 0.6s cubic-bezier(0.34,1.56,0.64,1) forwards;
@@ -123,6 +138,8 @@ const globalStyles = `
   @media (max-width: 600px) {
     .st-grid { grid-template-columns: repeat(2, 1fr) !important; }
     .st-divider { display: none !important; }
+    .st-astro { display: none; }
+    .st-astro.st-astro--mobile-ok { display: block; font-size: 14px !important; opacity: 0.35 !important; }
   }
 `
 
@@ -179,7 +196,7 @@ function StatCard({
           fontFamily: "'Playfair Display', Georgia, serif",
           fontSize: 'clamp(40px, 5.5vw, 58px)',
           fontWeight: 800,
-          color: hovered ? '#3d1f00' : '#7a4a00',
+          color: hovered ? '#2b1500' : '#4a2800',
           lineHeight: 1,
           letterSpacing: '-2px',
           display: 'block',
@@ -194,7 +211,8 @@ function StatCard({
         fontSize: 10.5,
         letterSpacing: '0.18em',
         textTransform: 'uppercase',
-        color: hovered ? '#4a2800' : 'rgba(110, 65, 0, 0.7)',
+        fontWeight: 700,
+        color: hovered ? '#2b1500' : 'rgba(74, 40, 0, 0.85)',
         lineHeight: 1.65,
         marginTop: 10,
         transition: 'color 0.3s ease',
@@ -238,24 +256,22 @@ export default function Stats() {
     >
       <style>{globalStyles}</style>
 
-      {[
-        { cls: 'st-orb-1', w: 320, h: 320, bg: 'rgba(255,245,150,0.35)', top: -80,   left: -60 },
-        { cls: 'st-orb-2', w: 260, h: 260, bg: 'rgba(210,150,20,0.20)',  bottom: -60, right: -40 },
-        { cls: 'st-orb-3', w: 180, h: 180, bg: 'rgba(255,255,180,0.25)', top: '40%', left: '55%' },
-      ].map(({ cls, w, h, bg, ...pos }) => (
-        <div
-          key={cls}
-          className={cls}
+      {/* Floating astrology symbols */}
+      {astroSymbols.map((a, i) => (
+        <span
+          key={i}
+          className={`st-astro${i % 3 === 0 ? ' st-astro--mobile-ok' : ''}`}
           style={{
-            position: 'absolute',
-            borderRadius: '50%',
-            width: w, height: h,
-            background: bg,
-            filter: 'blur(60px)',
-            pointerEvents: 'none',
-            ...pos,
+            top: a.top,
+            left: a.left,
+            fontSize: a.size,
+            animationDuration: `${a.dur}s`,
+            animationDelay: `${a.delay}s`,
+            ['--rot' as string]: `${a.rot}deg`,
           }}
-        />
+        >
+          {a.sym}
+        </span>
       ))}
 
       <p
@@ -263,7 +279,7 @@ export default function Stats() {
         style={{
           fontSize: 11,
           letterSpacing: '0.28em',
-          color: 'rgba(100, 58, 0, 0.75)',
+          color: '#2b1500',
           textTransform: 'uppercase',
           fontWeight: 600,
           marginBottom: 14,

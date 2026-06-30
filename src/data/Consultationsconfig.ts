@@ -19,6 +19,8 @@ export interface ConsultationConfig {
   icon: string
   image: string
   image2: string
+  astrologerPhoto: string
+  pricingImage: string
   whatIs: {
     heading: string
     description: string
@@ -50,6 +52,8 @@ export const consultationsConfig: ConsultationConfig[] = [
     icon: '🔮',
     image: '/personal.png',
     image2: '/personal.jpeg',
+    astrologerPhoto: '/check.png',
+    pricingImage: '/saint.png',
     whatIs: {
       heading: 'Direct, One-on-One Astrological Guidance',
       description:
@@ -74,10 +78,10 @@ export const consultationsConfig: ConsultationConfig[] = [
       { title: 'Join Your Live Session', description: 'Connect via audio or video call and get your questions answered directly.' },
     ],
     forWhom: [
-      { title: 'Those With Specific Questions', description: 'Have one or two pressing questions you want answered clearly and directly? This session is for you.' },
-      { title: 'People Who Prefer Conversation', description: 'If reading a report isn\'t enough and you\'d rather talk through your chart, a live session works better.' },
-      { title: 'Those Facing a Decision Point', description: 'Weighing a big decision — job change, relocation, marriage, investment? Get real-time guidance before you decide.' },
-      { title: 'Anyone Wanting a Second Opinion', description: 'Already explored astrology before but want a fresh, expert perspective on your chart and current phase of life.' },
+      { title: 'You Have One or Two Pressing Questions', description: 'You want clear, direct answers — not a long general report — and this session gets straight to the point.' },
+      { title: 'You\'d Rather Talk Than Read', description: 'If a written report isn\'t enough and you\'d rather talk through your chart out loud, a live conversation works better for you.' },
+      { title: 'You\'re Facing a Big Decision', description: 'Weighing a job change, relocation, marriage, or investment? You want real-time guidance before you decide, not after.' },
+      { title: 'You Want a Fresh, Expert Opinion', description: 'You\'ve explored astrology before but want a second, expert perspective on your chart and your current phase of life.' },
     ],
     pricingPlans: [
       {
@@ -141,6 +145,8 @@ export const consultationsConfig: ConsultationConfig[] = [
     icon: '💑',
     image: '/love.webp',
     image2: '/love.jpeg',
+    astrologerPhoto: '/check.png',
+    pricingImage: '/lovu.png',
     whatIs: {
       heading: 'A Shared Session for a Shared Journey',
       description:
@@ -165,10 +171,10 @@ export const consultationsConfig: ConsultationConfig[] = [
       { title: 'Join the Session Together', description: 'Connect on the same call and explore your charts and compatibility live.' },
     ],
     forWhom: [
-      { title: 'Couples Before Marriage', description: 'Want to talk through your compatibility together, with room for questions from both sides? This is built for that.' },
-      { title: 'Couples Facing Friction', description: 'If recurring misunderstandings are creating distance, a joint session can help both partners see the bigger picture.' },
-      { title: 'Long-Distance or Newly Engaged Couples', description: 'A live video session is a meaningful way to connect on something important, even from different cities.' },
-      { title: 'Couples Wanting Shared Clarity', description: 'Rather than each partner reading a separate report, get insights together and discuss them in the moment.' },
+      { title: 'You\'re Planning to Get Married', description: 'You want to talk through your compatibility together, with room for questions from both sides before taking the next step.' },
+      { title: 'You\'re Facing Recurring Friction', description: 'If misunderstandings keep creating distance between you, a joint session helps both partners see the bigger picture together.' },
+      { title: 'You\'re Long-Distance or Newly Engaged', description: 'A live video session is a meaningful way to connect on something important, even from different cities.' },
+      { title: 'You Want Clarity Together, Not Separately', description: 'Rather than each reading a separate report, you\'d rather get insights together and discuss them in the moment.' },
     ],
     pricingPlans: [
       {
@@ -232,6 +238,8 @@ export const consultationsConfig: ConsultationConfig[] = [
     icon: '🃏',
     image: '/taroot.png',
     image2: '/taroot.webp',
+    astrologerPhoto: '/check.png',
+    pricingImage: '/personal-pricing.png',
     whatIs: {
       heading: 'Intuitive Insight Through the Cards',
       description:
@@ -256,10 +264,10 @@ export const consultationsConfig: ConsultationConfig[] = [
       { title: 'Join Your Live Reading', description: 'Connect via call and watch the cards unfold with real-time interpretation.' },
     ],
     forWhom: [
-      { title: 'Those Seeking a Fresh Perspective', description: 'When you\'re too close to a situation to see it clearly, the cards can offer a different angle.' },
-      { title: 'People Facing a Decision', description: 'Weighing two paths and want intuitive insight to go alongside your own thinking? A focused spread can help.' },
-      { title: 'Those Curious About Love or Career Energy', description: 'Get a read on the current energy around your relationship or professional life.' },
-      { title: 'Anyone Open to a Reflective Conversation', description: 'If you enjoy exploring ideas through symbolism and conversation, a tarot session offers exactly that.' },
+      { title: 'You Need a Fresh Perspective', description: 'When you\'re too close to a situation to see it clearly, the cards can offer a different angle on what\'s really going on.' },
+      { title: 'You\'re Weighing Two Paths', description: 'You want intuitive insight to go alongside your own thinking before making a decision, and a focused spread can help with that.' },
+      { title: 'You\'re Curious About Love or Career Energy', description: 'You\'d like a read on the current energy around your relationship or professional life right now.' },
+      { title: 'You Enjoy Reflective Conversations', description: 'If you like exploring ideas through symbolism and dialogue rather than flat predictions, a tarot session offers exactly that.' },
     ],
     pricingPlans: [
       {
@@ -323,6 +331,8 @@ export const consultationsConfig: ConsultationConfig[] = [
     icon: '💎',
     image: '/gemstonee.jpg',
     image2: '/gemstone.jpg',
+    astrologerPhoto: '/check.png',
+    pricingImage: '/personal-pricing.png',
     whatIs: {
       heading: 'Personalized Gemstone & Rudraksha Guidance',
       description:
@@ -347,10 +357,10 @@ export const consultationsConfig: ConsultationConfig[] = [
       { title: 'Get Your Personalized Recommendations', description: 'Discuss your chart live and receive clear gemstone and Rudraksha guidance.' },
     ],
     forWhom: [
-      { title: 'Those Considering a Gemstone', description: 'Before investing in a gemstone, find out whether it actually suits your chart and current planetary periods.' },
-      { title: 'Those Already Wearing Gemstones', description: 'Want a second opinion on whether what you\'re currently wearing is helping or working against you? Get clarity here.' },
-      { title: 'People Exploring Rudraksha', description: 'Curious about which Rudraksha bead aligns with your goals — career, peace of mind, health, or relationships?' },
-      { title: 'Anyone Seeking Practical, No-Pressure Advice', description: 'Get straightforward, chart-based recommendations without being pushed toward expensive purchases.' },
+      { title: 'You\'re Considering a Gemstone', description: 'Before investing in one, you want to find out whether it actually suits your chart and current planetary periods.' },
+      { title: 'You\'re Already Wearing One', description: 'You want a second opinion on whether what you\'re currently wearing is helping you or working against you.' },
+      { title: 'You\'re Exploring Rudraksha', description: 'You\'re curious which Rudraksha bead aligns with your goals — career, peace of mind, health, or relationships.' },
+      { title: 'You Want Honest, No-Pressure Advice', description: 'You\'d rather have straightforward, chart-based recommendations than be pushed toward an expensive purchase.' },
     ],
     pricingPlans: [
       {

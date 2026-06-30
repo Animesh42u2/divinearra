@@ -80,8 +80,6 @@ const subjects = [
   'Couple Matching Report',
   'Personal Consultation',
   'Couple Consultation',
-  'Gemstone & Rudraksha Consultation',
-  'Tarot Card Reading',
 ]
 
 export default function ContactUs() {

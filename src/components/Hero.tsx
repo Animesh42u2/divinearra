@@ -182,17 +182,19 @@ const CSS = `
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
-    gap: clamp(24px, 4vw, 48px);
-    padding: clamp(48px, 7vw, 80px) clamp(24px, 8%, 100px) clamp(64px, 8vw, 88px);
-    min-height: clamp(420px, 55vw, 580px);
+    justify-content: center;
+    gap: clamp(24px, 4vw, 64px);
+    padding: clamp(48px, 7vw, 110px) clamp(24px, 8%, 140px) clamp(64px, 8vw, 120px);
+    /* was capped at 580px — now scales further on large/ultra-wide screens */
+    min-height: clamp(420px, 46vw, 720px);
   }
 
   /* ── Left column ─────────────────────────────────────────────────────────── */
   .hero-left {
     flex: 1 1 0;
     min-width: 0;
-    max-width: 540px;
+    /* was max-width: 540px — too narrow on big screens, content looked tiny/lost in whitespace */
+    max-width: 680px;
     z-index: 2;
   }
 
@@ -201,7 +203,7 @@ const CSS = `
   .hero-tag {
     display: inline-block;
     font-family: "Segoe UI","Helvetica Neue",Arial,sans-serif;
-    font-size: 11px;
+    font-size: clamp(11px, 0.9vw, 13px);
     font-weight: 600;
     letter-spacing: 0.20em;
     text-transform: uppercase;
@@ -213,11 +215,11 @@ const CSS = `
     line-height: 1;
   }
 
-  /* Headline — Georgia serif, clamp(24px → 48px), weight 800
-     Same family/weight as Stats numbers; same fluid scale strategy             */
+  /* Headline — Georgia serif, clamp(24px → 60px), weight 800
+     Raised the upper bound so it doesn't plateau on large desktops            */
   .hero-title {
     font-family: 'Playfair Display', Georgia, serif;
-    font-size: clamp(24px, 3.4vw, 48px);
+    font-size: clamp(24px, 3.6vw, 60px);
     font-weight: 800;
     line-height: 1.18;
     letter-spacing: -0.5px;
@@ -225,10 +227,10 @@ const CSS = `
     color: #fff;
   }
 
-  /* Body copy — same sans-serif stack as Stats labels; clamp(13px → 16px)     */
+  /* Body copy — same sans-serif stack as Stats labels; clamp(13px → 18px)     */
   .hero-desc {
     font-family: "Segoe UI","Helvetica Neue",Arial,sans-serif;
-    font-size: clamp(13px, 1.35vw, 16px);
+    font-size: clamp(13px, 1.2vw, 18px);
     line-height: 1.65;
     font-weight: 400;
     color: rgba(255,255,255,0.88);
@@ -246,10 +248,10 @@ const CSS = `
   /* Both buttons share the same base rhythm */
   .hero-btn {
     font-family: "Segoe UI","Helvetica Neue",Arial,sans-serif;
-    font-size: clamp(13px, 1.1vw, 15px);
+    font-size: clamp(13px, 1vw, 17px);
     font-weight: 700;
     letter-spacing: 0.03em;
-    padding: clamp(10px,1.2vw,13px) clamp(20px,2.2vw,28px);
+    padding: clamp(10px,1.2vw,16px) clamp(20px,2.2vw,34px);
     border-radius: 30px;
     cursor: pointer;
     transition: opacity 0.2s ease, transform 0.2s ease;
@@ -274,8 +276,9 @@ const CSS = `
   .hero-right {
     flex-shrink: 0;
     position: relative;
-    width: clamp(240px, 34vw, 480px);
-    height: clamp(240px, 34vw, 480px);
+    /* was capped at 480px — now grows further on large screens */
+    width: clamp(240px, 30vw, 600px);
+    height: clamp(240px, 30vw, 600px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -317,11 +320,11 @@ const CSS = `
     background: rgba(255,255,255,0.15);
     border: 1px solid rgba(255,255,255,0.30);
     color: #fff;
-    width: clamp(32px, 3vw, 40px);
-    height: clamp(32px, 3vw, 40px);
+    width: clamp(32px, 3vw, 44px);
+    height: clamp(32px, 3vw, 44px);
     border-radius: 50%;
     cursor: pointer;
-    font-size: clamp(18px, 2vw, 22px);
+    font-size: clamp(18px, 2vw, 24px);
     z-index: 10;
     display: flex;
     align-items: center;
@@ -330,13 +333,13 @@ const CSS = `
     line-height: 1;
   }
   .hero-arrow:hover { background: rgba(255,255,255,0.28); }
-  .hero-arrow--prev { left: clamp(8px, 1.5vw, 14px); }
-  .hero-arrow--next { right: clamp(8px, 1.5vw, 14px); }
+  .hero-arrow--prev { left: clamp(8px, 1.5vw, 20px); }
+  .hero-arrow--next { right: clamp(8px, 1.5vw, 20px); }
 
   /* ── Slide dots ──────────────────────────────────────────────────────────── */
   .hero-dots {
     position: absolute;
-    bottom: clamp(14px, 2vw, 20px);
+    bottom: clamp(14px, 2vw, 24px);
     left: 50%;
     transform: translateX(-50%);
     display: flex;
@@ -388,10 +391,15 @@ const CSS = `
 
   /* ── Responsive ──────────────────────────────────────────────────────────── */
 
+  /* Large desktop / ultra-wide — was missing, so everything plateaued past ~1440px */
+  @media (min-width: 1440px) {
+    .hero { padding-left: 100px; padding-right: 100px; }
+  }
+
   /* Tablet */
   @media (max-width: 900px) and (min-width: 641px) {
     .hero { padding: 48px 32px 68px; }
-    .hero-right { width: 260px; height: 260px; }
+    .hero-right { width: 280px; height: 280px; }
   }
 
   /* Mobile */

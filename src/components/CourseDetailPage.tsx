@@ -199,18 +199,24 @@ export default function CourseDetailPage() {
         .cp-hero-anim { animation: fadeSlideUp 0.45s ease forwards; }
 
         .cp-hero {
-          background: linear-gradient(135deg, #c47a1e 0%, #b8691a 100%);
-          color: #fff; display: flex; flex-direction: row;
-          align-items: center; justify-content: space-between;
-          gap: 32px; padding: 60px clamp(20px,8%,100px) 70px;
-          min-height: 500px; position: relative; overflow: hidden;
-        }
-        .cp-hero-left  { flex:1 1 0; min-width:0; max-width:520px; z-index:2; }
-        .cp-hero-right {
-          flex-shrink:0; position:relative;
-          width:clamp(200px,36vw,480px); height:clamp(200px,36vw,480px);
-          display:flex; align-items:center; justify-content:center; z-index:2;
-        }
+  background: linear-gradient(135deg, #c47a1e 0%, #b8691a 100%);
+  color: #fff; padding: 60px clamp(20px,8%,100px) 70px;
+  min-height: 500px; position: relative; overflow: hidden;
+}
+.cp-hero-inner {
+  max-width: 1500px; width: 100%; margin: 0 auto;
+  display: flex; flex-direction: row; align-items: center;
+  justify-content: space-between; gap: 32px;
+}
+@media (min-width: 1600px) {
+  .cp-hero-inner { max-width: 1700px; }
+}
+        .cp-hero-left  { flex:1 1 0; min-width:0; max-width:680px; z-index:2; }
+.cp-hero-right {
+  flex-shrink:0; position:relative;
+  width:clamp(200px,30vw,620px); height:clamp(200px,30vw,620px);
+  display:flex; align-items:center; justify-content:center; z-index:2;
+}
         .cp-chakra {
           position:absolute; top:50%; left:50%;
           width:100%; height:100%; object-fit:contain;
@@ -244,11 +250,12 @@ export default function CourseDetailPage() {
         .for-whom-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr)); gap:1.5rem; }
         .curriculum-grid { display:flex; flex-direction:column; gap:0.75rem; }
 
-        @media (max-width:640px) {
-          .cp-hero { flex-direction:column; align-items:center; text-align:center; padding:36px 20px 56px; min-height:unset; gap:24px; }
-          .cp-hero-left { max-width:100%; order:2; }
-          .cp-hero-right { order:1; width:180px; height:180px; }
-        }
+       @media (max-width:640px) {
+  .cp-hero { padding:36px 20px 56px; min-height:unset; }
+  .cp-hero-inner { flex-direction:column; align-items:center; text-align:center; gap:24px; }
+  .cp-hero-left { max-width:100%; order:2; }
+  .cp-hero-right { order:1; width:180px; height:180px; }
+}
 
         @keyframes ctaPulseRing { 0% { transform:scale(0.85);opacity:0.5; } 70% { transform:scale(1.25);opacity:0; } 100% { transform:scale(1.25);opacity:0; } }
         @keyframes ctaGlowBtn { 0%,100% { box-shadow:0 4px 24px rgba(255,255,255,0.35); } 50% { box-shadow:0 8px 40px rgba(255,255,255,0.55); } }
@@ -335,6 +342,7 @@ export default function CourseDetailPage() {
 
       {/* ── HERO ── */}
       <section className="cp-hero">
+        <div className="cp-hero-inner">
         <div className="cp-hero-anim cp-hero-left">
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem', flexWrap: 'wrap' }}>
             <span style={{ border: '1px solid rgba(255,255,255,0.4)', borderRadius: 20, padding: '4px 14px', fontSize: 11, letterSpacing: '0.12em', fontWeight: 600 }}>
@@ -344,13 +352,13 @@ export default function CourseDetailPage() {
               {course.level}
             </span>
           </div>
-          <h1 style={{ fontFamily: 'Georgia, serif', fontSize: 'clamp(20px,3.2vw,44px)', fontWeight: 800, lineHeight: 1.2, margin: '12px 0 14px' }}>
+          <h1 style={{ fontFamily: 'Georgia, serif', fontSize: 'clamp(20px,2.6vw,56px)', fontWeight: 800, lineHeight: 1.2, margin: '12px 0 14px' }}>
             {course.tagline}
           </h1>
-          <p style={{ fontSize: 'clamp(12px,1.4vw,15px)', opacity: 0.88, marginBottom: 12, fontStyle: 'italic' }}>
+          <p style={{ fontSize: 'clamp(12px,1.1vw,18px)', opacity: 0.88, marginBottom: 12, fontStyle: 'italic' }}>
             {course.subtitle}
           </p>
-          <p style={{ fontSize: 'clamp(12px,1.4vw,15px)', opacity: 0.82, marginBottom: 28, lineHeight: 1.7 }}>
+          <p style={{ fontSize: 'clamp(12px,1.1vw,18px)', opacity: 0.82, marginBottom: 28, lineHeight: 1.7 }}>
             {course.heroDescription}
           </p>
           <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: '1.5rem' }}>
@@ -376,6 +384,7 @@ export default function CourseDetailPage() {
           <div className="cp-hero-anim cp-slide-img">
             <img src={course.image} alt={course.title} />
           </div>
+        </div>
         </div>
       </section>
 

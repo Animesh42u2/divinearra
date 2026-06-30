@@ -348,33 +348,34 @@ export default function ReportDetailPage() {
            HERO
         ══════════════════════════════ */
         .rp-hero {
-          background: linear-gradient(135deg, #c47a1e 0%, #b8691a 100%);
-          color: #fff;
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          justify-content: space-between;
-          gap: 32px;
-          padding: 60px clamp(20px, 8%, 100px) 70px;
-          position: relative;
-          overflow: hidden;
-        }
-        .rp-hero-left  {
-          flex: 1 1 0;
-          min-width: 0;
-          max-width: 520px;
-          z-index: 2;
-        }
-        .rp-hero-right {
-          flex-shrink: 0;
-          position: relative;
-          width: clamp(200px, 36vw, 480px);
-          height: clamp(200px, 36vw, 480px);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          z-index: 2;
-        }
+  background: linear-gradient(135deg, #c47a1e 0%, #b8691a 100%);
+  color: #fff;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;          /* was space-between — center reads better once content is capped in width */
+  gap: clamp(24px, 4vw, 64px);
+  padding: clamp(48px, 7vw, 110px) clamp(20px, 8%, 140px) clamp(64px, 8vw, 120px);
+  min-height: clamp(420px, 46vw, 720px);   /* was missing entirely — this was the main reason it looked small */
+  position: relative;
+  overflow: hidden;
+}
+.rp-hero-left {
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 640px;                 /* was 520px */
+  z-index: 2;
+}
+.rp-hero-right {
+  flex-shrink: 0;
+  position: relative;
+  width: clamp(200px, 32vw, 580px);   /* was capped at 480px */
+  height: clamp(200px, 32vw, 580px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
         .rp-chakra {
           position: absolute;
           top: 50%; left: 50%;
@@ -419,6 +420,9 @@ export default function ReportDetailPage() {
         .rp-hero-btns a {
           white-space: nowrap;
         }
+          @media (min-width: 1440px) {
+  .rp-hero { padding-left: 100px; padding-right: 100px; }
+}
         .hero-stats {
           display: flex;
           gap: 0.75rem;
@@ -680,7 +684,7 @@ export default function ReportDetailPage() {
           <span className="rp-hero-badge">
             ✦ Exclusive Report by Astro Aaditya Narayan
           </span>
-          <h1 style={{ fontFamily: 'Georgia, serif', fontSize: 'clamp(18px, 3.2vw, 44px)', fontWeight: 800, lineHeight: 1.2, margin: '12px 0 14px' }}>
+          <h1 style={{ fontFamily: 'Georgia, serif', fontSize: 'clamp(18px, 3.4vw, 56px)', fontWeight: 800, lineHeight: 1.2, margin: '12px 0 14px' }}>
             {report.tagline}
           </h1>
           <p style={{ fontSize: 'clamp(12px, 1.4vw, 15px)', opacity: 0.88, marginBottom: 12, fontStyle: 'italic' }}>

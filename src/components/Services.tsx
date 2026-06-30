@@ -55,12 +55,12 @@ export default function Services() {
   const cards = serviceData[activeTab]
 
   return (
-    <section style={{ padding: '72px 8%', background: '#fdf6ed', overflow: 'hidden' }}>
+    <section style={{ padding: 'clamp(56px, 7vw, 100px) clamp(20px, 6vw, 8%)', background: '#fdf6ed', overflow: 'hidden' }}>
       <style>{`
         .svc-card {
           background: #fff5e6;
-          border-radius: 18px;
-          padding: 28px 22px;
+          border-radius: 20px;
+          padding: clamp(28px, 2.2vw, 38px) clamp(22px, 1.8vw, 30px);
           border: 1.5px solid #e8d5b7;
           position: relative;
           display: flex;
@@ -79,7 +79,7 @@ export default function Services() {
           background: linear-gradient(135deg, rgba(196,122,30,0.08) 0%, transparent 60%);
           opacity: 0;
           transition: opacity 0.28s ease;
-          border-radius: 18px;
+          border-radius: 20px;
           pointer-events: none;
         }
         .svc-card:hover {
@@ -91,14 +91,19 @@ export default function Services() {
         .svc-card:hover::before { opacity: 1; }
 
         .svc-icon-wrap {
-          width: 56px; height: 56px;
+          width: clamp(56px, 4.2vw, 72px);
+          height: clamp(56px, 4.2vw, 72px);
           border-radius: 50%;
           background: #fff;
           display: flex; align-items: center; justify-content: center;
-          margin-bottom: 16px;
+          margin-bottom: clamp(16px, 1.4vw, 22px);
           border: 1.5px solid #e8d5b7;
           transition: border-color 0.25s ease, background 0.25s ease, transform 0.25s ease;
           flex-shrink: 0;
+        }
+        .svc-icon-wrap svg {
+          width: clamp(24px, 1.8vw, 32px);
+          height: clamp(24px, 1.8vw, 32px);
         }
         .svc-card:hover .svc-icon-wrap {
           border-color: #c47a1e;
@@ -111,12 +116,12 @@ export default function Services() {
           background: transparent;
           border: 1.5px solid #4a2006;
           color: #4a2006;
-          padding: 10px;
-          border-radius: 8px;
+          padding: clamp(10px, 0.9vw, 14px);
+          border-radius: 9px;
           font-weight: 600;
           cursor: pointer;
           font-family: sans-serif;
-          font-size: 13px;
+          font-size: clamp(13px, 0.95vw, 15px);
           margin-top: auto;
           transition: background 0.22s ease, color 0.22s ease, border-color 0.22s ease, transform 0.22s ease;
         }
@@ -129,12 +134,13 @@ export default function Services() {
 
         .svc-tag {
           position: absolute;
-          top: 14px; right: 14px;
-          font-size: 11px;
+          top: clamp(14px, 1.1vw, 18px);
+          right: clamp(14px, 1.1vw, 18px);
+          font-size: clamp(11px, 0.8vw, 12.5px);
           color: #9a7050;
           font-family: sans-serif;
           background: #fff;
-          padding: 2px 10px;
+          padding: 3px 11px;
           border-radius: 10px;
           border: 1px solid #e8d5b7;
           transition: background 0.22s ease, color 0.22s ease, border-color 0.22s ease;
@@ -145,12 +151,41 @@ export default function Services() {
           border-color: #c47a1e;
         }
 
+        .svc-title {
+          font-size: clamp(15px, 1.15vw, 18px);
+          font-weight: 700;
+          margin: 0 0 12px;
+          color: #4a2006;
+          line-height: 1.3;
+        }
+
+        .svc-desc {
+          font-size: clamp(13px, 0.95vw, 15px);
+          color: #9a7050;
+          line-height: 1.6;
+          font-family: sans-serif;
+          margin-bottom: 20px;
+          flex: 1;
+        }
+
+        .svc-eyebrow { font-size: clamp(13px, 0.85vw, 14px); }
+        .svc-heading { font-size: clamp(30px, 3vw, 46px); }
+        .svc-subhead { font-size: clamp(14px, 1vw, 17px); }
+
+        .svc-tab-btn {
+          padding: clamp(9px, 0.8vw, 12px) clamp(20px, 1.8vw, 28px);
+          font-size: clamp(13px, 0.95vw, 15px);
+        }
+
         .svc-grid {
           display: grid;
           grid-template-columns: repeat(4, 1fr);
-          gap: 20px;
-          max-width: 1100px;
+          gap: clamp(18px, 1.6vw, 26px);
+          max-width: 1500px;
           margin: 0 auto;
+        }
+        @media (min-width: 1600px) {
+          .svc-grid { grid-template-columns: repeat(5, 1fr); max-width: 1800px; }
         }
         @media (max-width: 1024px) {
           .svc-grid { grid-template-columns: repeat(3, 1fr); }
@@ -163,30 +198,29 @@ export default function Services() {
         }
       `}</style>
 
-      <p style={{ textAlign: 'center', fontSize: 13, color: '#9a7050', fontFamily: 'sans-serif', marginBottom: 8 }}>
+      <p className="svc-eyebrow" style={{ textAlign: 'center', color: '#9a7050', fontFamily: 'sans-serif', marginBottom: 8 }}>
         What We Offer
       </p>
-      <h2 style={{ textAlign: 'center', fontSize: 36, fontWeight: 700, margin: '0 0 10px' }}>
+      <h2 className="svc-heading" style={{ textAlign: 'center', fontWeight: 700, margin: '0 0 14px' }}>
         Our <span style={{ color: '#c47a1e' }}>Services</span>
       </h2>
-      <p style={{ textAlign: 'center', color: '#9a7050', fontFamily: 'sans-serif', marginBottom: 32, fontSize: 15 }}>
+      <p className="svc-subhead" style={{ textAlign: 'center', color: '#9a7050', fontFamily: 'sans-serif', marginBottom: 40 }}>
         Choose the service that fits your needs and start your journey toward clarity
       </p>
 
       {/* Tabs */}
-      <div style={{ display: 'flex', justifyContent: 'center', gap: 10, marginBottom: 36, flexWrap: 'wrap' }}>
+      <div style={{ display: 'flex', justifyContent: 'center', gap: 12, marginBottom: 44, flexWrap: 'wrap' }}>
         {tabs.map(tab => (
           <button
             key={tab}
+            className="svc-tab-btn"
             onClick={() => setActiveTab(tab)}
             style={{
-              padding: '9px 22px',
               borderRadius: 25,
               border: '1.5px solid #e0c090',
               background: activeTab === tab ? '#c47a1e' : 'transparent',
               color: activeTab === tab ? '#fff' : '#7a3e0a',
               fontWeight: 600,
-              fontSize: 14,
               cursor: 'pointer',
               fontFamily: 'sans-serif',
               transition: 'all 0.2s',
@@ -210,24 +244,16 @@ export default function Services() {
 
             <div className="svc-icon-wrap">
               <s.Icon
-                size={24}
                 color={hoveredCard === s.title ? '#c47a1e' : '#c47a1e'}
                 strokeWidth={1.5}
               />
             </div>
 
-            <h3 style={{ fontSize: 15, fontWeight: 700, margin: '0 0 10px', color: '#4a2006', lineHeight: 1.3 }}>
+            <h3 className="svc-title">
               {s.title}
             </h3>
 
-            <p style={{
-              fontSize: 13,
-              color: '#9a7050',
-              lineHeight: 1.6,
-              fontFamily: 'sans-serif',
-              marginBottom: 18,
-              flex: 1,
-            }}>
+            <p className="svc-desc">
               {s.desc}
             </p>
 
