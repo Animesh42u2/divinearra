@@ -729,7 +729,7 @@ export default function CourseDetailPage() {
               "Astrology is not about fear — it is about awareness, alignment, and awakening your inner power."
             </blockquote>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.55rem' }}>
-              {[['100K+','Consultations Delivered'],['7+','Years of Experience'],['59+','Years of Legacy'],['8+','Professional Awards'],['30K+','Hours of Expert Guidance']].map(([v, l]) => (
+              {[['100K+','Consultations Delivered'],['9+','Years of Experience'],['59+','Years of Legacy'],['8+','Professional Awards'],['30K+','Hours of Expert Guidance']].map(([v, l]) => (
                 <div key={l} style={{ background: 'rgba(255,255,255,0.11)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 8, padding: '0.5rem 0.5rem', textAlign: 'center' }}>
                   <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(0.85rem,1.5vw,1rem)', fontWeight: 800, color: '#fff' }}>{v}</div>
                   <div style={{ fontSize: 'clamp(0.55rem,1vw,0.6rem)', color: 'rgba(255,255,255,0.65)', marginTop: 2, textTransform: 'uppercase', letterSpacing: '0.07em' }}>{l}</div>

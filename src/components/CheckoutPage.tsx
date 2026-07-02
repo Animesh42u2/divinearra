@@ -106,12 +106,14 @@ export default function CheckoutPage({ type }: { type: CheckoutType }) {
   const navigate  = useNavigate()
 
   const item = resolveItem(type, slug ?? '')
+  const isCouple = slug === 'couple' || slug === 'couple-matching-report'
   const planIndex: number = location.state?.planIndex ?? 0
   const plan = item?.pricingPlans[planIndex]
 
   const [form, setForm] = useState({
     name: '', email: '', whatsapp: '',
     dob: '', time: '', place: '',
+     partnerName: '', partnerDob: '', partnerTime: '', partnerPlace: '', partnerGender: '',
     gender: '', pincode: '', language: '',
   })
   const [paying, setPaying] = useState(false)
@@ -141,8 +143,16 @@ const [showSuggestions, setShowSuggestions] = useState(false)
       if (!form.pincode.trim()) return 'Please enter your pin code.'
       if (!form.language)       return 'Please select a report language.'
     }
+     if (isCouple) {                                              // ← add this block
+    if (!form.partnerName.trim())  return "Please enter your partner's full name."
+    if (!form.partnerDob)          return "Please enter your partner's date of birth."
+    if (!form.partnerTime)         return "Please enter your partner's time of birth."
+    if (!form.partnerPlace.trim()) return "Please enter your partner's birth place."
+    if (!form.partnerGender)       return "Please select your partner's gender."
+  }
     return null
   }
+  
   async function handlePlaceInput(e: React.ChangeEvent<HTMLInputElement>) {
   const value = e.target.value
   setForm(p => ({ ...p, place: value }))
@@ -194,6 +204,13 @@ const [showSuggestions, setShowSuggestions] = useState(false)
           language: form.language,
           gender:   form.gender,
         }),
+          ...(isCouple && {                                            
+    partnerName:   form.partnerName,
+    partnerDob:    form.partnerDob,
+    partnerTime:   form.partnerTime,
+    partnerPlace:  form.partnerPlace,
+    partnerGender: form.partnerGender,
+  }),
       },
       theme: { color: '#c47a1e' },
 
@@ -607,6 +624,47 @@ const [showSuggestions, setShowSuggestions] = useState(false)
                 </div>
               </>
             )}
+            {isCouple && (
+  <>
+    <p className="co-section-label">Partner's Birth Details</p>
+    <div className="co-form-grid">
+      <div className="co-field span-2">
+        <label className="co-label">Partner's Full Name <span>*</span></label>
+        <input
+          className="co-input" type="text" placeholder="Partner's full name"
+          value={form.partnerName}
+          onChange={set('partnerName')}
+        />
+      </div>
+      <div className="co-field">
+        <label className="co-label">Partner's Date of Birth <span>*</span></label>
+        <input className="co-input" type="date" value={form.partnerDob} onChange={set('partnerDob')} />
+      </div>
+      <div className="co-field">
+        <label className="co-label">Partner's Time of Birth <span>*</span></label>
+        <input className="co-input" type="time" value={form.partnerTime} onChange={set('partnerTime')} />
+      </div>
+      <div className="co-field">
+        <label className="co-label">Partner's Birth Place <span>*</span></label>
+        <input
+          className="co-input" type="text" placeholder="City, State"
+          value={form.partnerPlace}
+          onChange={set('partnerPlace')}
+          autoComplete="off"
+        />
+      </div>
+      <div className="co-field">
+        <label className="co-label">Partner's Gender <span>*</span></label>
+        <select className="co-input" value={form.partnerGender} onChange={set('partnerGender')}>
+          <option value="">Select gender</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+    </div>
+  </>
+)}
 
             <div className="co-form-divider" />
 

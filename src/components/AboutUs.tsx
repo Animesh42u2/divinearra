@@ -16,7 +16,7 @@ const BROWN_MID  = '#6b3a10'
 
 const stats = [
   { icon: Users,    value: 100, suffix: 'K+', label: 'Consultations Delivered'  },
-  { icon: Clock,    value: 7,   suffix: '+',  label: 'Years of Experience'      },
+  { icon: Clock,    value: 9,   suffix: '+',  label: 'Years of Experience'      },
   { icon: BookOpen, value: 59,  suffix: '+',  label: 'Years of Legacy'          },
   { icon: Trophy,   value: 8,   suffix: '+',  label: 'Professional Awards'      },
   { icon: Star,     value: 30,  suffix: 'K+', label: 'Hours of Expert Guidance' },
@@ -216,6 +216,12 @@ export default function AboutUs() {
           filter: drop-shadow(0 -6px 28px rgba(200,121,26,0.3)) drop-shadow(0 10px 24px rgba(0,0,0,0.45));
         }
 
+        /* ── Large Desktop / Wide screens ── */
+        @media (min-width:1200px) {
+          .au-trust    { grid-template-columns: repeat(3,1fr) !important; }
+          .au-approach { grid-template-columns: repeat(3,1fr) !important; }
+        }
+
         /* ── Tablet ── */
         @media (max-width:900px) {
           .au-stats   { grid-template-columns: repeat(3,1fr) !important; }
@@ -355,7 +361,7 @@ export default function AboutUs() {
       </section>
 
       {/* ════════════ STATS ════════════ */}
-      <section style={{ maxWidth:1000, margin:'-1.5rem auto 0', padding:'0 clamp(1rem,4vw,2rem)', position:'relative', zIndex:10 }}>
+      <section style={{ maxWidth:1300, margin:'-1.5rem auto 0', padding:'0 clamp(1rem,4vw,2rem)', position:'relative', zIndex:10 }}>
         <div className="au-stats" style={{ display:'grid', gridTemplateColumns:'repeat(5,1fr)', gap:'1rem' }}>
           {stats.map(({ icon: Icon, value, suffix, label }, i) => (
             <ScaleIn key={label} delay={i * 0.08}>
@@ -374,10 +380,10 @@ export default function AboutUs() {
       </section>
 
       {/* ════════════ ABOUT TEXT ════════════ */}
-      <section style={{ maxWidth:800, margin:'3.5rem auto 0', padding:'0 clamp(1rem,4vw,2rem)' }}>
+      <section style={{ maxWidth:900, margin:'3.5rem auto 0', padding:'0 clamp(1rem,4vw,2rem)' }}>
         <div style={{ display:'flex', flexDirection:'column', gap:'1.1rem' }}>
           {[
-            "With over 7+ years of experience, Aaditya Narayan ji has guided countless individuals across the globe through the intricate patterns of their birth charts — offering accurate predictions, practical remedies, and spiritual direction that truly transform lives.",
+            "With over 9+ years of experience, Aaditya Narayan ji has guided countless individuals across the globe through the intricate patterns of their birth charts — offering accurate predictions, practical remedies, and spiritual direction that truly transform lives.",
             "His approach goes beyond traditional astrology. Every consultation is a journey of self-understanding, healing, and empowerment, where you don't just get answers — you gain the wisdom to realign your energy and rewrite your destiny.",
             "Whether you're struggling with career confusion, relationship issues, or life direction, Aaditya Narayan ji's compassionate guidance helps you see the hidden patterns behind your challenges and find your path toward peace and success.",
           ].map((text, i) => (
@@ -398,7 +404,7 @@ export default function AboutUs() {
       </section>
 
       {/* ════════════ WHY TRUST ════════════ */}
-      <section style={{ maxWidth:960, margin:'4rem auto 0', padding:'0 clamp(1rem,4vw,2rem)' }}>
+      <section style={{ maxWidth:1300, margin:'4rem auto 0', padding:'0 clamp(1rem,4vw,2rem)' }}>
         <FadeUp>
           <div style={{ textAlign:'center', marginBottom:'2rem' }}>
             <div style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:'0.75rem', marginBottom:'0.75rem' }}>
@@ -410,7 +416,7 @@ export default function AboutUs() {
         <div className="au-trust" style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'1rem' }}>
           {trustPoints.map((point, i) => (
             <FadeUp key={i} delay={i * 0.08}>
-              <div className="au-card" style={{ background:'#fff', borderRadius:12, padding:'1rem 1.25rem', border:`1px solid ${AMBER}22`, boxShadow:'0 2px 12px rgba(200,121,26,0.08)', display:'flex', gap:'0.75rem', alignItems:'flex-start', cursor:'default', gridColumn: i===4 ? '1 / -1' : 'auto', height:'100%' }}>
+              <div className="au-card" style={{ background:'#fff', borderRadius:12, padding:'1rem 1.25rem', border:`1px solid ${AMBER}22`, boxShadow:'0 2px 12px rgba(200,121,26,0.08)', display:'flex', gap:'0.75rem', alignItems:'flex-start', cursor:'default', height:'100%' }}>
                 <div style={{ width:30, height:30, borderRadius:'50%', flexShrink:0, background:`linear-gradient(135deg,${AMBER_DARK},${AMBER})`, display:'flex', alignItems:'center', justifyContent:'center' }}>
                   <CheckCircle2 size={16} color="#fff" strokeWidth={2}/>
                 </div>
@@ -422,7 +428,7 @@ export default function AboutUs() {
       </section>
 
       {/* ════════════ OUR APPROACH ════════════ */}
-      <section style={{ maxWidth:800, margin:'4rem auto 0', padding:'0 clamp(1rem,4vw,2rem)' }}>
+      <section style={{ maxWidth:1100, margin:'4rem auto 0', padding:'0 clamp(1rem,4vw,2rem)' }}>
         <FadeUp>
           <div style={{ textAlign:'center', marginBottom:'2rem' }}>
             <div style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:'0.75rem', marginBottom:'0.75rem' }}>
@@ -441,7 +447,7 @@ export default function AboutUs() {
         <div className="au-approach" style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'1rem' }}>
           {approachAreas.map(({ icon: Icon, label }, i) => (
             <FadeUp key={label} delay={i * 0.07}>
-              <div style={{ background:'#fff', borderRadius:12, padding:'0.9rem 1.2rem', border:`1px solid ${AMBER}22`, boxShadow:'0 2px 10px rgba(200,121,26,0.08)', display:'flex', gap:'0.7rem', alignItems:'center', gridColumn: i===5 ? '1 / -1' : 'auto' }}>
+              <div style={{ background:'#fff', borderRadius:12, padding:'0.9rem 1.2rem', border:`1px solid ${AMBER}22`, boxShadow:'0 2px 10px rgba(200,121,26,0.08)', display:'flex', gap:'0.7rem', alignItems:'center', height:'100%' }}>
                 <div style={{ width:32, height:32, borderRadius:'50%', flexShrink:0, background:`linear-gradient(135deg,${AMBER_DARK},${AMBER})`, display:'flex', alignItems:'center', justifyContent:'center' }}>
                   <Icon size={16} color="#fff" strokeWidth={1.8}/>
                 </div>
@@ -453,7 +459,7 @@ export default function AboutUs() {
       </section>
 
       {/* ════════════ OUR PROMISE ════════════ */}
-      <section style={{ maxWidth:960, margin:'4rem auto 0', padding:'0 clamp(1rem,4vw,2rem)' }}>
+      <section style={{ maxWidth:1300, margin:'4rem auto 0', padding:'0 clamp(1rem,4vw,2rem)' }}>
         <FadeUp>
           <div style={{ textAlign:'center', marginBottom:'2rem' }}>
             <div style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:'0.75rem', marginBottom:'0.75rem' }}>
@@ -479,7 +485,7 @@ export default function AboutUs() {
       </section>
 
       {/* ════════════ EXPERTISE ════════════ */}
-      <section style={{ maxWidth:800, margin:'4rem auto 0', padding:'0 clamp(1rem,4vw,2rem)' }}>
+      <section style={{ maxWidth:1200, margin:'4rem auto 0', padding:'0 clamp(1rem,4vw,2rem)' }}>
         <FadeUp>
           <div style={{ textAlign:'center', marginBottom:'1.5rem' }}>
             <h2 style={{ fontFamily:"'Playfair Display',serif", fontSize:'clamp(1.3rem,3vw,2rem)', color:BROWN_TEXT, margin:'0 0 0.3rem' }}>Our Expertise Areas</h2>
@@ -501,7 +507,7 @@ export default function AboutUs() {
       </section>
 
       {/* ════════════ CTA ════════════ */}
-      <section style={{ maxWidth:800, margin:'4rem auto 0', padding:'0 clamp(1rem,4vw,2rem) 5rem' }}>
+      <section style={{ maxWidth:950, margin:'4rem auto 0', padding:'0 clamp(1rem,4vw,2rem) 5rem' }}>
         <FadeUp>
           <div style={{ background:`linear-gradient(135deg,${AMBER_DARK} 0%,${AMBER} 100%)`, borderRadius:20, padding:'clamp(2rem,5vw,3.2rem)', textAlign:'center', position:'relative', overflow:'hidden' }}>
             <div style={{ position:'absolute', top:-40, right:-40, width:200, height:200, borderRadius:'50%', background:'rgba(255,255,255,0.07)', pointerEvents:'none' }}/>

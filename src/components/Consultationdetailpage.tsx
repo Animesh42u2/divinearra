@@ -1,6 +1,6 @@
 import * as LucideIcons from 'lucide-react'
 import { useState, useEffect } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useParams, useNavigate } from 'react-router-dom'
 import { getConsultationBySlug } from '../data/Consultationsconfig'
 import Testimonials from './Testimonials'
 import Navbar from './Navbar'
@@ -423,9 +423,12 @@ const ctaBtn: React.CSSProperties = {
 // ─── PAGE ────────────────────────────────────────────────────
 export default function ConsultationDetailPage() {
   const { slug } = useParams<{ slug: string }>()
+  const navigate = useNavigate()
   const consultation = getConsultationBySlug(slug ?? '')
   const [angle, setAngle] = useState(0)
-  const [callDuration, setCallDuration] = useState<'15' | '30'>('15')
+  const [callDuration, setCallDuration] = useState<'15' | '30'>(
+  slug === 'couple' ? '30' : '15'
+)
   
 
   useEffect(() => {
@@ -849,7 +852,7 @@ gap: 4.5rem;
               ))}
             </ul>
 <button
-  onClick={() => document.getElementById('pricing-cards')?.scrollIntoView({ behavior: 'smooth' })}
+  onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
   style={{ ...ctaBtn }}
 >
   Book Now
@@ -1161,24 +1164,26 @@ gap: 4.5rem;
           </div>
         </div>
         <div>
-          <div style={{ fontWeight: 700, fontSize: '0.8rem', color: BROWN_TEXT, marginBottom: 6 }}>Duration:</div>
-          <div style={{ display: 'flex', borderRadius: 30, overflow: 'hidden', border: `1px solid ${AMBER}55` }}>
-            <span
-              className={`pc-mode-pill ${callDuration === '15' ? 'active' : ''}`}
-              style={{ cursor: 'pointer' }}
-              onClick={() => setCallDuration('15')}
-            >
-              15 Min
-            </span>
-            <span
-              className={`pc-mode-pill ${callDuration === '30' ? 'active' : ''}`}
-              style={{ cursor: 'pointer' }}
-              onClick={() => setCallDuration('30')}
-            >
-              30 Min
-            </span>
-          </div>
-        </div>
+  <div style={{ fontWeight: 700, fontSize: '0.8rem', color: BROWN_TEXT, marginBottom: 6 }}>Duration:</div>
+  <div style={{ display: 'flex', borderRadius: 30, overflow: 'hidden', border: `1px solid ${AMBER}55` }}>
+    {slug !== 'couple' && (
+      <span
+        className={`pc-mode-pill ${callDuration === '15' ? 'active' : ''}`}
+        style={{ cursor: 'pointer' }}
+        onClick={() => setCallDuration('15')}
+      >
+        15 Min
+      </span>
+    )}
+    <span
+      className={`pc-mode-pill ${callDuration === '30' ? 'active' : ''}`}
+      style={{ cursor: 'pointer' }}
+      onClick={() => setCallDuration('30')}
+    >
+      30 Min
+    </span>
+  </div>
+</div>
         <div>
           <div style={{ fontWeight: 700, fontSize: '0.8rem', color: BROWN_TEXT, marginBottom: 6 }}>Consultation Type:</div>
           <div style={{ display: 'flex', borderRadius: 30, overflow: 'hidden', border: `1px solid ${AMBER}55` }}>
@@ -1216,7 +1221,11 @@ gap: 4.5rem;
           </div>
         </div>
         <button
-          onClick={() => window.location.href = `/checkout/consultation/${slug}`}
+          onClick={() =>
+    navigate(`/checkout/consultation/${slug}`, {
+      state: { planIndex: callDuration === '15' ? 0 : 1 },
+    })
+  }
           style={{
             background: `linear-gradient(135deg, ${AMBER}, ${AMBER_LIGHT})`,
             color: '#fff', fontWeight: 700, fontSize: '0.95rem',
@@ -1267,7 +1276,7 @@ gap: 4.5rem;
               "Astrology is not about fear — it is about awareness, alignment, and awakening your inner power."
             </blockquote>
             <div className="about-stats" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.55rem' }}>
-              {[['100K+','Consultations Delivered'],['7+','Years of Experience'],['59+','Years of Legacy'],['8+','Professional Awards'],['30K+','Hours of Expert Guidance']].map(([v, l]) => (
+              {[['100K+','Consultations Delivered'],['9+','Years of Experience'],['59+','Years of Legacy'],['8+','Professional Awards'],['30K+','Hours of Expert Guidance']].map(([v, l]) => (
                 <div key={l} style={{ background: 'rgba(255,255,255,0.11)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 8, padding: '0.5rem', textAlign: 'center' }}>
                   <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1rem,1.8vw,1.2rem)', fontWeight: 800, color: '#fff' }}>{v}</div>
                   <div style={{ fontSize: 'clamp(0.6rem,1vw,0.68rem)', color: 'rgba(255,255,255,0.65)', marginTop: 2, textTransform: 'uppercase', letterSpacing: '0.07em' }}>{l}</div>

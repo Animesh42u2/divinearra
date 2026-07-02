@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import Navbar from './Navbar'
@@ -209,35 +209,7 @@ const allConsultations = [
     rating: '5.0',
     reviews: 2134,
   },
-  {
-    slug: 'tarot-card-reading',
-    title: 'Tarot Card Reading',
-    desc: 'An intuitive live tarot session for clarity on love, career, or any decision weighing on your mind.',
-    image: '/taroot.png',
-    price: '₹349',
-    originalPrice: '₹799',
-    tag: 'trending',
-    icon: '🃏',
-    duration: '15–45 Min',
-    rating: '4.8',
-    reviews: 1623,
-  },
-  {
-    slug: 'gemstone-rudraksha',
-    title: 'Gemstone & Rudraksha Consultation',
-    desc: 'Personalized guidance on which gemstones and Rudraksha truly align with your birth chart — before you invest.',
-    image: '/gemstonee.jpg',
-    price: '₹599',
-    originalPrice: '₹1,499',
-    tag: 'trending',
-    icon: '💎',
-    duration: '20–40 Min',
-    rating: '4.9',
-    reviews: 1756,
-  },
 ]
-
-type Tab = 'all' | 'popular' | 'trending'
 
 const tagConfig: Record<string, { label: string; bg: string; color: string }> = {
   popular:  { label: '🔥 Popular',  bg: 'rgba(196,122,30,0.15)', color: '#c47a1e' },
@@ -260,11 +232,7 @@ const CalendarIcon = () => (
 // Main Page
 // ─────────────────────────────────────────
 export default function ConsultationsPage() {
-  const [activeTab, setActiveTab] = useState<Tab>('all')
-
-  const filtered = activeTab === 'all'
-    ? allConsultations
-    : allConsultations.filter(c => c.tag === activeTab)
+  const filtered = allConsultations
 
   return (
     <>
@@ -484,7 +452,7 @@ export default function ConsultationsPage() {
               ['100K+', 'Consultations Done'],
               ['4.9/5 ★', 'Avg Rating'],
               ['7+', 'Years Experience'],
-              ['4', 'Session Types'],
+              ['2', 'Session Types'],
             ].map(([v, l]) => (
               <div key={l} className="ch-stat">
                 <div className="ch-stat-val">{v}</div>
@@ -509,20 +477,8 @@ export default function ConsultationsPage() {
             Your Guidance, Your Way.
           </h2>
           <p style={{ fontFamily: 'sans-serif', fontSize: 14, color: '#7a5030', margin: '0 auto', lineHeight: 1.7, maxWidth: 460 }}>
-            From personal life questions to couple compatibility, tarot insights to gemstone guidance — pick the session that speaks to where you are right now.
+            From personal life questions to couple compatibility — pick the session that speaks to where you are right now.
           </p>
-        </div>
-
-        <div className="tabs-wrap">
-          {(['all', 'popular', 'trending'] as Tab[]).map(t => (
-            <button
-              key={t}
-              className={`tab-btn${activeTab === t ? ' active' : ''}`}
-              onClick={() => setActiveTab(t)}
-            >
-              {t === 'all' ? '✦ All Sessions' : t === 'popular' ? '🔥 Popular' : '✦ Trending'}
-            </button>
-          ))}
         </div>
 
         <div className="cons-grid">

@@ -59,9 +59,9 @@ export const consultationsConfig: ConsultationConfig[] = [
       description:
         'The Personal Consultation is a live audio or video session with Astro Aaditya Narayan, where your birth chart is discussed in real time and your specific questions are answered directly. Whether you\'re facing a single pressing issue or want an overview of your life\'s direction, this session gives you clarity through conversation, not just paperwork.',
       bullets: [
-        'Live, real-time conversation with an expert Vedic astrologer.',
-        'Ask follow-up questions and get immediate clarification.',
-        'Covers any area of life — career, love, finance, health, or family.',
+        'Personalized Birth Chart (Kundli) Analysis.',
+        'In-depth Guidance on 1 Major Life Question.',
+        'Practical & Easy-to-Follow Personalized Remedies.',
         'Personalized remedies explained and discussed during the call.',
       ],
     },
@@ -85,7 +85,7 @@ export const consultationsConfig: ConsultationConfig[] = [
     ],
     pricingPlans: [
       {
-        name: 'Quick Consultation',
+        name: 'Aryabhata',
         tagline: 'Focused Guidance for Your Most Pressing Question',
         originalPrice: '₹999',
         discountedPrice: '₹499',
@@ -101,7 +101,7 @@ export const consultationsConfig: ConsultationConfig[] = [
         ],
       },
       {
-        name: 'Extended Consultation',
+        name: 'Chanakya',
         tagline: 'A Deeper, Unhurried Conversation About Your Life',
         originalPrice: '₹2,999',
         discountedPrice: '₹1,299',
@@ -121,7 +121,7 @@ export const consultationsConfig: ConsultationConfig[] = [
     faqs: [
       { question: 'How does the live session work?', answer: 'After booking, you\'ll receive a confirmed time slot. At that time, you\'ll connect with Astro Aaditya Narayan via phone or video call, depending on the plan you choose.' },
       { question: 'What information do I need to provide beforehand?', answer: 'Your accurate date, time, and place of birth. The more accurate your birth time, the more precise the chart analysis will be.' },
-      { question: 'Can I ask about multiple topics in one session?', answer: 'Yes, though the Quick Consultation works best for 1–2 focused questions. The Extended Consultation gives more room to cover multiple areas.' },
+      { question: 'Can I ask about multiple topics in one session?', answer: 'Yes, though the Aryabhata works best for 1–2 focused questions. The Chanakya gives more room to cover multiple areas.' },
       { question: 'What if I need to reschedule?', answer: 'You can reschedule your session up to 12 hours before the booked time through the link sent in your confirmation message.' },
       { question: 'Is this available in Hindi?', answer: 'Yes, sessions can be conducted in Hindi or English based on your preference — just let us know at the time of booking.' },
     ],
@@ -146,7 +146,7 @@ export const consultationsConfig: ConsultationConfig[] = [
     image: '/love.webp',
     image2: '/love.jpeg',
     astrologerPhoto: '/check.png',
-    pricingImage: '/lovu.png',
+    pricingImage: '/love.png',
     whatIs: {
       heading: 'A Shared Session for a Shared Journey',
       description:
