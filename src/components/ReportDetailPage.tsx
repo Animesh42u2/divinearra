@@ -684,7 +684,8 @@ export default function ReportDetailPage() {
           <span className="rp-hero-badge">
             ✦ Exclusive Report by Astro Aaditya Narayan
           </span>
-<h1 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 'clamp(18px, 3.4vw, 56px)', fontWeight: 800, lineHeight: 1.2, margin: '12px 0 14px' }}>            {report.tagline}
+          <h1 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 'clamp(18px, 3.4vw, 56px)', fontWeight: 800, lineHeight: 1.2, margin: '12px 0 14px' }}>
+            {report.tagline}
           </h1>
           <p style={{ fontSize: 'clamp(12px, 1.4vw, 15px)', opacity: 0.88, marginBottom: 12, fontStyle: 'italic' }}>
             {report.subtitle}

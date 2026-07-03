@@ -23,11 +23,12 @@ const stats = [
 ]
 
 const trustPoints = [
-  '7+ Years of dedicated practice in Vedic Astrology, guiding individuals, families, and businesses toward clarity and purpose.',
+  '9+ Years of dedicated practice in Vedic Astrology, guiding individuals, families, and businesses toward clarity and purpose.',
   'Conducted over 100K+ consultations — including top professionals, entrepreneurs, spiritual seekers, and public figures across India and abroad.',
   'Honored with 8+ prestigious Professional Awards recognising excellence, accuracy, and ethical practice in Vedic astrology.',
   'Carries a 59-year combined family legacy of Vedic sciences — ancient wisdom passed down and refined through generations.',
   '30,000+ hours of expert guidance delivered — each session deeply personalised, rooted in the unique planetary blueprint of the client.',
+  'Trusted by 2 Lakh+ kundlis analysed with a 4.9/5 average rating — a track record built on accuracy, discretion, and genuine care.',
 ]
 
 const approachAreas = [

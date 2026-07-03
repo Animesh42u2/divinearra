@@ -5,6 +5,14 @@ import { useNavigate } from 'react-router-dom'
 
 const slides = [
   {
+    tag: '✦ Spiritual Guidance',
+    title: 'Real Wisdom. Real Answers. One Trusted Guide by Your Side.',
+    desc: "Whether it's love, career, health, or purpose — get honest, heart-centred guidance rooted in authentic Vedic tradition. No scripts. No shortcuts.",
+    btn1: 'Start Your Journey', btn1Route: '/consultation',
+    btn2: 'Book a Session',     btn2Route: '/consultation',
+    image: '/slide5.png',
+  },
+  {
     tag: '✦ Career & Success',
     title: 'Your Stars Know the Career Path You Were Born to Walk',
     desc: 'Stop guessing your next move. Get a detailed Career Report powered by Vedic Astrology — revealing your strengths, ideal profession, and the exact timing to act.',
@@ -27,14 +35,6 @@ const slides = [
     btn1: 'Get My Kundli', btn1Route: '/reports/premium-kundali',
     btn2: 'Know More',     btn2Route: '/reports',
     image: '/slide4.png',
-  },
-  {
-    tag: '✦ Spiritual Guidance',
-    title: 'Real Wisdom. Real Answers. One Trusted Guide by Your Side.',
-    desc: "Whether it's love, career, health, or purpose — get honest, heart-centred guidance rooted in authentic Vedic tradition. No scripts. No shortcuts.",
-    btn1: 'Start Your Journey', btn1Route: '/consultation',
-    btn2: 'Book a Session',     btn2Route: '/consultation',
-    image: '/slide5.png',
   },
   {
     tag: '✦ Wealth & Fortune',
@@ -126,7 +126,7 @@ export default function Hero() {
           />
           <div
   key={`img-${current}`}
-  className={`hero-img-wrap hero-fade${slide.image === '/slide5.png' ? ' hero-img-wrap--big' : ''}`}
+  className={`hero-img-wrap hero-fade${['/slide5.png', '/slide2.png'].includes(slide.image) ? ' hero-img-wrap--big' : ''}`}
 >
             <img src={slide.image} alt={slide.tag} />
           </div>

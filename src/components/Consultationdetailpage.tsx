@@ -504,8 +504,8 @@ export default function ConsultationDetailPage() {
 .cp-hero-right {
   flex-shrink: 0;
   position: relative;
-  width: clamp(150px, 30vw, 560px);      /* was capped at 480px */
-  height: clamp(150px, 30vw, 560px);
+  width: clamp(180px, 34vw, 620px);
+  height: clamp(180px, 34vw, 620px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -514,12 +514,12 @@ export default function ConsultationDetailPage() {
   @media (min-width: 1440px) {
   .cp-hero { padding-left: 100px; padding-right: 100px; }
   .cp-hero-left { max-width: 680px; }
-  .cp-hero-right { width: clamp(280px, 26vw, 620px); height: clamp(280px, 26vw, 620px); }
+  .cp-hero-right { width: clamp(320px, 30vw, 680px); height: clamp(320px, 30vw, 680px); }
 }
   @media (min-width: 1920px) {
   .cp-hero { padding-left: 160px; padding-right: 160px; }
   .cp-hero-left { max-width: 760px; }
-  .cp-hero-right { width: clamp(320px, 24vw, 680px); height: clamp(320px, 24vw, 680px); }
+  .cp-hero-right { width: clamp(360px, 28vw, 740px); height: clamp(360px, 28vw, 740px); }
 }
         .cp-chakra {
           position: absolute; top: 50%; left: 50%;
@@ -545,12 +545,12 @@ export default function ConsultationDetailPage() {
             gap: 20px;
           }
           .cp-hero-left  { order: 2; width: 100%; min-width: 0; }
-          .cp-hero-right { order: 1; width: 140px; height: 140px; }
+          .cp-hero-right { order: 1; width: 170px; height: 170px; }
           .cp-hero-btns  { justify-content: center !important; }
           .hero-stats    { justify-content: center !important; }
         }
         @media (min-width: 601px) and (max-width: 900px) {
-          .cp-hero-right { width: clamp(160px,28vw,280px); height: clamp(160px,28vw,280px); }
+          .cp-hero-right { width: clamp(190px,32vw,320px); height: clamp(190px,32vw,320px); }
         }
 
         /* ── FLORAL ── */
@@ -800,7 +800,7 @@ gap: 4.5rem;
           <span style={{ border: '1px solid rgba(255,255,255,0.4)', borderRadius: 20, padding: '4px 14px', fontSize: 11, marginBottom: 16, display: 'inline-block', letterSpacing: '0.12em', fontWeight: 600 }}>
             ✦ 1-On-1 Consultation with Astro Aaditya Narayan
           </span>
-          <h1 style={{ fontFamily: 'Georgia, serif', fontSize: 'clamp(18px, 3.2vw, 50px)', fontWeight: 800, lineHeight: 1.2, margin: '12px 0 14px' }}>
+          <h1 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 'clamp(18px, 3.2vw, 50px)', fontWeight: 800, lineHeight: 1.2, margin: '12px 0 14px' }}>
             {consultation.tagline}
           </h1>
           <p style={{ fontSize: 'clamp(11px, 1.4vw, 17px)', opacity: 0.88, marginBottom: 12, fontStyle: 'italic' }}>

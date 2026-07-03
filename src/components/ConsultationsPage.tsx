@@ -188,8 +188,8 @@ const allConsultations = [
     title: 'Personal Consultation',
     desc: 'Get real-time answers to your most pressing life questions in a live 1-on-1 session with Astro Aaditya Narayan.',
     image: '/personal.png',
-    price: '₹499',
-    originalPrice: '₹999',
+    price: '₹499/-',
+    originalPrice: '₹1,249/-',
     tag: 'popular',
     icon: '🔮',
     duration: '15–30 Min',
@@ -201,11 +201,11 @@ const allConsultations = [
     title: 'Couple Consultation',
     desc: 'A joint live session for both partners to explore compatibility, understand each other better, and get guidance together.',
     image: '/love.webp',
-    price: '₹799',
-    originalPrice: '₹1,999',
+    price: '₹1,399/-',
+    originalPrice: '₹3,499/-',
     tag: 'popular',
     icon: '💑',
-    duration: '30–60 Min',
+    duration: '30 Min',
     rating: '5.0',
     reviews: 2134,
   },
@@ -517,7 +517,6 @@ export default function ConsultationsPage() {
                     <div className="cons-card-price-row">
                       <span className="cons-card-price">{c.price}</span>
                       <span className="cons-card-original">{c.originalPrice}</span>
-                      <span style={{ fontFamily: 'sans-serif', fontSize: 11, color: '#a08060' }}>onwards</span>
                     </div>
                     <div className="cons-card-btn">Book Session →</div>
                   </div>
