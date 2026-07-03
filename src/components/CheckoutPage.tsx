@@ -137,12 +137,12 @@ const [showSuggestions, setShowSuggestions] = useState(false)
     if (!form.whatsapp.trim())  return 'Please enter your WhatsApp number.'
     if (!form.gender)           return 'Please select your gender.'
     if (showBirth) {
-      if (!form.dob)            return 'Please enter your date of birth.'
-      if (!form.time)           return 'Please enter your time of birth.'
-      if (!form.place.trim())   return 'Please enter your birth place.'
-      if (!form.pincode.trim()) return 'Please enter your pin code.'
-      if (!form.language)       return 'Please select a report language.'
-    }
+  if (!form.dob)            return 'Please enter your date of birth.'
+  if (!form.time)           return 'Please enter your time of birth.'
+  if (!form.place.trim())   return 'Please enter your birth place.'
+  if (!form.pincode.trim()) return 'Please enter your pin code.'
+  if (!isCouple && !form.language) return 'Please select a report language.'
+}
      if (isCouple) {                                              // ← add this block
     if (!form.partnerName.trim())  return "Please enter your partner's full name."
     if (!form.partnerDob)          return "Please enter your partner's date of birth."
@@ -193,17 +193,17 @@ const [showSuggestions, setShowSuggestions] = useState(false)
         contact: form.whatsapp,
       },
       notes: {
-        plan:    plan.name,
-        product: item.title,
-        type,
-        ...(showBirth && {
-          dob:      form.dob,
-          time:     form.time,
-          place:    form.place,
-          pincode:  form.pincode,
-          language: form.language,
-          gender:   form.gender,
-        }),
+  plan:    plan.name,
+  product: item.title,
+  type,
+  ...(showBirth && {
+    dob:      form.dob,
+    time:     form.time,
+    place:    form.place,
+    pincode:  form.pincode,
+    gender:   form.gender,
+  }),
+  ...(showBirth && !isCouple && { language: form.language }),
           ...(isCouple && {                                            
     partnerName:   form.partnerName,
     partnerDob:    form.partnerDob,
@@ -437,12 +437,14 @@ const [showSuggestions, setShowSuggestions] = useState(false)
         .co-terms a { color: #c47a1e; text-decoration: underline; text-underline-offset: 2px; }
 
         .co-pay-btn {
+  position: relative;
+  overflow: hidden;
   width: 55%;
   margin: 0 auto;
   display: flex;
   padding: 17px 24px;
-  background: linear-gradient(135deg, #f0a830, #c47a1e);
-  color: #1e0d00; border: none; border-radius: 14px;
+  background: linear-gradient(135deg, #7a2020, #5c1717);
+  color: #fff5e8; border: none; border-radius: 14px;
   font-family: 'Playfair Display', Georgia, serif; font-size: 21px; font-weight: 800;
   cursor: pointer; letter-spacing: 0.02em;
   transition: opacity 0.18s, transform 0.15s;
@@ -451,12 +453,36 @@ const [showSuggestions, setShowSuggestions] = useState(false)
         .co-pay-btn:hover:not(:disabled)  { opacity: 0.92; transform: translateY(-2px); }
         .co-pay-btn:active:not(:disabled) { transform: translateY(0); }
         .co-pay-btn:disabled { opacity: 0.65; cursor: not-allowed; }
+        .co-pay-btn:disabled .co-pay-btn-shine { animation-play-state: paused; }
+
+        .co-pay-btn-shine {
+          position: absolute;
+          top: 0;
+          left: -75%;
+          width: 50%;
+          height: 100%;
+          background: linear-gradient(
+            120deg,
+            rgba(255,255,255,0) 0%,
+            rgba(255,255,255,0.55) 50%,
+            rgba(255,255,255,0) 100%
+          );
+          transform: skewX(-20deg);
+          animation: coPayShine 2.8s ease-in-out infinite;
+          pointer-events: none;
+        }
+        @keyframes coPayShine {
+          0%   { left: -75%; }
+          50%  { left: 125%; }
+          100% { left: 125%; }
+        }
 
         @keyframes co-spin { to { transform: rotate(360deg); } }
         .co-spinner {
           width: 18px; height: 18px;
-          border: 2px solid rgba(255,255,255,0.4);
-          border-top-color: #fff; border-radius: 50%;
+          border: 2px solid rgba(255,255,255,0.35);
+          border-top-color: #fff;
+          border-radius: 50%;
           animation: co-spin 0.7s linear infinite; flex-shrink: 0;
         }
         .co-form-divider { height: 1px; background: rgba(196,122,30,0.12); margin: 24px 0; }
@@ -559,7 +585,7 @@ const [showSuggestions, setShowSuggestions] = useState(false)
 
             {showBirth && (
               <>
-                <p className="co-section-label">Birth Details</p>
+                <p className="co-section-label">{isCouple ? 'Your Birth Details' : 'Birth Details'}</p>
                 <div className="co-form-grid">
                   <div className="co-field">
                     <label className="co-label">Date of Birth <span>*</span></label>
@@ -613,14 +639,16 @@ const [showSuggestions, setShowSuggestions] = useState(false)
                     <label className="co-label">Pin Code <span>*</span></label>
                     <input className="co-input" type="text" placeholder="Your pin code" value={form.pincode} onChange={set('pincode')} />
                   </div>
-                  <div className="co-field span-2">
-                    <label className="co-label">Report Language <span>*</span></label>
-                    <select className="co-input" value={form.language} onChange={set('language')}>
-                      <option value="">Select language</option>
-                      <option value="english">English</option>
-                      <option value="hindi">Hindi</option>
-                    </select>
-                  </div>
+                  {!isCouple && (
+  <div className="co-field span-2">
+    <label className="co-label">Report Language <span>*</span></label>
+    <select className="co-input" value={form.language} onChange={set('language')}>
+      <option value="">Select language</option>
+      <option value="english">English</option>
+      <option value="hindi">Hindi</option>
+    </select>
+  </div>
+)}
                 </div>
               </>
             )}
@@ -689,6 +717,7 @@ const [showSuggestions, setShowSuggestions] = useState(false)
             </p>
             
             <button className="co-pay-btn" onClick={handlePayment} disabled={paying}>
+              <span className="co-pay-btn-shine" />
               {paying ? (
                 <><span className="co-spinner" /> Processing Payment…</>
               ) : (

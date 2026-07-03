@@ -759,7 +759,7 @@ gap: 4.5rem;
         .fw-book-brand  { font-size: 0.52rem; letter-spacing: 0.12em; font-family: sans-serif; text-transform: uppercase; }
         .fw-book-title  { font-size: clamp(0.75rem,2vw,1.05rem); font-weight: 800; color: #fff; font-family: 'Playfair Display', serif; text-align: center; line-height: 1.2; }
         .fw-book-line   { width: 32px; height: 1.5px; background: #c8791a; margin: 0.2rem 0; }
-        .fw-book-sub    { font-size: 0.46rem; letter-spacing: 0.08em; font-family: sans-serif; text-align: center; text-transform: uppercase; }
+        .fw-book-sub    { font-size: 0.7rem; letter-spacing: 0.08em; font-family: sans-serif; text-align: center; text-transform: uppercase; }
 
         /* Pricing card grid */
         .pricing-cards-grid {
