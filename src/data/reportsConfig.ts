@@ -180,7 +180,7 @@ export const reportsConfig: ReportConfig[] = [
         name: 'Lal Kitab Report',
         tagline: 'Complete Karmic Analysis with Practical Remedies',
         originalPrice: '₹999',
-        discountedPrice: '₹299',
+        discountedPrice: '₹349',
         features: [
           { label: 'Personalized Lal Kitab Chart', included: true },
           { label: 'Planet Strength & Weakness Analysis', included: true },
