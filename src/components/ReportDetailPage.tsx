@@ -684,8 +684,7 @@ export default function ReportDetailPage() {
           <span className="rp-hero-badge">
             ✦ Exclusive Report by Astro Aaditya Narayan
           </span>
-          <h1 style={{ fontFamily: 'Georgia, serif', fontSize: 'clamp(18px, 3.4vw, 56px)', fontWeight: 800, lineHeight: 1.2, margin: '12px 0 14px' }}>
-            {report.tagline}
+<h1 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 'clamp(18px, 3.4vw, 56px)', fontWeight: 800, lineHeight: 1.2, margin: '12px 0 14px' }}>            {report.tagline}
           </h1>
           <p style={{ fontSize: 'clamp(12px, 1.4vw, 15px)', opacity: 0.88, marginBottom: 12, fontStyle: 'italic' }}>
             {report.subtitle}
@@ -1118,13 +1117,20 @@ export default function ReportDetailPage() {
                   {plan.tagline}
                 </p>
                 <div style={{ marginBottom: '1rem' }}>
-                  <span style={{ color: '#bbb', fontSize: '0.95rem', textDecoration: 'line-through', display: 'block', marginBottom: 2 }}>
-                    {plan.originalPrice}
-                  </span>
+                  <span style={{ 
+  color: '#494949ea', 
+  fontSize: '0.95rem', 
+  fontWeight: 700, 
+  textDecoration: 'line-through', 
+  display: 'block', 
+  marginBottom: 2 
+}}>
+  {plan.originalPrice}
+</span>
                   <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.3rem, 3vw, 2rem)', fontWeight: 800, color }}>
                     {plan.discountedPrice}/-
                   </span>
-                  <span style={{ fontSize: '0.65rem', color: BROWN_MID, marginLeft: 4 }}>only</span>
+                  <span style={{ fontSize: '0.95rem', color: BROWN_MID, marginLeft: 4 }}>only</span>
                 </div>
 
                 <div style={{

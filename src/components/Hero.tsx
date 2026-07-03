@@ -124,7 +124,10 @@ export default function Hero() {
             className="hero-chakra"
             style={{ transform: `translate(-50%,-50%) rotate(${angle}deg)` }}
           />
-          <div key={`img-${current}`} className="hero-img-wrap hero-fade">
+          <div
+  key={`img-${current}`}
+  className={`hero-img-wrap hero-fade${slide.image === '/slide5.png' ? ' hero-img-wrap--big' : ''}`}
+>
             <img src={slide.image} alt={slide.tag} />
           </div>
         </div>
@@ -277,8 +280,8 @@ const CSS = `
     flex-shrink: 0;
     position: relative;
     /* was capped at 480px — now grows further on large screens */
-    width: clamp(240px, 30vw, 600px);
-    height: clamp(240px, 30vw, 600px);
+    width: clamp(280px, 36vw, 700px);
+height: clamp(280px, 36vw, 700px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -305,6 +308,10 @@ const CSS = `
     align-items: center;
     justify-content: center;
   }
+  .hero-img-wrap--big {
+  width: 68%;
+  height: 92%;
+}
   .hero-img-wrap img {
     width: 100%; height: 100%;
     object-fit: contain;
@@ -370,7 +377,7 @@ const CSS = `
   .hero-ticker {
     display: flex;
     gap: 64px;
-    animation: hero-ticker 25s linear infinite;
+    animation: hero-ticker 13s linear infinite;
     white-space: nowrap;
     /* Same sans-serif stack, same 11px uppercase treatment as hero tag         */
     font-family: "Segoe UI","Helvetica Neue",Arial,sans-serif;

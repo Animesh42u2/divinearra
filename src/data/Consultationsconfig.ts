@@ -87,10 +87,10 @@ export const consultationsConfig: ConsultationConfig[] = [
       {
         name: 'Aryabhata',
         tagline: 'Focused Guidance for Your Most Pressing Question',
-        originalPrice: '₹999',
+        originalPrice: '₹1,249',
         discountedPrice: '₹499',
         features: [
-          { label: '15-Minute Live Call', included: true },
+          { label: '15 Minutes 1-On-1 Session', included: true },
           { label: 'Audio Consultation', included: true },
           { label: 'Answer On Major Life Questions', included: true },
           { label: 'Basic Remedy Suggestions', included: true },
@@ -105,7 +105,7 @@ export const consultationsConfig: ConsultationConfig[] = [
         discountedPrice: '₹999',
         highlight: true,
         features: [
-          { label: '30-Minutes 1-On-1 Session', included: true },
+          { label: '30 Minutes 1-On-1 Session', included: true },
           { label: 'Audio Consultation', included: true },
           { label: 'Ask Unlimited Questions', included: true },
           { label: 'Detailed Remedy Suggestions', included: true },

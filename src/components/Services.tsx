@@ -1,14 +1,14 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
-  MessageCircle, Briefcase, Users, Gem,
+  MessageCircle, Briefcase, Users,
   BookOpen, Sun, ClipboardList, Heart,
   DollarSign, Calendar, GraduationCap,
   Activity, Moon, Star, Layers
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 
-const tabs = ['Consultations', 'Reports', 'Kundli']
+const tabs = [ 'Reports','Consultations', 'Kundli']
 
 const serviceData: Record<string, {
   tag: string
@@ -20,9 +20,9 @@ const serviceData: Record<string, {
 }[]> = {
   Consultations: [
     { tag: '1-on-1', Icon: MessageCircle, title: 'Personalized Consultation', desc: 'Get personalized guidance directly from the leading expert for clear life decisions.', btnLabel: 'Book Now', route: '/consultation/personal' },
-    { tag: 'Expert', Icon: Briefcase, title: 'Tarot Card Reading Consultation', desc: 'Get expert guidance for your career growth and professional success.', btnLabel: 'Book Now', route: '/consultation/tarot-card-reading' },
+    // { tag: 'Expert', Icon: Briefcase, title: 'Tarot Card Reading Consultation', desc: 'Get expert guidance for your career growth and professional success.', btnLabel: 'Book Now', route: '/consultation/tarot-card-reading' },
     { tag: 'Couple', Icon: Users, title: 'Couple Consultation', desc: 'Understand your relationship dynamics and get clarity for your future together.', btnLabel: 'Book Now', route: '/consultation/couple' },
-    { tag: 'Special', Icon: Gem, title: 'Gemstone & Rudraksha', desc: 'Get the right gemstone recommendations based on your birth chart analysis.', btnLabel: 'Book Now', route: '/consultation/gemstone-rudraksha' },
+    // { tag: 'Special', Icon: Gem, title: 'Gemstone & Rudraksha', desc: 'Get the right gemstone recommendations based on your birth chart analysis.', btnLabel: 'Book Now', route: '/consultation/gemstone-rudraksha' },
   ],
   Reports: [
   { tag: 'Premium', Icon: Star, title: 'Premium Personalized Kundali', desc: 'A deeply detailed, fully personalized Kundali report crafted just for you.', btnLabel: 'Order Now', route: '/reports/premium-kundali' },
@@ -48,7 +48,7 @@ const serviceData: Record<string, {
 }
 
 export default function Services() {
-  const [activeTab, setActiveTab] = useState('Consultations')
+  const [activeTab, setActiveTab] = useState('Reports')
   const [hoveredCard, setHoveredCard] = useState<string | null>(null)
   const navigate = useNavigate()
 
@@ -170,7 +170,7 @@ export default function Services() {
 
         .svc-eyebrow { font-size: clamp(13px, 0.85vw, 14px); }
         .svc-heading { font-size: clamp(30px, 3vw, 46px); }
-        .svc-subhead { font-size: clamp(14px, 1vw, 17px); }
+        .svc-subhead { font-size: clamp(17px, 1.3vw, 20px); }
 
         .svc-tab-btn {
           padding: clamp(9px, 0.8vw, 12px) clamp(20px, 1.8vw, 28px);
@@ -178,29 +178,18 @@ export default function Services() {
         }
 
         .svc-grid {
-          display: grid;
-          grid-template-columns: repeat(4, 1fr);
-          gap: clamp(18px, 1.6vw, 26px);
-          max-width: 1500px;
-          margin: 0 auto;
-        }
-        @media (min-width: 1600px) {
-          .svc-grid { grid-template-columns: repeat(5, 1fr); max-width: 1800px; }
-        }
-        @media (max-width: 1024px) {
-          .svc-grid { grid-template-columns: repeat(3, 1fr); }
-        }
-        @media (max-width: 720px) {
-          .svc-grid { grid-template-columns: repeat(2, 1fr); }
-        }
-        @media (max-width: 480px) {
-          .svc-grid { grid-template-columns: 1fr; }
-        }
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 320px));
+  justify-content: center;
+  gap: clamp(18px, 1.6vw, 26px);
+  max-width: 1500px;
+  margin: 0 auto;
+}
+@media (max-width: 480px) {
+  .svc-grid { grid-template-columns: minmax(0, 340px); }
+}
       `}</style>
 
-      <p className="svc-eyebrow" style={{ textAlign: 'center', color: '#9a7050', fontFamily: 'sans-serif', marginBottom: 8 }}>
-        What We Offer
-      </p>
       <h2 className="svc-heading" style={{ textAlign: 'center', fontWeight: 700, margin: '0 0 14px' }}>
         Our <span style={{ color: '#c47a1e' }}>Services</span>
       </h2>
