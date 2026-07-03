@@ -996,7 +996,7 @@ export default function ReportDetailPage() {
             return (
               <div
                 key={i}
-                onClick={() => navigate(`/checkout/report/${slug}`, { state: { planIndex: i } })}
+                onClick={() => navigate(`/checkout/report/${slug}?plan=${i}`)}
                 style={{
                   background: `
   radial-gradient(ellipse at 15% 15%, rgba(255,255,255,0.95) 0%, transparent 50%),

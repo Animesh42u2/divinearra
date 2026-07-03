@@ -451,7 +451,7 @@ export default function ConsultationsPage() {
             {[
               ['100K+', 'Consultations Done'],
               ['4.9/5 ★', 'Avg Rating'],
-              ['7+', 'Years Experience'],
+              ['9+', 'Years Of Experience'],
               ['2', 'Session Types'],
             ].map(([v, l]) => (
               <div key={l} className="ch-stat">

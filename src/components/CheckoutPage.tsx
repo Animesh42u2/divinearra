@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useParams, useLocation, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom'
 import { getReportBySlug } from '../data/reportsConfig'
 import { getConsultationBySlug } from '../data/Consultationsconfig'
 import { getCourseBySlug } from '../data/CoursesConfig'
@@ -102,13 +102,14 @@ function toPaise(priceStr: string): number {
 
 export default function CheckoutPage({ type }: { type: CheckoutType }) {
   const { slug }  = useParams()
-  const location  = useLocation()
-  const navigate  = useNavigate()
+const [searchParams] = useSearchParams()
+const navigate  = useNavigate()
 
-  const item = resolveItem(type, slug ?? '')
-  const isCouple = slug === 'couple' || slug === 'couple-matching-report'
-  const planIndex: number = location.state?.planIndex ?? 0
-  const plan = item?.pricingPlans[planIndex]
+const item = resolveItem(type, slug ?? '')
+const isCouple = slug === 'couple' || slug === 'couple-matching-report'
+const planIndexRaw = Number(searchParams.get('plan'))
+const planIndex = Number.isInteger(planIndexRaw) && planIndexRaw >= 0 ? planIndexRaw : 0
+const plan = item?.pricingPlans[planIndex]
 
   const [form, setForm] = useState({
     name: '', email: '', whatsapp: '',
@@ -516,9 +517,9 @@ const [showSuggestions, setShowSuggestions] = useState(false)
           {/* ── LEFT: Plan Card ── */}
           <div className="co-plan-card">
             <div className="co-plan-img">
-              <div className="co-plan-badge">Best Value</div>
-              <img src={item.image} alt={item.title} />
-            </div>
+  {planIndex === 1 && <div className="co-plan-badge">Best Value</div>}
+  <img src={item.image} alt={item.title} />
+</div>
             <div className="co-plan-body">
               <h3 className="co-plan-name">{plan.name}</h3>
               <p className="co-plan-tagline">{plan.tagline}</p>
