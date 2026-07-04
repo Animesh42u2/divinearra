@@ -5,6 +5,7 @@ import { getConsultationBySlug } from '../data/Consultationsconfig'
 import Testimonials from './Testimonials'
 import Navbar from './Navbar'
 import Footer from './Footer'
+import SEO from './SEO'
 import { BorderBeam } from './BorderBeam'
 import { motion} from 'framer-motion'
 import { useRef } from 'react'
@@ -441,6 +442,11 @@ export default function ConsultationDetailPage() {
   if (!consultation) {
     return (
       <div style={{ background: CREAM, minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+        <SEO
+          title="Consultation Not Found | Divine Arra"
+          description="The astrology consultation you're looking for could not be found. Explore our personal and couple consultation options at Divine Arra."
+          url="/consultation"
+        />
         <Navbar />
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '4rem 2rem', textAlign: 'center' }}>
           <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: '2rem', color: BROWN_TEXT, marginBottom: '1rem' }}>Consultation Not Found</h1>
@@ -464,6 +470,12 @@ export default function ConsultationDetailPage() {
 
   return (
     <div style={{ background: CREAM, minHeight: '100vh', color: BROWN_TEXT, fontFamily: "'Inter', 'Segoe UI', sans-serif" }}>
+      <SEO
+        title={`${consultation.title} | Live Astrology Session | Divine Arra`}
+        description={consultation.tagline || consultation.whatIs?.description?.slice(0, 155) || `Book a live ${consultation.title} with Astro Aaditya Narayan for personalized Vedic astrology guidance.`}
+        image={consultation.image}
+        url={`/consultation/${slug}`}
+      />
           <Navbar />
 
       <style>{`

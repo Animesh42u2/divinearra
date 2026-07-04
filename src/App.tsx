@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import { useEffect } from 'react'
 import Navbar from './components/Navbar'
+import SEO from './components/SEO'
 import Hero from './components/Hero'
 import Services from './components/Services'
 import ReportsPage from './components/ReportsPage'
@@ -37,6 +38,11 @@ function ScrollToTop() {
 function HomePage() {
   return (
     <div style={{ paddingTop: 75 }}>
+      <SEO
+        title="Divine Arra | Vedic Astrology, Kundli & Horoscope Reports Online"
+        description="Get accurate Vedic astrology reports, personalized Kundli analysis, horoscope matching, and expert astrology consultations online. Book your reading with Divine Arra today."
+        url="/"
+      />
       <Navbar />
       <Hero />
       <div id="services-section">

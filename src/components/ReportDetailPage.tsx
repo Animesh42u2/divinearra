@@ -4,6 +4,7 @@ import { getReportBySlug } from '../data/reportsConfig'
 import Testimonials from './Testimonials'
 import Navbar from './Navbar'
 import Footer from './Footer'
+import SEO from './SEO'
 import { BorderBeam } from './BorderBeam'
 import { motion} from 'framer-motion'
 import { useRef, useState, useEffect } from 'react'
@@ -312,6 +313,11 @@ export default function ReportDetailPage() {
   if (!report) {
     return (
       <div style={{ background: CREAM, minHeight: '100vh', color: BROWN_TEXT, fontFamily: "'Inter', 'Segoe UI', sans-serif" }}>
+        <SEO
+          title="Report Not Found | Divine Arra"
+          description="The astrology report you're looking for could not be found. Browse our full range of Vedic astrology reports at Divine Arra."
+          url="/reports"
+        />
         <Navbar />
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '4rem 2rem', textAlign: 'center' }}>
           <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: 'clamp(1.4rem, 4vw, 2rem)', color: BROWN_TEXT, marginBottom: '1rem' }}>Report Not Found</h1>
@@ -332,6 +338,12 @@ export default function ReportDetailPage() {
 
   return (
     <div style={{ background: CREAM, minHeight: '100vh', color: BROWN_TEXT, fontFamily: "'Inter', 'Segoe UI', sans-serif" }}>
+      <SEO
+        title={`${report.title} | Vedic Astrology Report | Divine Arra`}
+        description={report.tagline || report.whatIs?.description?.slice(0, 155) || `Get your personalized ${report.title} from Divine Arra's expert Vedic astrologers.`}
+        image={report.image}
+        url={`/reports/${slug}`}
+      />
       <Navbar />
 
       <style>{`

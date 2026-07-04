@@ -1,4 +1,5 @@
 import LegalPageLayout, { type LegalSection } from './LegalPageLayout'
+import SEO from './SEO'
 
 const sections: LegalSection[] = [
   {
@@ -45,12 +46,19 @@ const sections: LegalSection[] = [
 
 export default function Disclaimer() {
   return (
-    <LegalPageLayout
-      eyebrow="Know Before You Begin"
-      title="Disclaimer"
-      intro="Welcome to Divine Arra, an astrology platform dedicated to offering authentic astrological guidance, education, and spiritual insights. By accessing or using our website, services, or consultations, you acknowledge and agree to the following terms and conditions outlined in this Disclaimer."
-      sections={sections}
-      closingNote="By booking a consultation or enrolling in a course, you acknowledge that you have read, understood, and agreed to this Disclaimer."
-    />
+    <>
+      <SEO
+        title="Disclaimer | Divine Arra"
+        description="Read Divine Arra's disclaimer on the nature of astrology guidance, accuracy of predictions, and limitations of liability before booking a consultation or course."
+        url="/disclaimer"
+      />
+      <LegalPageLayout
+        eyebrow="Know Before You Begin"
+        title="Disclaimer"
+        intro="Welcome to Divine Arra, an astrology platform dedicated to offering authentic astrological guidance, education, and spiritual insights. By accessing or using our website, services, or consultations, you acknowledge and agree to the following terms and conditions outlined in this Disclaimer."
+        sections={sections}
+        closingNote="By booking a consultation or enrolling in a course, you acknowledge that you have read, understood, and agreed to this Disclaimer."
+      />
+    </>
   )
 }

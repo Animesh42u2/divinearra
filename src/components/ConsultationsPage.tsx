@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import Navbar from './Navbar'
+import SEO from './SEO'
 
 // ─────────────────────────────────────────
 // InteractiveGridBackground (self-contained)
@@ -382,6 +383,11 @@ export default function ConsultationsPage() {
           .ch-stat { padding: 8px 12px; }
         }
       `}</style>
+      <SEO
+        title="Astrology Consultations | Personal & Couple Sessions | Divine Arra"
+        description="Book a live astrology consultation with Astro Aaditya Narayan — personal or couple sessions for real-time guidance on career, relationships, and life direction."
+        url="/consultation"
+      />
 
       <Navbar />
 

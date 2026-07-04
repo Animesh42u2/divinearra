@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 
 const stats = [
   { target: 100, suffix: 'K+', label: 'Consultations\nDelivered',   duration: 2000 },
-  { target: 7,   suffix: '+',  label: 'Years of\nExperience',       duration: 1400 },
+  { target: 9,   suffix: '+',  label: 'Years of\nExperience',       duration: 1400 },
   { target: 59,  suffix: '+',  label: 'Years of\nLegacy',           duration: 1600 },
   { target: 8,   suffix: '+',  label: 'Professional\nAwards',       duration: 1200 },
   { target: 30,  suffix: 'K+', label: 'Hours of Expert\nGuidance',  duration: 1800 },

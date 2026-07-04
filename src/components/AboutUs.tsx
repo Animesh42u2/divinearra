@@ -5,6 +5,7 @@ import {
   Leaf, Moon, Shield, Gem, Target,
 } from 'lucide-react'
 import Navbar from './Navbar'
+import SEO from './SEO'
 import { motion, useInView } from 'framer-motion'
 import { useRef, useState, useEffect } from 'react'
 
@@ -123,6 +124,11 @@ export default function AboutUs() {
 
   return (
     <div style={{ background: CREAM, minHeight: '100vh', fontFamily: "'Inter','Segoe UI',sans-serif" }}>
+      <SEO
+        title="About Astro Aaditya Narayan | Divine Arra"
+        description="Meet Astro Aaditya Narayan, a Vedic astrologer with 9+ years of experience and a 59-year family legacy, guiding clients through career, love, and life direction."
+        url="/about"
+      />
       <Navbar />
 
       <style>{`

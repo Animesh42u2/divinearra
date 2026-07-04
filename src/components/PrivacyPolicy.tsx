@@ -1,5 +1,6 @@
 import LegalPageLayout from './LegalPageLayout'
 import type { LegalSection } from './LegalPageLayout'
+import SEO from './SEO'
 
 const sections: LegalSection[] = [
   {
@@ -70,12 +71,19 @@ const sections: LegalSection[] = [
 
 export default function PrivacyPolicy() {
   return (
-    <LegalPageLayout
-      eyebrow="Your Trust, Protected"
-      title="Privacy Policy"
-      intro="At Divine Arra, we value your trust and are committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your personal information when you access our website, book consultations, or enroll in astrology courses. By using our services, you consent to the practices described in this Privacy Policy."
-      sections={sections}
-      closingNote="At Divine Arra, your trust is sacred — and so is your privacy. We remain committed to maintaining the highest standards of integrity, confidentiality, and respect in every interaction."
-    />
+    <>
+      <SEO
+        title="Privacy Policy | Divine Arra"
+        description="Learn how Divine Arra collects, uses, and protects your personal and birth details when you book astrology consultations, reports, or courses."
+        url="/privacy-policy"
+      />
+      <LegalPageLayout
+        eyebrow="Your Trust, Protected"
+        title="Privacy Policy"
+        intro="At Divine Arra, we value your trust and are committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your personal information when you access our website, book consultations, or enroll in astrology courses. By using our services, you consent to the practices described in this Privacy Policy."
+        sections={sections}
+        closingNote="At Divine Arra, your trust is sacred — and so is your privacy. We remain committed to maintaining the highest standards of integrity, confidentiality, and respect in every interaction."
+      />
+    </>
   )
 }

@@ -5,6 +5,7 @@ import {
   ChevronDown, Clock, Sparkles,
 } from 'lucide-react'
 import Navbar from './Navbar'
+import SEO from './SEO'
 
 // ── Spiritual Confetti — fast, no lag, built-in shapes only ──────────────────
 const SPIRITUAL_COLORS = [
@@ -148,6 +149,11 @@ export default function ContactUs() {
 
   return (
     <div style={{ background: CREAM, minHeight: '100vh', fontFamily: "'Inter','Segoe UI',sans-serif" }}>
+      <SEO
+        title="Contact Us | Divine Arra"
+        description="Get in touch with Divine Arra for astrology consultations, reports, and course inquiries. Reach our team via phone, email, or the contact form."
+        url="/contact"
+      />
       <Navbar />
 
       <style>{`

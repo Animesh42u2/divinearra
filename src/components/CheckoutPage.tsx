@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useParams, useNavigate, useSearchParams } from 'react-router-dom'
+import { useParams, useNavigate, useSearchParams, Link } from 'react-router-dom'
 import { getReportBySlug } from '../data/reportsConfig'
 import { getConsultationBySlug } from '../data/Consultationsconfig'
 import { getCourseBySlug } from '../data/CoursesConfig'
@@ -713,9 +713,15 @@ const [showSuggestions, setShowSuggestions] = useState(false)
             </div>
 
             <p className="co-terms">
-              By proceeding, you agree to our{' '}
-              <a href="#">Terms & Conditions</a> and <a href="#">Privacy Policy</a>.
-            </p>
+  By proceeding, you agree to our{' '}
+  <Link to="/terms-and-conditions" target="_blank" rel="noopener noreferrer">
+    Terms & Conditions
+  </Link>{' '}
+  and{' '}
+  <Link to="/privacy-policy" target="_blank" rel="noopener noreferrer">
+    Privacy Policy
+  </Link>.
+</p>
             
             <button className="co-pay-btn" onClick={handlePayment} disabled={paying}>
               <span className="co-pay-btn-shine" />

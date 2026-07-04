@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import Navbar from './Navbar'
+import SEO from './SEO'
 import { reportsConfig } from '../data/reportsConfig'
 
 // ─────────────────────────────────────────
@@ -339,7 +340,11 @@ export default function ReportsPage() {
         .tab-btn:not(.active):hover { border-color: #c47a1e; color: #c47a1e; background: rgba(196,122,30,0.06); }
         .section-eyebrow { font-family: sans-serif; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: #c47a1e; margin: 0 0 10px; opacity: 0.9; }
       `}</style>
-
+      <SEO
+        title="Astrology Reports | Vedic Kundali, Career, Finance & More | Divine Arra"
+        description="Explore personalized Vedic astrology reports — Kundali, Career, Finance, Health, Varshaphal, and Couple Matching — crafted from your unique birth chart."
+        url="/reports"
+      />
       <Navbar />
 
       {/* HERO BANNER */}

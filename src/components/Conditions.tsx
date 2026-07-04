@@ -1,5 +1,6 @@
 import LegalPageLayout from './LegalPageLayout'
 import type { LegalSection } from './LegalPageLayout'
+import SEO from './SEO'
 
 const sections: LegalSection[] = [
   {
@@ -79,12 +80,19 @@ const sections: LegalSection[] = [
 
 export default function TermsAndConditions() {
   return (
-    <LegalPageLayout
-      eyebrow="Please Read Carefully"
-      title="Terms & Conditions"
-      intro="Welcome to Divine Arra. These Terms & Conditions govern your access to and use of our website, services, consultations, and courses. By using our website or booking any service, you agree to comply with these terms in full."
-      sections={sections}
-      closingNote="At Divine Arra, our mission is to guide individuals toward light, balance, and clarity through the sacred science of astrology. By engaging with our services, you acknowledge and respect the spiritual nature of our work and agree to use the insights received responsibly."
-    />
+    <>
+      <SEO
+        title="Terms & Conditions | Divine Arra"
+        description="Read the terms and conditions for booking astrology consultations, reports, and courses with Divine Arra, including payment, rescheduling, and liability policies."
+        url="/terms-and-conditions"
+      />
+      <LegalPageLayout
+        eyebrow="Please Read Carefully"
+        title="Terms & Conditions"
+        intro="Welcome to Divine Arra. These Terms & Conditions govern your access to and use of our website, services, consultations, and courses. By using our website or booking any service, you agree to comply with these terms in full."
+        sections={sections}
+        closingNote="At Divine Arra, our mission is to guide individuals toward light, balance, and clarity through the sacred science of astrology. By engaging with our services, you acknowledge and respect the spiritual nature of our work and agree to use the insights received responsibly."
+      />
+    </>
   )
 }

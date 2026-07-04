@@ -1,4 +1,5 @@
 import LegalPageLayout, { type LegalSection } from './LegalPageLayout'
+import SEO from './SEO'
 
 const sections: LegalSection[] = [
   {
@@ -62,12 +63,19 @@ const sections: LegalSection[] = [
 
 export default function RefundPolicy() {
   return (
-    <LegalPageLayout
-      eyebrow="Fair & Transparent"
-      title="Refund Policy"
-      intro="At Divine Arra, we strive to deliver authentic, personalized, and spiritually enriching astrology consultations and courses. Since our consultations and reports are custom-created and based on individual birth details, they require significant analysis and cannot be reused or resold. Therefore, we maintain a transparent and fair No Refund Policy, with limited exceptions as outlined below."
-      sections={sections}
-      closingNote="Your spiritual journey is sacred — and we're honored to be part of it."
-    />
+    <>
+      <SEO
+        title="Refund Policy | Divine Arra"
+        description="Understand Divine Arra's refund and rescheduling policy for astrology consultations, reports, and courses before you book your session."
+        url="/refund-policy"
+      />
+      <LegalPageLayout
+        eyebrow="Fair & Transparent"
+        title="Refund Policy"
+        intro="At Divine Arra, we strive to deliver authentic, personalized, and spiritually enriching astrology consultations and courses. Since our consultations and reports are custom-created and based on individual birth details, they require significant analysis and cannot be reused or resold. Therefore, we maintain a transparent and fair No Refund Policy, with limited exceptions as outlined below."
+        sections={sections}
+        closingNote="Your spiritual journey is sacred — and we're honored to be part of it."
+      />
+    </>
   )
 }
