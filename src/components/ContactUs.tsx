@@ -58,7 +58,7 @@ const CREAM      = '#fdf6e9'
 const BROWN_TEXT = '#2a1200'
 const BROWN_MID  = '#6b3a10'
 
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzyJnRHFyt6zG8uo89510GPk96C2ufuj2x6QvIuOkiRWUyc63UO0HvGMHXJVQyNOtdRpA/exec'
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbys50LKpok7ipNvRTITJ46tbnLTT-n0EGlgfuZGbBbxGWSWoM_8Y1iQDrs6BkpY4aLncA/exec'
 
 const contactInfo = [
   { icon: Mail,  label: 'Email',                   value: 'support@divinearra.com',          href: 'mailto:support@divinearra.com' },
@@ -113,7 +113,11 @@ export default function ContactUs() {
       const fd = new FormData()
       Object.entries(form).forEach(([key, value]) => fd.append(key, value))
 
-      await fetch(APPS_SCRIPT_URL, { method: 'POST', body: fd })
+      await fetch(APPS_SCRIPT_URL, {
+  method: 'POST',
+  mode: 'no-cors',
+  body: fd
+})
 
       setSubmitted(true)
       launchOmConfetti()
