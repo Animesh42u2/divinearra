@@ -1,4 +1,4 @@
-import { Phone, Mail, MapPin, Sparkles } from 'lucide-react'
+import { Phone, Mail,Sparkles } from 'lucide-react'
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 
@@ -355,10 +355,7 @@ export default function LegalPageLayout({ eyebrow, title, intro, sections, closi
                 <Mail size={16} color={AMBER} style={{ flexShrink: 0 }} />
                 <span>support@divinearra.com</span>
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10, color: BROWN_MID, fontSize: '1.05rem', lineHeight: 1.6, textAlign: 'center' }}>
-                <MapPin size={16} color={AMBER} style={{ flexShrink: 0 }} />
-                <span>3rd Floor, Shanti Enclave, Laxmisagar, Bhubaneswar, Odisha, 751006</span>
-              </div>
+              
             </div>
           </div>
         </FadeUp>
