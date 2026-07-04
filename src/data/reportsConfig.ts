@@ -464,7 +464,7 @@ export const reportsConfig: ReportConfig[] = [
         ],
       },
       {
-        name: 'Couple Matching Report + 1-On-1 Consultation',
+        name: 'Couple Matching Report + 1-on-1 Consultation',
         tagline: 'Deep-Dive Session on Your Relationship Compatibility',
         originalPrice: '₹2,750/-',
         discountedPrice: '₹1,100',
@@ -554,7 +554,7 @@ export const reportsConfig: ReportConfig[] = [
         ],
       },
       {
-        name: 'Education Report + 1-On-1 Consultation',
+        name: 'Education Report + 1-on-1 Consultation',
         tagline: 'Personal Guidance Session for Academic Direction',
         originalPrice: '₹2,500/-',
         discountedPrice: '₹999',
@@ -734,7 +734,7 @@ export const reportsConfig: ReportConfig[] = [
         ],
       },
       {
-        name: 'Fortune Report + 1-On-1 Consultation',
+        name: 'Fortune Report + 1-on-1 Consultation',
         tagline: 'Complete Life Reading with Expert Walkthrough',
         originalPrice: '₹2,500/-',
         discountedPrice: '₹999',
@@ -916,7 +916,7 @@ export const reportsConfig: ReportConfig[] = [
         ],
       },
       {
-        name: 'Varshaphal + 1-on-1 Consultation',
+        name: 'Varshaphal Report + 1-on-1 Consultation',
         tagline: 'Year-Ahead Forecast with Expert Planning Session',
         originalPrice: '₹2,500/-',
         discountedPrice: '₹999',

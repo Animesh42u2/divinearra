@@ -21,6 +21,10 @@ import CheckoutPage from './components/CheckoutPage'
 import PaymentSuccess from './components/Paymentsuccess'
 import AboutUs from './components/AboutUs'
 import ContactUs from './components/ContactUs'
+import PrivacyPolicy from './components/PrivacyPolicy'
+import RefundPolicy from './components/Refundpolicy'
+import TermsAndConditions from './components/Conditions'
+import Disclaimer from './components/Disclaimer'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -35,7 +39,9 @@ function HomePage() {
     <div style={{ paddingTop: 75 }}>
       <Navbar />
       <Hero />
-      <Services />
+      <div id="services-section">
+        <Services />
+      </div>
       <div id="kundli-section">
         <KundliSection />
       </div>
@@ -81,6 +87,12 @@ function App() {
         <Route path="/about" element={<PageLayout><AboutUs /></PageLayout>} />
         <Route path="/contact" element={<PageLayout><ContactUs /></PageLayout>} />
         <Route path="/calculators/:type" element={<PageLayout><CalculatorPage /></PageLayout>} />
+
+        {/* ── Footer "Other Links" pages ── */}
+        <Route path="/privacy-policy" element={<PageLayout><PrivacyPolicy /></PageLayout>} />
+        <Route path="/refund-policy" element={<PageLayout><RefundPolicy /></PageLayout>} />
+        <Route path="/terms-and-conditions" element={<PageLayout><TermsAndConditions /></PageLayout>} />
+        <Route path="/disclaimer" element={<PageLayout><Disclaimer /></PageLayout>} />
 
         {/* ── Unified checkout routes ── */}
         <Route path="/checkout/report/:slug"       element={<PageLayout><CheckoutPage type="report" /></PageLayout>} />

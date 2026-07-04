@@ -115,17 +115,16 @@ function HowItWorks({ steps }: { steps: { title: string; description: string }[]
           border-color: rgba(200,121,26,0.4);
         }
         .pc-chakra-wrap {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      min-height: 100%;
-      border-radius: 20px;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      align-self: stretch;
-    }
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  min-height: 260px;
+  border-radius: 20px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
     .pc-chakra-img {
       position: absolute;
       top: 50%;
@@ -138,20 +137,23 @@ function HowItWorks({ steps }: { steps: { title: string; description: string }[]
       z-index: 0;
     }
     .pc-slide-img2 {
-      position: relative;
-      z-index: 1;
-      width: 78%;
-      height: 92%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .pc-slide-img2 img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      display: block;
-    }
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8%;
+  box-sizing: border-box;
+}
+.pc-slide-img2 img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
         /* Badge — solid gradient fill, plain number, nothing else */
         .hiw-badge {
           width: 46px;
@@ -1246,10 +1248,10 @@ gap: 4.5rem;
 
         <div className="about-grid">
           <div className="about-photo" style={{ position: 'relative', width: '100%', maxWidth: 420 }}>
-            <img
-              src="/Aaditya.png" alt="Astro Aaditya Narayan"
-              style={{ width: '100%', height: 'clamp(280px, 50vw, 560px)', objectFit: 'cover', objectPosition: 'top center', display: 'block', borderRadius: 18 }}
-            />
+           <img
+  src="/Aaditya.png" alt="Astro Aaditya Narayan"
+  style={{ width: '100%', height: 'auto', maxHeight: 560, objectFit: 'contain', display: 'block', borderRadius: 18 }}
+/>
           </div>
 
           <div>

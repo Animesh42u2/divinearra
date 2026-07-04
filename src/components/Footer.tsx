@@ -1,5 +1,6 @@
 import { Phone, Mail, MapPin, ArrowUp } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 
 const WhatsAppIcon = () => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
@@ -7,9 +8,49 @@ const WhatsAppIcon = () => (
   </svg>
 )
 
+// Route/path config for the two footer link columns.
+// `hash` = homepage section id to scroll to (used only when there's no dedicated page/route).
+interface FooterLinkItem {
+  label: string
+  path: string
+  hash?: string
+}
+
 export default function Footer() {
-  const quickLinks = ['About Us', 'Services', 'Courses', 'Contact', 'Blogs & Articles']
-  const otherLinks = ['Privacy Policy', 'Refund Policy', 'Terms & Conditions', 'Disclaimer', 'Sitemap']
+  const quickLinks: FooterLinkItem[] = [
+    { label: 'About Us', path: '/about' },
+    { label: 'Services', path: '/reports'},
+    { label: 'Consultations', path: '/consultation' },
+    { label: 'Contact', path: '/contact' },
+  ]
+
+  const otherLinks: FooterLinkItem[] = [
+    { label: 'Privacy Policy', path: '/privacy-policy' },
+    { label: 'Refund Policy', path: '/refund-policy' },
+    { label: 'Terms & Conditions', path: '/terms-and-conditions' },
+    { label: 'Disclaimer', path: '/disclaimer' },
+  ]
+
+  const navigate = useNavigate()
+  const location = useLocation()
+
+  // Handles links that point at a homepage section (id + scroll) instead of
+  // their own route. Plain routes (no `hash`) fall through and let <Link> work normally.
+  const handleFooterLinkClick = (e: React.MouseEvent, item: FooterLinkItem) => {
+    if (!item.hash) return
+
+    e.preventDefault()
+
+    if (location.pathname === '/') {
+      document.getElementById(item.hash)?.scrollIntoView({ behavior: 'smooth' })
+    } else {
+      navigate('/')
+      // Wait a tick for the homepage to mount before scrolling to the section
+      setTimeout(() => {
+        document.getElementById(item.hash!)?.scrollIntoView({ behavior: 'smooth' })
+      }, 100)
+    }
+  }
 
   const [showScroll, setShowScroll] = useState(false)
   const [scrollProgress, setScrollProgress] = useState(0)
@@ -162,7 +203,13 @@ export default function Footer() {
           {/* Column 1: Brand */}
           <div>
             <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 18, cursor: 'pointer' }}
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+              onClick={() => {
+                if (location.pathname === '/') {
+                  window.scrollTo({ top: 0, behavior: 'smooth' })
+                } else {
+                  navigate('/')
+                }
+              }}>
               <img src="/logo.jpeg" alt="Divine Arra" style={{ width: 36, height: 36, objectFit: 'contain' }} />
               <span style={{ fontFamily: "'Playfair Display', Georgia, serif",
  fontSize: 17, fontWeight: 700, color: '#e8c97a', letterSpacing: '0.08em' }}>Divine Arra</span>
@@ -177,8 +224,15 @@ export default function Footer() {
           <div>
             <div className="footer-col-title">Quick Links</div>
             <nav style={{ display: 'flex', flexDirection: 'column' }}>
-              {quickLinks.map(link => (
-                <a key={link} href="#" className="footer-link">{link}</a>
+              {quickLinks.map(item => (
+                <Link
+                  key={item.label}
+                  to={item.path}
+                  className="footer-link"
+                  onClick={(e) => handleFooterLinkClick(e, item)}
+                >
+                  {item.label}
+                </Link>
               ))}
             </nav>
           </div>
@@ -187,8 +241,15 @@ export default function Footer() {
           <div>
             <div className="footer-col-title">Other Links</div>
             <nav style={{ display: 'flex', flexDirection: 'column' }}>
-              {otherLinks.map(link => (
-                <a key={link} href="#" className="footer-link">{link}</a>
+              {otherLinks.map(item => (
+                <Link
+                  key={item.label}
+                  to={item.path}
+                  className="footer-link"
+                  onClick={(e) => handleFooterLinkClick(e, item)}
+                >
+                  {item.label}
+                </Link>
               ))}
             </nav>
           </div>
