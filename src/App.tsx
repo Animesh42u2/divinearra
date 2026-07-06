@@ -39,7 +39,7 @@ function HomePage() {
   return (
     <div style={{ paddingTop: 75 }}>
       <SEO
-        title="Divine Arra | Consultation | Vedic Reports | Kundli & Horoscope Reports Online"
+        title="Divine Arra : Consultation | Vedic Reports | Kundli & Horoscope Reports Online"
         description="Get accurate Vedic astrology reports, personalized Kundli analysis, horoscope matching, and expert astrology consultations online. Book your reading with Divine Arra today."
         url="/"
       />

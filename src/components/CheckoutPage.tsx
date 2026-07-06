@@ -704,7 +704,7 @@ const [showSuggestions, setShowSuggestions] = useState(false)
               </div>
               <div className="co-summary-row" style={{ color: '#4a8a4a' }}>
                 <span>Discount Applied</span>
-                <span>− Save 60%</span>
+                <span>Save 60%</span>
               </div>
               <div className="co-summary-row total">
                 <span>Total (Incl. GST)</span>

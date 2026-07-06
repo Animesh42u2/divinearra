@@ -60,7 +60,7 @@ export default function Services() {
         .svc-card {
           background: #fff5e6;
           border-radius: 20px;
-          padding: clamp(28px, 2.2vw, 38px) clamp(22px, 1.8vw, 30px);
+          padding: clamp(28px, 2.4vw, 42px) clamp(22px, 2vw, 34px);
           border: 1.5px solid #e8d5b7;
           position: relative;
           display: flex;
@@ -91,19 +91,19 @@ export default function Services() {
         .svc-card:hover::before { opacity: 1; }
 
         .svc-icon-wrap {
-          width: clamp(56px, 4.2vw, 72px);
-          height: clamp(56px, 4.2vw, 72px);
+          width: clamp(58px, 4.4vw, 80px);
+          height: clamp(58px, 4.4vw, 80px);
           border-radius: 50%;
           background: #fff;
           display: flex; align-items: center; justify-content: center;
-          margin-bottom: clamp(16px, 1.4vw, 22px);
+          margin-bottom: clamp(16px, 1.4vw, 24px);
           border: 1.5px solid #e8d5b7;
           transition: border-color 0.25s ease, background 0.25s ease, transform 0.25s ease;
           flex-shrink: 0;
         }
         .svc-icon-wrap svg {
-          width: clamp(24px, 1.8vw, 32px);
-          height: clamp(24px, 1.8vw, 32px);
+          width: clamp(26px, 2vw, 36px);
+          height: clamp(26px, 2vw, 36px);
         }
         .svc-card:hover .svc-icon-wrap {
           border-color: #c47a1e;
@@ -116,12 +116,12 @@ export default function Services() {
           background: transparent;
           border: 1.5px solid #4a2006;
           color: #4a2006;
-          padding: clamp(10px, 0.9vw, 14px);
+          padding: clamp(11px, 1vw, 16px);
           border-radius: 9px;
           font-weight: 600;
           cursor: pointer;
           font-family: sans-serif;
-          font-size: clamp(13px, 0.95vw, 15px);
+          font-size: clamp(13.5px, 1vw, 16px);
           margin-top: auto;
           transition: background 0.22s ease, color 0.22s ease, border-color 0.22s ease, transform 0.22s ease;
         }
@@ -134,13 +134,13 @@ export default function Services() {
 
         .svc-tag {
           position: absolute;
-          top: clamp(14px, 1.1vw, 18px);
-          right: clamp(14px, 1.1vw, 18px);
-          font-size: clamp(11px, 0.8vw, 12.5px);
+          top: clamp(12px, 1vw, 18px);
+          right: clamp(12px, 1vw, 18px);
+          font-size: clamp(11.5px, 0.85vw, 13.5px);
           color: #9a7050;
           font-family: sans-serif;
           background: #fff;
-          padding: 3px 11px;
+          padding: 4px 12px;
           border-radius: 10px;
           border: 1px solid #e8d5b7;
           transition: background 0.22s ease, color 0.22s ease, border-color 0.22s ease;
@@ -152,19 +152,19 @@ export default function Services() {
         }
 
         .svc-title {
-          font-size: clamp(15px, 1.15vw, 18px);
+          font-size: clamp(16px, 1.15vw, 20px);
           font-weight: 700;
-          margin: 0 0 12px;
+          margin: 0 0 14px;
           color: #4a2006;
           line-height: 1.3;
         }
 
         .svc-desc {
-          font-size: clamp(13px, 0.95vw, 15px);
+          font-size: clamp(13.5px, 0.95vw, 16px);
           color: #9a7050;
-          line-height: 1.6;
+          line-height: 1.65;
           font-family: sans-serif;
-          margin-bottom: 20px;
+          margin-bottom: 22px;
           flex: 1;
         }
 
@@ -177,17 +177,31 @@ export default function Services() {
           font-size: clamp(13px, 0.95vw, 15px);
         }
 
+        /* Responsive grid: 5 columns on desktop, stepping down on smaller screens */
         .svc-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 320px));
-  justify-content: center;
-  gap: clamp(18px, 1.6vw, 26px);
-  max-width: 1500px;
-  margin: 0 auto;
-}
-@media (max-width: 480px) {
-  .svc-grid { grid-template-columns: minmax(0, 340px); }
-}
+          display: grid;
+          grid-template-columns: repeat(5, minmax(0, 1fr));
+          justify-content: center;
+          gap: clamp(18px, 1.6vw, 30px);
+          max-width: 1800px;
+          margin: 0 auto;
+        }
+
+        @media (max-width: 1400px) {
+          .svc-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+        }
+
+        @media (max-width: 1100px) {
+          .svc-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        }
+
+        @media (max-width: 768px) {
+          .svc-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+
+        @media (max-width: 480px) {
+          .svc-grid { grid-template-columns: minmax(0, 1fr); }
+        }
       `}</style>
 
       <h2 className="svc-heading" style={{ textAlign: 'center', fontWeight: 700, margin: '0 0 14px' }}>

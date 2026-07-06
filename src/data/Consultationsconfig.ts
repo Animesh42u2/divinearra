@@ -87,7 +87,7 @@ export const consultationsConfig: ConsultationConfig[] = [
       {
         name: 'Aryabhata',
         tagline: 'Focused Guidance for Your Most Pressing Question',
-        originalPrice: '₹1,249',
+        originalPrice: '₹1,249/-',
         discountedPrice: '₹499',
         features: [
           { label: '15 Minutes 1-On-1 Session', included: true },
@@ -102,7 +102,7 @@ export const consultationsConfig: ConsultationConfig[] = [
       {
         name: 'Chanakya',
         tagline: 'A Deeper, Unhurried Conversation About Your Life',
-        originalPrice: '₹2,499',
+        originalPrice: '₹2,499/-',
         discountedPrice: '₹999',
         highlight: true,
         features: [
@@ -177,7 +177,7 @@ export const consultationsConfig: ConsultationConfig[] = [
       {
         name: 'Couple Quick Session',
         tagline: 'A Focused Compatibility Conversation',
-        originalPrice: '₹3,499',
+        originalPrice: '₹3,499/-',
         discountedPrice: '₹1,399',
         features: [
           { label: '30-Minute Joint Live Call', included: true },
@@ -191,7 +191,7 @@ export const consultationsConfig: ConsultationConfig[] = [
       {
         name: 'Couple Deep-Dive Session',
         tagline: 'A Thorough Compatibility & Relationship Session',
-        originalPrice: '₹3,499',
+        originalPrice: '₹3,499/-',
         discountedPrice: '₹1,399',
         highlight: true,
         features: [
@@ -374,7 +374,7 @@ export const consultationsConfig: ConsultationConfig[] = [
       {
         name: 'Gemstone + Rudraksha Consultation',
         tagline: 'Complete Gemstone & Rudraksha Guidance with Sourcing Tips',
-        originalPrice: '₹3,499',
+        originalPrice: '₹3,499/-',
         discountedPrice: '₹1,099',
         highlight: true,
         features: [
