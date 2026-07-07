@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, useLocation, Navigate } from 'react-router-dom'
 import { useEffect } from 'react'
 import Navbar from './components/Navbar'
 import SEO from './components/SEO'
@@ -106,6 +106,7 @@ function App() {
         <Route path="/checkout/consultation/:slug" element={<PageLayout><CheckoutPage type="consultation" /></PageLayout>} />
         <Route path="/checkout/course/:slug"       element={<PageLayout><CheckoutPage type="course" /></PageLayout>} />
         <Route path="/payment-success" element={<PaymentSuccess />} />
+        <Route path="/services1" element={<Navigate to="/reports" replace />} />
         <Route path="*" element={<PageLayout><NotFound /></PageLayout>} />
       </Routes>
     </BrowserRouter>
