@@ -26,6 +26,7 @@ import PrivacyPolicy from './components/PrivacyPolicy'
 import RefundPolicy from './components/Refundpolicy'
 import TermsAndConditions from './components/Conditions'
 import Disclaimer from './components/Disclaimer'
+import NotFound from './components/NotFound'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -105,6 +106,7 @@ function App() {
         <Route path="/checkout/consultation/:slug" element={<PageLayout><CheckoutPage type="consultation" /></PageLayout>} />
         <Route path="/checkout/course/:slug"       element={<PageLayout><CheckoutPage type="course" /></PageLayout>} />
         <Route path="/payment-success" element={<PaymentSuccess />} />
+        <Route path="*" element={<PageLayout><NotFound /></PageLayout>} />
       </Routes>
     </BrowserRouter>
   )

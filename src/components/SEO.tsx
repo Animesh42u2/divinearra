@@ -5,9 +5,10 @@ interface SEOProps {
   description: string
   image?: string
   url?: string
+  noindex?: boolean   // ← add this
 }
 
-export default function SEO({ title, description, image, url }: SEOProps) {
+export default function SEO({ title, description, image, url, noindex = false }: SEOProps) {
   const siteUrl = 'https://www.divinearra.com'
   const fullUrl = url ? `${siteUrl}${url}` : siteUrl
   const ogImage = image ?? `${siteUrl}/logo.jpeg`
@@ -17,6 +18,8 @@ export default function SEO({ title, description, image, url }: SEOProps) {
       <title>{title}</title>
       <meta name="description" content={description} />
       <link rel="canonical" href={fullUrl} />
+
+      {noindex && <meta name="robots" content="noindex, nofollow" />}
 
       <meta property="og:type" content="website" />
       <meta property="og:url" content={fullUrl} />
