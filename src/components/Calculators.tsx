@@ -256,7 +256,7 @@ function InfoCard({ label, value }: { label: string; value?: string | number | n
       borderRadius: 12, padding: '14px 18px',
     }}>
       <div style={{ fontSize: 10, color: T.brown, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 5 }}>{label}</div>
-      <div style={{ fontSize: 16, fontWeight: 700, color: T.amberDark, fontFamily: 'Georgia,serif' }}>{value}</div>
+      <div style={{ fontSize: 16, fontWeight: 700, color: T.amberDark, fontFamily: "'Playfair Display',Georgia,serif",}}>{value}</div>
     </div>
   )
 }
@@ -298,7 +298,7 @@ function MangalResult({ data }: { data: Record<string, unknown> }) {
         border: `2px solid ${hasDosha && !cancels ? T.errorBdr : T.successBdr}`,
       }}>
         <div style={{ fontSize: 'clamp(32px,7vw,40px)' }}>{hasDosha && !cancels ? '⚠️' : '✅'}</div>
-        <div style={{ fontSize: 'clamp(16px,3.5vw,20px)', fontWeight: 800, marginTop: 10, fontFamily: 'Georgia,serif',
+        <div style={{ fontSize: 'clamp(16px,3.5vw,20px)', fontWeight: 800, marginTop: 10, fontFamily: "'Playfair Display',Georgia,serif",
           color: hasDosha && !cancels ? T.error : T.success }}>
           {hasDosha == null ? 'Unable to determine'
             : hasDosha && !cancels ? 'Mangal Dosha Present'
@@ -310,7 +310,7 @@ function MangalResult({ data }: { data: Record<string, unknown> }) {
         <InfoCard label="Mars Position" value={mangalPos} />
         <InfoCard label="Dosha Type"    value={dosha} />
       </div>
-      {desc && <p style={{ fontSize: 13, color: T.brown, lineHeight: 1.8, fontFamily: 'sans-serif', margin: 0 }}>{desc}</p>}
+      {desc && <p style={{ fontSize: 13, color: T.brown, lineHeight: 1.8, fontFamily: "'Playfair Display',Georgia,serif", margin: 0 }}>{desc}</p>}
     </div>
   )
 }
@@ -334,7 +334,7 @@ function KundliResult({ data }: { data: Record<string, unknown> }) {
     <div>
       {score != null && (
         <div style={{ textAlign: 'center', marginBottom: 24 }}>
-          <div style={{ fontSize: 'clamp(40px,10vw,56px)', fontWeight: 800, fontFamily: 'Georgia,serif', color: T.amber, lineHeight: 1 }}>
+          <div style={{ fontSize: 'clamp(40px,10vw,56px)', fontWeight: 800, fontFamily: "'Playfair Display',Georgia,serif", color: T.amber, lineHeight: 1 }}>
             {score}
             <span style={{ fontSize: 'clamp(16px,4vw,22px)', color: T.brown, fontWeight: 400 }}>/{maxPts ?? 36}</span>
           </div>
@@ -361,8 +361,8 @@ function KundliResult({ data }: { data: Record<string, unknown> }) {
               borderRadius: 10, padding: '10px 14px',
             }}>
               <div style={{ fontSize: 10, color: T.brown, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 4 }}>{g.name}</div>
-              <div style={{ fontSize: 15, fontWeight: 700, color: T.amberDark }}>
-                {g.received_points ?? '—'}<span style={{ fontSize: 11, color: T.brown, fontWeight: 400 }}>/{g.total_points}</span>
+              <div style={{ fontSize: 15, fontWeight: 700, color: T.amberDark, fontFamily: "'Playfair Display',Georgia,serif" }}>
+                {g.received_points ?? '—'}<span style={{ fontSize: 11, color: T.brown, fontWeight: 400, fontFamily: "'Playfair Display',Georgia,serif" }}>/{g.total_points}</span>
               </div>
             </div>
           ))}
@@ -672,7 +672,7 @@ export default function Calculators() {
         </div>
         <h2 style={{
           margin: '0 0 14px', fontSize: 'clamp(28px,4vw,42px)',
-          fontWeight: 800, fontFamily: 'Georgia,serif', color: T.amberDark,
+          fontWeight: 800, fontFamily: "'Playfair Display',Georgia,serif", color: T.amberDark,
         }}>
           Free <span style={{ color: T.amber }}>Calculators</span>
         </h2>
@@ -703,7 +703,7 @@ export default function Calculators() {
                   <Icon size={28} color={calc.accentColor} strokeWidth={1.5} />
                 </div>
                 <div style={{ minWidth: 0 }}>
-                  <div style={{ fontWeight: 700, fontSize: 16, color: T.amberDark, marginBottom: 6, fontFamily: 'Georgia,serif' }}>
+                  <div style={{ fontWeight: 700, fontSize: 16, color: T.amberDark, marginBottom: 6, fontFamily: "'Playfair Display',Georgia,serif" }}>
                     {calc.title}
                   </div>
                   <div style={{ fontSize: 13, color: T.brown, lineHeight: 1.7, fontFamily: 'sans-serif' }}>
@@ -747,7 +747,7 @@ const [showSuggestions,  setShowSuggestions]  = useState<Record<string, boolean>
     return (
       <div style={{ textAlign: 'center', padding: 'clamp(48px,12vw,80px) 20px', fontFamily: 'sans-serif' }}>
         <div style={{ fontSize: 48, marginBottom: 16 }}>🔭</div>
-        <h2 style={{ color: T.amberDark, fontFamily: 'Georgia,serif' }}>Calculator not found</h2>
+        <h2 style={{ color: T.amberDark, fontFamily: "'Playfair Display',Georgia,serif" }}>Calculator not found</h2>
         <button
           onClick={() => navigate(-1)}
           style={{
@@ -935,7 +935,7 @@ async function handlePlaceInput(fk: string, value: string) {
           </div>
           <h1 style={{
             margin: 0, fontSize: 'clamp(19px,4vw,32px)',
-            fontWeight: 800, fontFamily: 'Georgia,serif',
+            fontWeight: 800, fontFamily: "'Playfair Display',Georgia,serif",
             textShadow: '0 2px 12px rgba(0,0,0,0.18)', lineHeight: 1.25,
           }}>
             {calc.title}
@@ -1033,7 +1033,7 @@ async function handlePlaceInput(fk: string, value: string) {
             }}
           >
             <h3 style={{
-              margin: '0 0 20px', fontFamily: 'Georgia,serif',
+              margin: '0 0 20px', fontFamily: "'Playfair Display',Georgia,serif",
               color: T.amberDark, fontSize: 'clamp(17px,3vw,20px)',
               display: 'flex', alignItems: 'center', gap: 8,
             }}>
