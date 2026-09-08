@@ -88,7 +88,7 @@ export const consultationsConfig: ConsultationConfig[] = [
         name: 'Aryabhata',
         tagline: 'Focused Guidance for Your Most Pressing Question',
         originalPrice: '₹1,249/-',
-        discountedPrice: '₹1',
+        discountedPrice: '₹499',
         features: [
           { label: '15 Minutes 1-On-1 Session', included: true },
           { label: 'Audio Consultation', included: true },
