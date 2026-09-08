@@ -59,7 +59,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   // no spaces or symbols — so this can't just be the raw phone number.
   const customerId = `cust_${phone.replace(/\D/g, '').slice(-10)}_${Date.now()}`
 
-  const origin = (req.headers.origin as string) || `https://${req.headers.host}`
+  // Cashfree requires order_meta.return_url to always be https — but in
+// local dev, req.headers.origin is naturally http://localhost:PORT,
+// which Cashfree's API rejects outright with a 400. Since checkout uses
+// redirectTarget: '_modal', return_url is only actually visited for
+// redirect-based methods (UPI/netbanking) that leave the page — not
+// during modal-based card/test payments — so forcing the scheme to
+// https here is safe even though localhost isn't really served over https.
+const rawOrigin = (req.headers.origin as string) || `https://${req.headers.host}`
+const origin = rawOrigin.replace(/^http:\/\//, 'https://')
 
   try {
     const cfRes = await fetch(ORDERS_URL, {

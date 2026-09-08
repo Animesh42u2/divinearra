@@ -3,7 +3,7 @@ import { useParams, useNavigate, useSearchParams, Link } from 'react-router-dom'
 import { getReportBySlug } from '../data/reportsConfig'
 import { getConsultationBySlug } from '../data/Consultationsconfig'
 import { getCourseBySlug } from '../data/CoursesConfig'
-import { openCashfreeCheckout } from '../utils/Cashfree '
+import { openCashfreeCheckout } from '../utils/Cashfree'
 import Navbar from './Navbar'
 
 type CheckoutType = 'report' | 'consultation' | 'course'
