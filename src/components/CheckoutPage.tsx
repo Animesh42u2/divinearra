@@ -3,6 +3,7 @@ import { useParams, useNavigate, useSearchParams, Link } from 'react-router-dom'
 import { getReportBySlug } from '../data/reportsConfig'
 import { getConsultationBySlug } from '../data/Consultationsconfig'
 import { getCourseBySlug } from '../data/CoursesConfig'
+import { openCashfreeCheckout } from '../utils/Cashfree '
 import Navbar from './Navbar'
 
 type CheckoutType = 'report' | 'consultation' | 'course'
@@ -18,39 +19,6 @@ interface CheckoutItem {
     features: { label: string; included: boolean }[]
   }[]
 }
-
-// ── Razorpay types ───────────────────────────────────────────
-interface RazorpayResponse {
-  razorpay_payment_id: string
-}
-
-interface RazorpayFailureResponse {
-  error: { description: string }
-}
-
-interface RazorpayWindow extends Window {
-  Razorpay: new (options: RazorpayOptions) => RazorpayInstance
-}
-
-interface RazorpayInstance {
-  open: () => void
-  on: (event: string, handler: (resp: RazorpayFailureResponse) => void) => void
-}
-
-interface RazorpayOptions {
-  key: string
-  amount: number
-  currency: string
-  name: string
-  description: string
-  image?: string
-  prefill?: { name: string; email: string; contact: string }
-  notes?: Record<string, string>
-  theme?: { color: string }
-  handler: (response: RazorpayResponse) => void
-  modal?: { ondismiss: () => void }
-}
-// ────────────────────────────────────────────────────────────
 
 function resolveItem(type: CheckoutType, slug: string): CheckoutItem | undefined {
   if (type === 'report')       return getReportBySlug(slug)       as CheckoutItem | undefined
@@ -82,22 +50,12 @@ const needsBirthDetails: Record<CheckoutType, boolean> = {
   course:       true,
 }
 
-// ── Razorpay script loader ───────────────────────────────────
-function loadRazorpayScript(): Promise<boolean> {
-  return new Promise(resolve => {
-    if ((window as unknown as RazorpayWindow).Razorpay) { resolve(true); return }
-    const script = document.createElement('script')
-    script.src = 'https://checkout.razorpay.com/v1/checkout.js'
-    script.onload  = () => resolve(true)
-    script.onerror = () => resolve(false)
-    document.body.appendChild(script)
-  })
-}
-
-// ── Parse "₹349" or "349" → paise ───────────────────────────
-function toPaise(priceStr: string): number {
-  const digits = priceStr.replace(/[^\d]/g, '')
-  return parseInt(digits, 10) * 100
+// ── Parse "₹349" (or "349") → a plain rupee amount for Cashfree ──
+// Note: unlike Razorpay (which wants paise, i.e. amount * 100), Cashfree's
+// order_amount is the actual rupee value, decimals allowed (e.g. 349.00).
+function toRupees(priceStr: string): number {
+  const digits = priceStr.replace(/[^\d.]/g, '')
+  return parseFloat(digits)
 }
 
 export default function CheckoutPage({ type }: { type: CheckoutType }) {
@@ -153,7 +111,7 @@ const [showSuggestions, setShowSuggestions] = useState(false)
   }
     return null
   }
-  
+
   async function handlePlaceInput(e: React.ChangeEvent<HTMLInputElement>) {
   const value = e.target.value
   setForm(p => ({ ...p, place: value }))
@@ -167,6 +125,15 @@ const [showSuggestions, setShowSuggestions] = useState(false)
 }
 
   // ── Payment handler ──────────────────────────────────────
+  // Birth/partner details aren't sent to Cashfree the way they were
+  // stuffed into Razorpay's free-form `notes` object — Cashfree's
+  // order_note is capped at 200 characters, far too small for the full
+  // form. The short summary below goes to Cashfree for your own reference
+  // in their dashboard; if you need the full birth/partner details tied
+  // to each order for fulfillment, log `form` to your own store (e.g. the
+  // same Google Apps Script / sheet pattern already used in CTA.tsx),
+  // keyed by the orderId returned from create-cashfree-order, at the
+  // point handlePayment is called.
   async function handlePayment() {
     const err = validate()
     if (err) { alert(err); return }
@@ -174,52 +141,23 @@ const [showSuggestions, setShowSuggestions] = useState(false)
 
     setPaying(true)
 
-    const loaded = await loadRazorpayScript()
-    if (!loaded) {
-      alert('Failed to load payment gateway. Please check your internet connection.')
-      setPaying(false)
-      return
-    }
+    const noteParts = [plan.name, item.title]
+    if (showBirth) noteParts.push(`DOB:${form.dob}`, `Time:${form.time}`, `Place:${form.place}`)
+    if (isCouple) noteParts.push(`Partner:${form.partnerName}`)
 
-    const options: RazorpayOptions = {
-      key:         import.meta.env.VITE_RAZORPAY_KEY_ID as string,
-      amount:      toPaise(plan.discountedPrice),
-      currency:    'INR',
-      name:        'Divine Arra',
+    await openCashfreeCheckout({
+      amount:      toRupees(plan.discountedPrice),
+      name:        form.name,
+      email:       form.email,
+      phone:       form.whatsapp,
       description: `${plan.name} — ${item.title}`,
-      image:       '/logo.png',
-      prefill: {
-        name:    form.name,
-        email:   form.email,
-        contact: form.whatsapp,
-      },
-      notes: {
-  plan:    plan.name,
-  product: item.title,
-  type,
-  ...(showBirth && {
-    dob:      form.dob,
-    time:     form.time,
-    place:    form.place,
-    pincode:  form.pincode,
-    gender:   form.gender,
-  }),
-  ...(showBirth && !isCouple && { language: form.language }),
-          ...(isCouple && {                                            
-    partnerName:   form.partnerName,
-    partnerDob:    form.partnerDob,
-    partnerTime:   form.partnerTime,
-    partnerPlace:  form.partnerPlace,
-    partnerGender: form.partnerGender,
-  }),
-      },
-      theme: { color: '#c47a1e' },
+      note:        noteParts.join(' | '),
 
-      handler(response: RazorpayResponse) {
+      onSuccess(orderId) {
         setPaying(false)
         navigate('/payment-success', {
           state: {
-            paymentId: response.razorpay_payment_id,
+            paymentId: orderId,
             planName:  plan.name,
             product:   item.title,
             amount:    plan.discountedPrice,
@@ -230,19 +168,11 @@ const [showSuggestions, setShowSuggestions] = useState(false)
         })
       },
 
-      modal: {
-        ondismiss() { setPaying(false) },
+      onFailure(message) {
+        setPaying(false)
+        alert(message)
       },
-    }
-
-    const rzp = new (window as unknown as RazorpayWindow).Razorpay(options)
-
-    rzp.on('payment.failed', (resp: RazorpayFailureResponse) => {
-      setPaying(false)
-      alert(`Payment failed: ${resp.error.description}. Please try again.`)
     })
-
-    rzp.open()
   }
 
   return (
@@ -369,9 +299,10 @@ const [showSuggestions, setShowSuggestions] = useState(false)
           border: 1px solid rgba(196,122,30,0.25);
           border-radius: 12px; padding: 14px 16px; margin-bottom: 20px;
           display: flex; align-items: center; justify-content: space-between;
+          flex-wrap: wrap; gap: 8px 12px;
         }
         .co-price-orig { font-family: sans-serif; font-size: 12px; color: #b09070; text-decoration: line-through; }
-        .co-price-disc { font-family: 'Playfair Display', Georgia, serif; font-size: 26px; font-weight: 700; color: #b86010; }
+        .co-price-disc { font-family: 'Playfair Display', Georgia, serif; font-size: clamp(21px, 5vw, 26px); font-weight: 700; color: #b86010; }
         .co-price-save {
           font-family: sans-serif; font-size: 10px; font-weight: 700;
           background: rgba(196,122,30,0.15); color: #a06010;
@@ -394,8 +325,8 @@ const [showSuggestions, setShowSuggestions] = useState(false)
           box-shadow: 0 1px 0 rgba(196,122,30,0.08), 0 8px 32px rgba(196,122,30,0.06);
           padding: clamp(24px, 4vw, 40px);
         }
-        .co-form-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 28px; }
-        .co-form-title { font-family: 'Playfair Display', Georgia, serif; font-size: 24px; font-weight: 700; color: #1a0a00; margin: 0 0 5px; }
+        .co-form-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 28px; flex-wrap: wrap; }
+        .co-form-title { font-family: 'Playfair Display', Georgia, serif; font-size: clamp(19px, 4.5vw, 24px); font-weight: 700; color: #1a0a00; margin: 0 0 5px; }
         .co-form-sub { font-family: sans-serif; font-size: 13px; color: #9a7050; margin: 0; line-height: 1.55; }
         .co-step-badge {
           flex-shrink: 0; background: #fff8e8; color: #a06010;
@@ -432,7 +363,7 @@ const [showSuggestions, setShowSuggestions] = useState(false)
         .co-summary-row { display: flex; justify-content: space-between; align-items: center; font-family: sans-serif; font-size: 15px; color: #7a5030; padding: 5px 0; }
         .co-summary-row.total { border-top: 1px dashed rgba(196,122,30,0.25); margin-top: 8px; padding-top: 12px; }
         .co-summary-row.total span:first-child { font-weight: 700; font-size: 16px; color: #1a0a00; }
-        .co-summary-row.total span:last-child  { font-family: 'Playfair Display', Georgia, serif; font-size: 26px; font-weight: 700; color: #b86010; }
+        .co-summary-row.total span:last-child  { font-family: 'Playfair Display', Georgia, serif; font-size: clamp(20px, 5vw, 26px); font-weight: 700; color: #b86010; }
 
         .co-terms { font-family: sans-serif; font-size: 12px; color: #9a7050; margin-bottom: 18px; line-height: 1.65; text-align: center; }
         .co-terms a { color: #c47a1e; text-decoration: underline; text-underline-offset: 2px; }
@@ -440,16 +371,18 @@ const [showSuggestions, setShowSuggestions] = useState(false)
         .co-pay-btn {
   position: relative;
   overflow: hidden;
-  width: 55%;
+  width: clamp(220px, 55%, 420px);
+  max-width: 100%;
   margin: 0 auto;
   display: flex;
-  padding: 17px 24px;
+  padding: clamp(14px, 3vw, 17px) clamp(18px, 4vw, 24px);
   background: linear-gradient(135deg, #7a2020, #5c1717);
   color: #fff5e8; border: none; border-radius: 14px;
-  font-family: 'Playfair Display', Georgia, serif; font-size: 21px; font-weight: 800;
+  font-family: 'Playfair Display', Georgia, serif; font-size: clamp(16px, 4.2vw, 21px); font-weight: 800;
   cursor: pointer; letter-spacing: 0.02em;
   transition: opacity 0.18s, transform 0.15s;
   align-items: center; justify-content: center; gap: 10px;
+  white-space: nowrap;
 }
         .co-pay-btn:hover:not(:disabled)  { opacity: 0.92; transform: translateY(-2px); }
         .co-pay-btn:active:not(:disabled) { transform: translateY(0); }
@@ -487,6 +420,30 @@ const [showSuggestions, setShowSuggestions] = useState(false)
           animation: co-spin 0.7s linear infinite; flex-shrink: 0;
         }
         .co-form-divider { height: 1px; background: rgba(196,122,30,0.12); margin: 24px 0; }
+
+        /* ---------- responsive ---------- */
+        @media (max-width: 640px) {
+          .co-plan-body { padding: 18px 18px 20px; }
+          .co-form-card { padding: clamp(20px, 5vw, 28px); }
+          .co-plan-img { height: 180px; }
+        }
+
+        @media (max-width: 540px) {
+          /* iOS Safari auto-zooms the page on focus if an input's
+             font-size is below 16px — bumping it to 16px here (instead
+             of the 14px used on desktop) stops that jump without
+             changing the look on larger screens. */
+          .co-input { font-size: 16px; }
+          .co-pay-btn { width: 100%; }
+        }
+
+        @media (max-width: 380px) {
+          .co-hero-eyebrow { font-size: 9px; padding: 4px 12px; letter-spacing: 3px; }
+          .co-plan-body { padding: 16px 14px 18px; }
+          .co-form-card { padding: 18px 14px; }
+          .co-trust-bar { gap: 10px 16px; }
+          .co-trust-item { font-size: 12px; }
+        }
       `}</style>
 
       <Navbar />
@@ -722,7 +679,7 @@ const [showSuggestions, setShowSuggestions] = useState(false)
     Privacy Policy
   </Link>.
 </p>
-            
+
             <button className="co-pay-btn" onClick={handlePayment} disabled={paying}>
               <span className="co-pay-btn-shine" />
               {paying ? (
