@@ -50,7 +50,7 @@ background: 'linear-gradient(90deg, #1a0a00 0%, #2d1200 40%, #3a1800 70%, #1a0a0
             <img
               src="/logo.png"
               alt="Divine Arra Logo"
-              style={{ width: 130, height: 130, objectFit: 'contain', filter: 'brightness(1.1)' }}
+              style={{ width: 110, height: 110, objectFit: 'contain', filter: 'brightness(1.1)' }}
             />
           </a>
 
