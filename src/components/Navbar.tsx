@@ -48,22 +48,10 @@ background: 'linear-gradient(90deg, #1a0a00 0%, #2d1200 40%, #3a1800 70%, #1a0a0
           <a href="/" onClick={(e) => { e.preventDefault(); navigate('/'); window.scrollTo({ top: 0, behavior: 'smooth' }) }}
             style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0 }}>
             <img
-              src="/logo.jpeg"
+              src="/logo.png"
               alt="Divine Arra Logo"
-              style={{ width: 46, height: 46, objectFit: 'contain', filter: 'brightness(1.1)' }}
+              style={{ width: 130, height: 130, objectFit: 'contain', filter: 'brightness(1.1)' }}
             />
-            <div style={{
-              fontWeight: 700, fontSize: 15,
-              color: '#e8c97a',
-              fontFamily: 'Georgia, serif',
-              letterSpacing: '0.1em',
-              whiteSpace: 'nowrap',
-              textShadow: '0 0 12px rgba(232,201,122,0.4)',
-              marginTop: 0,
-              lineHeight: 1,
-            }}>
-              Divine Arra
-            </div>
           </a>
 
           {/* Desktop Nav */}
