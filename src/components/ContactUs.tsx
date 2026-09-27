@@ -411,7 +411,7 @@ export default function ContactUs() {
               <h3 style={{ fontFamily:"'Playfair Display',serif", fontSize:'1rem', color:BROWN_TEXT, margin:'0 0 1rem', display:'flex', alignItems:'center', gap:8 }}>
                 <Clock size={16} color={AMBER}/> Business Hours
               </h3>
-              {[['Mon – Sat','9:00 AM – 7:00 PM'],['Sunday','10:00 AM – 4:00 PM']].map(([day, time]) => (
+              {[['Mon – Sat','10:00 AM – 6:30 PM'],['Sunday','Off']].map(([day, time]) => (
                 <div key={day} style={{ display:'flex', justifyContent:'space-between', alignItems:'center', padding:'0.5rem 0', borderBottom:`1px solid ${AMBER}18` }}>
                   <span style={{ fontSize:'0.83rem', color:BROWN_MID, fontWeight:600 }}>{day}</span>
                   <span style={{ fontSize:'0.83rem', color:AMBER_DARK, fontWeight:700 }}>{time}</span>
